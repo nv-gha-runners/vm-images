@@ -16,8 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: hashicorp/packer:latest
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.RAPIDSAI_GHA_PACKER_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.RAPIDSAI_GHA_PACKER_AWS_SECRET_ACCESS_KEY }}
     steps:
-      - uses: uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: Install Ansible
         run: apk add ansible
       - name: Build image
@@ -25,7 +28,7 @@ jobs:
           packer init .
           packer build \
             -var "skip_create_ami=${{ inputs.skip_create_ami }}" \
-            -var "kubernetes_version=${KUBERNETES_VERSION}" \
-            -var "driver_version=${DRIVER_VERSION}" \
-            -var "cuda_version=${CUDA_VERSION}" \
+            -var "kubernetes_version=${{ matrix.KUBERNETES_VERSION }}" \
+            -var "driver_version=${{ matrix.DRIVER_VERSION }}" \
+            -var "cuda_version=${{ matrix.CUDA_VERSION }}" \
             .

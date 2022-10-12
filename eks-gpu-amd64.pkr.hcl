@@ -67,9 +67,11 @@ build {
   ]
 
   provisioner "ansible" {
+    user = "ec2-user"
     playbook_file = "ansible/run.yaml"
     extra_arguments = ["--extra-vars", "cuda_version=${var.cuda_version} driver_version=${var.driver_version}"]
     galaxy_file = "ansible/requirements.yaml"
     roles_path = "ansible/roles"
+    use_proxy  = false
   }
 }
