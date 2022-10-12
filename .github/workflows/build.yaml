@@ -1,0 +1,31 @@
+name: build
+
+on:
+  workflow_call:
+    inputs:
+      skip_create_ami:
+        required: true
+        type: boolean
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - { KUBERNETES_VERSION: "1.23", DRIVER_VERSION: "495.29.05", CUDA_VERSION: "11-5" }
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/packer:latest
+    steps:
+      - uses: uses: actions/checkout@v3
+      - name: Install Ansible
+        run: apk add ansible
+      - name: Build image
+        run: |
+          packer init .
+          packer build \
+            -var "skip_create_ami=${{ inputs.skip_create_ami }}" \
+            -var "kubernetes_version=${KUBERNETES_VERSION}" \
+            -var "driver_version=${DRIVER_VERSION}" \
+            -var "cuda_version=${CUDA_VERSION}" \
+            .
