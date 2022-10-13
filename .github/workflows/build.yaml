@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         include:
+          - { KUBERNETES_VERSION: "1.22", DRIVER_VERSION: "495.29.05", CUDA_VERSION: "11-5" }
           - { KUBERNETES_VERSION: "1.23", DRIVER_VERSION: "495.29.05", CUDA_VERSION: "11-5" }
     runs-on: ubuntu-latest
     container:
