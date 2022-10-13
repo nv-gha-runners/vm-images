@@ -1,6 +1,7 @@
 - hosts: all
   vars:
     gpu_node: true
+    register_nvidia_runtime: true
   become: true
   roles:
     - rapids-roles/install_cuda
