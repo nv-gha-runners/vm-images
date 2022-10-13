@@ -12,8 +12,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - { KUBERNETES_VERSION: "1.22", DRIVER_VERSION: "495.29.05", CUDA_VERSION: "11-5" }
-          - { KUBERNETES_VERSION: "1.23", DRIVER_VERSION: "495.29.05", CUDA_VERSION: "11-5" }
+          - { KUBERNETES_VERSION: "1.22", DRIVER_VERSION: "495.29.05" }
+          - { KUBERNETES_VERSION: "1.23", DRIVER_VERSION: "495.29.05" }
     runs-on: ubuntu-latest
     container:
       image: hashicorp/packer:latest
@@ -31,5 +31,4 @@ jobs:
             -var "skip_create_ami=${{ inputs.skip_create_ami }}" \
             -var "kubernetes_version=${{ matrix.KUBERNETES_VERSION }}" \
             -var "driver_version=${{ matrix.DRIVER_VERSION }}" \
-            -var "cuda_version=${{ matrix.CUDA_VERSION }}" \
             .

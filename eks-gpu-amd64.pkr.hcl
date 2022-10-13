@@ -11,10 +11,6 @@ variable "driver_version" {
   type = string
 }
 
-variable "cuda_version" {
-  type = string
-}
-
 variable "kubernetes_version" {
   type = string
 }
@@ -41,7 +37,7 @@ locals {
 }
 
 source "amazon-ebs" "eks_gpu_amd64" {
-  ami_name      = "eks-gpu-amd64-${var.kubernetes_version}-${var.cuda_version}-${var.driver_version}-${local.timestamp}"
+  ami_name      = "eks-gpu-amd64-${var.kubernetes_version}-${var.driver_version}-${local.timestamp}"
   instance_type = var.instance_type
   region        = var.aws_region
 
@@ -69,7 +65,7 @@ build {
   provisioner "ansible" {
     user = "ec2-user"
     playbook_file = "ansible/run.yaml"
-    extra_arguments = ["--extra-vars", "cuda_version=${var.cuda_version} driver_version=${var.driver_version}"]
+    extra_arguments = ["--extra-vars", "driver_version=${var.driver_version}"]
     galaxy_file = "ansible/requirements.yaml"
     roles_path = "ansible/roles"
     use_proxy  = false
