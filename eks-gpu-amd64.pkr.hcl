@@ -37,7 +37,7 @@ locals {
 }
 
 source "amazon-ebs" "eks_gpu_amd64" {
-  ami_name      = "eks-gpu-amd64-${var.kubernetes_version}-${var.driver_version}-${local.timestamp}"
+  ami_name      = "eks-gpu-amd64-${var.kubernetes_version}-${split(".", var.driver_version)[0]}-${local.timestamp}"
   instance_type = var.instance_type
   region        = var.aws_region
 
