@@ -55,6 +55,11 @@ source "amazon-ebs" "eks_gpu_amd64" {
     owners      = ["amazon"]
   }
   ssh_username = "ec2-user"
+
+  tags = {
+    "k8s-version": "${var.kubernetes_version}",
+    "driver-version": "${split(".", var.driver_version)[0]}"
+  }
 }
 
 build {
