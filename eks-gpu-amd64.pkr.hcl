@@ -58,7 +58,8 @@ source "amazon-ebs" "eks_gpu_amd64" {
 
   tags = {
     "k8s-version": "${var.kubernetes_version}",
-    "driver-version": "${split(".", var.driver_version)[0]}"
+    "driver-version": "${split(".", var.driver_version)[0]}",
+    "arch": "amd64"
   }
 }
 
