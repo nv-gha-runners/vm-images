@@ -12,8 +12,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - { KUBERNETES_VERSION: "1.22", DRIVER_VERSION: "495.29.05" }
           - { KUBERNETES_VERSION: "1.23", DRIVER_VERSION: "495.29.05" }
+          - { KUBERNETES_VERSION: "1.24", DRIVER_VERSION: "495.29.05" }
     runs-on: ubuntu-latest
     container:
       image: hashicorp/packer:latest
