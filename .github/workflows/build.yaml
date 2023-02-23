@@ -13,7 +13,7 @@ jobs:
       matrix:
         include:
           - { KUBERNETES_VERSION: "1.24", DRIVER_VERSION: "520.61.05" }
-          - { KUBERNETES_VERSION: "1.24", DRIVER_VERSION: "525.60.13" }
+          - { KUBERNETES_VERSION: "1.24", DRIVER_VERSION: "525.85.12" }
     runs-on: ubuntu-latest
     container:
       image: hashicorp/packer:latest
