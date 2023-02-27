@@ -1,2 +1,3 @@
 - src: https://github.com/rapidsai/ansible-roles
   name: rapids-roles
+  version: "gcc10"
