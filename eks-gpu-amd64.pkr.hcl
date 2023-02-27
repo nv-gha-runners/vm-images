@@ -44,6 +44,7 @@ source "amazon-ebs" "eks_gpu_amd64" {
   vpc_id = local.vpc_id
   subnet_id = local.subnet_id
   associate_public_ip_address = true
+  temporary_security_group_source_public_ip = true
 
   skip_create_ami = var.skip_create_ami
 
