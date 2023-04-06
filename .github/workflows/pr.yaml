@@ -1,7 +1,9 @@
 name: prs
 
 on:
-  pull_request:
+  branch:
+    branches:
+      - !main
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"

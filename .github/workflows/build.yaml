@@ -19,10 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: hashicorp/packer:latest
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.RAPIDSAI_GHA_PACKER_AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.RAPIDSAI_GHA_PACKER_AWS_SECRET_ACCESS_KEY }}
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ vars.PACKER_AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
       - uses: actions/checkout@v3
       - name: Install Ansible
         run: apk add ansible
