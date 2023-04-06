@@ -1,7 +1,13 @@
 name: prs
 
 on:
-  pull_request:
+  push:
+    branches-ignore:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
