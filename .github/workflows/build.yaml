@@ -20,7 +20,7 @@ jobs:
           - "1.24"
         DRIVER_VERSION:
           - "520.61.05"
-          - "525.85.12"
+          - "525.105.17"
     runs-on: ubuntu-latest
     container:
       image: hashicorp/packer:latest
