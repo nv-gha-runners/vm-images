@@ -4,5 +4,5 @@
     register_nvidia_runtime: true
   become: true
   roles:
-    - rapids-roles/install_driver
-    - rapids-roles/install_nvct
+    - nv-gha-runners-roles/install_driver
+    - nv-gha-runners-roles/install_nvct
