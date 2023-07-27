@@ -17,11 +17,8 @@ jobs:
       fail-fast: false
       matrix:
         KUBERNETES_VERSION:
-          - "1.24"
-          - "1.25"
-          - "1.26"
+          - "1.27"
         DRIVER_VERSION:
-          - "520.61.05"
           - "525.105.17"
     runs-on: ubuntu-latest
     container:
