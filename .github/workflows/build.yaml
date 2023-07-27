@@ -19,7 +19,7 @@ jobs:
         KUBERNETES_VERSION:
           - "1.27"
         DRIVER_VERSION:
-          - "525.105.17"
+          - "525.125.06"
     runs-on: ubuntu-latest
     container:
       image: hashicorp/packer:latest
