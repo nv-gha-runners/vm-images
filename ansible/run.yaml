@@ -1,8 +1,6 @@
 - hosts: all
   vars:
     gpu_node: true
-    register_nvidia_runtime: true
   become: true
   roles:
     - nv-gha-runners-roles/install_driver
-    - nv-gha-runners-roles/install_nvct
