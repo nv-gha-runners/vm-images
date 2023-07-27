@@ -32,8 +32,6 @@ variable "skip_create_ami" {
 
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
-  vpc_id    = "vpc-81eb9ae9"
-  subnet_id = "subnet-45f29e2d"
 }
 
 source "amazon-ebs" "eks_gpu_amd64" {
@@ -41,8 +39,16 @@ source "amazon-ebs" "eks_gpu_amd64" {
   instance_type = var.instance_type
   region        = var.aws_region
 
-  vpc_id                                    = local.vpc_id
-  subnet_id                                 = local.subnet_id
+  vpc_filter {
+    filters = {
+      "tag:Name": "gha-runners-main"
+    }
+  }
+  subnet_filter {
+    filters = {
+      "tag:Name": "gha-runners-main-public-us-east-2a"
+    }
+  }
   associate_public_ip_address               = true
   temporary_security_group_source_public_ip = true
 
