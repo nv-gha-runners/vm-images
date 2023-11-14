@@ -4,15 +4,6 @@ build {
     "source.qemu.ubuntu",
   ]
 
-  // provisioner "ansible" {
-  //   user                   = "ec2-user"
-  //   playbook_file          = "ansible/run.yaml"
-  //   extra_arguments        = ["--extra-vars", "driver_version=${var.driver_version}"]
-  //   galaxy_file            = "ansible/requirements.yaml"
-  //   roles_path             = "ansible/roles"
-  //   use_proxy              = false
-  //   galaxy_force_with_deps = true
-  // }
   provisioner "shell" {
     inline = [
       "cloud-init status --wait",

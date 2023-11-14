@@ -30,8 +30,6 @@ jobs:
           role-to-assume: ${{ vars.PACKER_AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
       - uses: actions/checkout@v3
-      - name: Install Ansible
-        run: apk add ansible
       - name: Build image
         run: |
           packer init .
