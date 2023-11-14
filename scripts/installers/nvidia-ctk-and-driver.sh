@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # Don't install CUDA Toolkit and Driver if NV_DRIVER_VERSION is not set
-if [ -z "${NV_DRIVER_VERSION}" ]; then
-  echo "NV_DRIVER_VERSION is not set. Skipping CUDA Toolkit and Driver installation."
+if [ "${NV_VARIANT}" != "gpu" ]; then
+  echo "NV_VARIANT is not 'gpu'. Skipping CUDA Toolkit and Driver installation."
   exit 0
 fi
 

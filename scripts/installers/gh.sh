@@ -18,4 +18,5 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=${KEYRING}] https://cli.g
 sudo apt update
 sudo apt install gh -y
 
+gh --version
 sudo rm "${APT}" "${KEYRING}"

@@ -62,5 +62,5 @@ source "qemu" "ubuntu" {
   cd_files          = ["./cloud-init/*"]
   cd_label          = "cidata"
 
-  // headless = true // comment this line to see the VM during local builds
+  headless = true // comment this line to see the VM during local builds
 }
