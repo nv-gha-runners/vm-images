@@ -6,4 +6,22 @@ The repository uses Packer to create AMIs for AWS and `qcow2` files for KVM VMs.
 
 The `qcow2` files are then packaged and published as a Docker image for use as a `containerDisk` with KubeVirt ([docs](https://kubevirt.io/user-guide/virtual_machines/disks_and_volumes/#containerdisk)).
 
-All images use the latest Ubuntu LTS image as their base.
+All images use the latest Ubuntu Jammy image as their base.
+
+## Building `qcow2` Files Locally
+
+Create a `variables.auto.pkrvars.hcl` file and run `packer build`:
+
+```sh
+cp ./variables.auto.pkrvars.hcl.sample ./variables.auto.pkrvars.hcl
+packer build -only="qemu*" .
+```
+
+## Running `qcow2` Files Locally
+
+```sh
+qemu-system-x86_64 \
+    -enable-kvm \
+    -m 2048 \
+    -drive file=output/build.qcow2,media=disk,if=virtio
+```

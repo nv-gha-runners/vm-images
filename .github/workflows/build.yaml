@@ -37,6 +37,5 @@ jobs:
           packer init .
           packer build \
             -var "skip_create_ami=${{ inputs.skip_create_ami }}" \
-            -var "kubernetes_version=${{ matrix.KUBERNETES_VERSION }}" \
             -var "driver_version=${{ matrix.DRIVER_VERSION }}" \
             .

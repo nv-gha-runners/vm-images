@@ -1,0 +1,6 @@
+// arch = "amd64"
+// driver_version = "525.147.05"
+// os = "linux"
+runner_version = "2.311.0"
+// skip_create_ami = true
+// variant = "gpu"

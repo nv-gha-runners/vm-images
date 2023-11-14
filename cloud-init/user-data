@@ -1,0 +1,17 @@
+#cloud-config
+hostname: nv-runner
+locale: en_US.UTF-8
+timezone: US/Eastern
+ssh_pwauth: True
+disable_ec2_metadata: true
+users:
+  - name: runner
+    plain_text_passwd: runner
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    lock_passwd: false
+    uid: 1001
+    groups: docker, adm, systemd-journal
+    primary_group: docker
+runcmd:
+  - [groupmod, -g, 127, docker]

@@ -1,0 +1,26 @@
+OS:
+  - linux
+  # - win
+
+DRIVER_VERSION:
+  - "525.147.05"
+
+RUNNER_VERSION:
+  - "2.311.0"
+
+ARCH:
+  - amd64
+  - arm64
+
+VARIANT:
+  - cpu
+  - gpu
+
+FORMAT:
+  - qcow2
+  - ami
+
+# Specify additional excludes here.
+# ci/generate-matrix.yaml will automatically exclude 'cpu' variants and
+# `driver_version` combinations.
+exclude: []
