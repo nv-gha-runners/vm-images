@@ -12,28 +12,55 @@ permissions:
   contents: read
 
 jobs:
+  compute-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      MATRIX: ${{ steps.compute-matrix.outputs.MATRIX }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Compute matrix
+        id: compute-matrix
+        run: |
+          MATRIX=$(ci/compute-matrix.sh)
+          echo "MATRIX=${MATRIX}" | tee --append ${GITHUB_OUTPUT}
   build:
+    needs: compute-matrix
     strategy:
+      matrix: ${{ fromJSON(needs.compute-matrix.outputs.MATRIX) }}
       fail-fast: false
-      matrix:
-        KUBERNETES_VERSION:
-          - "1.27"
-        DRIVER_VERSION:
-          - "525.125.06"
     runs-on: ubuntu-latest
     container:
       image: hashicorp/packer:latest
     steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ vars.PACKER_AWS_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
-      - uses: actions/checkout@v3
-      - name: Build image
-        run: |
-          packer init .
-          packer build \
-            -var "skip_create_ami=${{ inputs.skip_create_ami }}" \
-            -var "driver_version=${{ matrix.DRIVER_VERSION }}" \
-            .
+      - run: |
+          echo "DRIVER_VERSION=$DRIVER_VERSION"
+          echo "OS=$OS"
+          echo "RUNNER_VERSION=$RUNNER_VERSION"
+          echo "ARCH=$ARCH"
+          echo "ENV=$ENV"
+          echo "SKIP_CREATE_AMI=$SKIP_CREATE_AMI"
+          echo "DOMAIN=$DOMAIN"
+          echo "PACKER_SOURCE=$PACKER_SOURCE"
+        env:
+          DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
+          OS: ${{ matrix.OS }}
+          RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
+          ARCH: ${{ matrix.ARCH }}
+          ENV: ${{ matrix.ENV }}
+          SKIP_CREATE_AMI: ${{ inputs.skip_create_ami }}
+          DOMAIN: ${{ matrix.domain }}
+          PACKER_SOURCE: ${{ matrix.packer_source }}
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     role-to-assume: ${{ vars.PACKER_AWS_ROLE_ARN }}
+      #     aws-region: ${{ vars.AWS_REGION }}
+      # - uses: actions/checkout@v4
+      # - name: Build image
+      #   run: |
+      #     packer init .
+      #     packer build \
+      #       -var "skip_create_ami=${{ inputs.skip_create_ami }}" \
+      #       -var "driver_version=${{ matrix.DRIVER_VERSION }}" \
+      #       .

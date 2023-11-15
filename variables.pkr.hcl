@@ -46,13 +46,3 @@ variable "skip_create_ami" {
   type    = bool
   default = true
 }
-
-variable "variant" {
-  type    = string
-  default = "cpu"
-
-  validation {
-    condition     = can(regex("^[cg]pu$", var.variant))
-    error_message = "The variant value must be either 'cpu' or 'gpu'."
-  }
-}

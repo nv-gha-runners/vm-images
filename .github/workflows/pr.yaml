@@ -14,13 +14,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # TODO: update PR build job
-  # build:
-  #   uses: ./.github/workflows/build.yaml
-  #   with:
-  #     skip_create_ami: true
-  #   secrets: inherit
-  temp:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "temp job"
+  build:
+    uses: ./.github/workflows/build.yaml
+    with:
+      skip_create_ami: true
+    secrets: inherit

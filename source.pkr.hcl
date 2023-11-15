@@ -7,7 +7,7 @@ source "amazon-ebs" "ubuntu" {
                     [ for v in
                       [
                         var.os,
-                        var.variant,
+                        local.variant,
                         local.driver_major_version,
                         var.arch,
                         var.runner_version,
@@ -41,7 +41,7 @@ source "amazon-ebs" "ubuntu" {
       "driver-version" = local.driver_major_version
       "os" = var.os
       "runner-version" = var.runner_version
-      "variant" = var.variant
+      "variant" = local.variant
     }: k => v if v != null
   }
 }

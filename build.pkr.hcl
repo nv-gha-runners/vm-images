@@ -22,7 +22,7 @@ build {
       "NV_ARCH=${var.arch}",
       "NV_DRIVER_VERSION=${var.driver_version}",
       "NV_HELPER_SCRIPTS=${local.helpers_directory}",
-      "NV_VARIANT=${var.variant}",
+      "NV_VARIANT=${local.variant}",
     ]
 
     scripts = [

@@ -3,6 +3,8 @@ OS:
   # - win
 
 DRIVER_VERSION:
+  # keep this blank entry. an empty driver version corresponds to CPU machines
+  - ""
   - "525.147.05"
 
 RUNNER_VERSION:
@@ -10,17 +12,10 @@ RUNNER_VERSION:
 
 ARCH:
   - amd64
-  - arm64
+  # - arm64
 
-VARIANT:
-  - cpu
-  - gpu
+ENV:
+  - aws
+  # - premise
 
-FORMAT:
-  - qcow2
-  - ami
-
-# Specify additional excludes here.
-# ci/generate-matrix.yaml will automatically exclude 'cpu' variants and
-# `driver_version` combinations.
 exclude: []
