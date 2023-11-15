@@ -8,12 +8,12 @@ source "amazon-ebs" "ubuntu" {
                       [
                         var.os,
                         local.variant,
-                        local.driver_major_version,
+                        var.driver_version,
                         var.arch,
                         var.runner_version,
                         local.timestamp
                       ]
-                    : v if v != null ]
+                    : v if v != "" ]
                   )
   instance_type = local.instance_type
   region        = var.aws_region
@@ -38,11 +38,11 @@ source "amazon-ebs" "ubuntu" {
   tags = {
     for k,v in {
       "arch" = var.arch
-      "driver-version" = local.driver_major_version
+      "driver-version" = var.driver_version
       "os" = var.os
       "runner-version" = var.runner_version
       "variant" = local.variant
-    }: k => v if v != null
+    }: k => v if v != ""
   }
 }
 
@@ -52,6 +52,8 @@ source "qemu" "ubuntu" {
   iso_checksum      = "file:https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
   disk_image        = true
   shutdown_command  = "echo 'ubuntu' | sudo -S shutdown -P now"
+  cores             = 4
+  memory            = 2048
   disk_size         = "150G"
   format            = "qcow2"
   accelerator       = "kvm"

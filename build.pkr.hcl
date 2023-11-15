@@ -32,7 +32,7 @@ build {
       "${path.root}/scripts/installers/yq.sh",
 
       // NVIDIA CTK & Driver
-      "${path.root}/scripts/installers/nvidia-ctk-and-driver.sh",
+      "${path.root}/scripts/installers/nvidia-driver.sh",
 
       // Remaining Packages
       "${path.root}/scripts/installers/awscli.sh",

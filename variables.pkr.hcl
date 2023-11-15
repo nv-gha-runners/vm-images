@@ -18,8 +18,8 @@ variable "driver_version" {
   default = ""
 
   validation {
-    condition     = can(regex("(^\\d+\\.\\d+\\.\\d+$|^$)", var.driver_version))
-    error_message = "The driver_version value must be an empty string or match the pattern '^\\d+\\.\\d+\\.\\d+$'."
+    condition     = can(regex("(^\\d{3}$|^$)", var.driver_version))
+    error_message = "The driver_version value must be an empty string or 3 digits."
   }
 }
 

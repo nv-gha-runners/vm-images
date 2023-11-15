@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-# Don't install CUDA Toolkit and Driver if NV_DRIVER_VERSION is not set
+# Don't install CUDA Driver if NV_DRIVER_VERSION is not set
 if [ "${NV_VARIANT}" != "gpu" ]; then
-  echo "NV_VARIANT is not 'gpu'. Skipping CUDA Toolkit and Driver installation."
+  echo "NV_VARIANT is not 'gpu'. Skipping CUDA Driver installation."
   exit 0
 fi
 
@@ -18,6 +18,6 @@ wget "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${ARCH
 sudo dpkg --install "${KEYRING}"
 sudo apt-get update
 
-sudo apt-get -y install cuda-toolkit "cuda-drivers-${NV_DRIVER_VERSION}"
+sudo apt-get -y install "nvidia-driver-${NV_DRIVER_VERSION}"
 
-sudo dpkg --purge "${KEYRING}"
+sudo dpkg --purge $(dpkg -f "${KEYRING}" Package)
