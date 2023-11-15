@@ -15,5 +15,4 @@ source "${HOME}/.cargo/env"
 # Cleanup Cargo cache
 # rm -rf "${HOME}/.cargo/registry/"*
 
-# Prepend $HOME/.cargo/bin /etc/environemnt PATH
-sudo sed -i '/^PATH=/ s|=\"|=\"$HOME/.cargo/bin:|' /etc/environment
+rustc --version
