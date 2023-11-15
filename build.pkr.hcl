@@ -47,6 +47,9 @@ build {
       "${path.root}/scripts/installers/python.sh",
       "${path.root}/scripts/installers/runner.sh",
       "${path.root}/scripts/installers/rust.sh",
+
+      // Cleanup
+      "${path.root}/scripts/installers/cleanup.sh",
     ]
   }
 
