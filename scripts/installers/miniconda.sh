@@ -1,15 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
-# Install Miniconda
-curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-$(arch).sh -o miniconda.sh
-chmod +x miniconda.sh
-sudo ./miniconda.sh -b -p /usr/share/miniconda
+curl -fsSL https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-$(arch).sh -o miniforge.sh
+chmod +x miniforge.sh
+sudo ./miniforge.sh -b -p /usr/share/miniforge
 
-CONDA=/usr/share/miniconda
+CONDA=/usr/share/miniforge
 echo "CONDA=$CONDA" | sudo tee --append /etc/environment
 
 sudo ln -s $CONDA/bin/conda /usr/bin/conda
 
 conda --version
-sudo rm -rf miniconda.sh
+sudo rm -rf miniforge.sh
