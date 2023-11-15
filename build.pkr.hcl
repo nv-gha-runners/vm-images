@@ -7,7 +7,13 @@ build {
   provisioner "shell" {
     inline = [
       "cloud-init status --wait",
+      "mkdir -p ${local.helpers_directory}"
     ]
+  }
+
+  provisioner "file" {
+    source      = "${path.root}/scripts/helpers/"
+    destination = "${local.helpers_directory}"
   }
 
   provisioner "shell" {
@@ -15,6 +21,7 @@ build {
       "DEBIAN_FRONTEND=noninteractive",
       "NV_ARCH=${var.arch}",
       "NV_DRIVER_VERSION=${var.driver_version}",
+      "NV_HELPER_SCRIPTS=${local.helpers_directory}",
       "NV_VARIANT=${var.variant}",
     ]
 
@@ -40,6 +47,12 @@ build {
       "${path.root}/scripts/installers/python.sh",
       "${path.root}/scripts/installers/runner.sh",
       "${path.root}/scripts/installers/rust.sh",
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "rm -rf ${local.helpers_directory}"
     ]
   }
 }
