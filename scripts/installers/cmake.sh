@@ -1,17 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
-KEYRING=/usr/share/keyrings/kitware-archive-keyring.gpg
-APT=/etc/apt/sources.list.d/kitware.list
+source "${NV_HELPER_SCRIPTS}/github.sh"
 
-wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null \
-  | gpg --dearmor - \
-  | sudo tee "${KEYRING}" >/dev/null
+LATEST_VERSION=$(get_github_latest_release_version "KitWare/CMake")
+CHECKSUM="https://github.com/Kitware/CMake/releases/download/v${LATEST_VERSION}/cmake-${LATEST_VERSION}-SHA-256.txt"
+PKG="https://github.com/Kitware/CMake/releases/download/v${LATEST_VERSION}/cmake-${LATEST_VERSION}-linux-$(arch).tar.gz"
 
-echo "deb [signed-by=${KEYRING}] https://apt.kitware.com/ubuntu/ jammy main" | sudo tee "${APT}" >/dev/null
+wget -q "${PKG}" "${CHECKSUM}"
 
-sudo apt-get update
-sudo apt install -y cmake
-
+grep "^$(sha256sum cmake-*.tar.gz)$" cmake-*-SHA-256.txt
+sudo tar --strip-components=1 -C /usr/local -xzf cmake-*.tar.gz
 cmake --version
-sudo rm -rf "${KEYRING}" "${APT}"
+sudo rm -rf ./cmake-*
