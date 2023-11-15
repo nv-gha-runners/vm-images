@@ -10,6 +10,7 @@ sudo apt install -y \
   build-essential \
   ca-certificates \
   curl \
+  gnupg \
   gpg \
   sudo \
   unzip \

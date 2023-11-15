@@ -4,9 +4,6 @@ set -euo pipefail
 KEYRING="/usr/share/keyrings/docker.gpg"
 APT="/etc/apt/sources.list.d/docker.list"
 
-sudo apt-get update
-sudo apt-get install ca-certificates curl gnupg
-sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o "${KEYRING}"
 sudo chmod a+r "${KEYRING}"
 
@@ -28,7 +25,7 @@ CHECKSUM_URL="${COMPOSE_URL}.sha256"
 wget -q "${COMPOSE_URL}" "${CHECKSUM_URL}"
 sha256sum -c docker-compose-*.sha256
 rm -rf docker-compose*.sha256
-sudo mkdir -p /usr/libexec/docker/cli-plugins/docker-compose
+sudo mkdir -p /usr/libexec/docker/cli-plugins
 chmod +x docker-compose*
 sudo mv docker-compose* /usr/libexec/docker/cli-plugins/docker-compose
 
