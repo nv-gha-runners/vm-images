@@ -33,34 +33,27 @@ jobs:
     container:
       image: hashicorp/packer:latest
     steps:
-      - run: |
-          echo "DRIVER_VERSION=$DRIVER_VERSION"
-          echo "OS=$OS"
-          echo "RUNNER_VERSION=$RUNNER_VERSION"
-          echo "ARCH=$ARCH"
-          echo "ENV=$ENV"
-          echo "SKIP_CREATE_AMI=$SKIP_CREATE_AMI"
-          echo "DOMAIN=$DOMAIN"
-          echo "PACKER_SOURCE=$PACKER_SOURCE"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ vars.PACKER_AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: |
+          packer init .
+          packer build \
+            -only="${PACKER_SOURCE}*" \
+            -var "arch=${ARCH}" \
+            -var "driver_version=${DRIVER_VERSION}" \
+            -var "os=${OS}" \
+            -var "runner_version=${RUNNER_VERSION}" \
+            -var "skip_create_ami=${SKIP_CREATE_AMI}" \
+            .
         env:
+          ARCH: ${{ matrix.ARCH }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           OS: ${{ matrix.OS }}
-          RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
-          ARCH: ${{ matrix.ARCH }}
-          ENV: ${{ matrix.ENV }}
-          SKIP_CREATE_AMI: ${{ inputs.skip_create_ami }}
-          DOMAIN: ${{ matrix.domain }}
           PACKER_SOURCE: ${{ matrix.packer_source }}
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v2
-      #   with:
-      #     role-to-assume: ${{ vars.PACKER_AWS_ROLE_ARN }}
-      #     aws-region: ${{ vars.AWS_REGION }}
-      # - uses: actions/checkout@v4
-      # - name: Build image
-      #   run: |
-      #     packer init .
-      #     packer build \
-      #       -var "skip_create_ami=${{ inputs.skip_create_ami }}" \
-      #       -var "driver_version=${{ matrix.DRIVER_VERSION }}" \
-      #       .
+          RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
+          SKIP_CREATE_AMI: ${{ inputs.skip_create_ami }}
