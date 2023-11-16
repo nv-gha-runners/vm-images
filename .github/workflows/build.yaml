@@ -56,6 +56,6 @@ jobs:
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           OS: ${{ matrix.OS }}
           PACKER_SOURCE: ${{ matrix.packer_source }}
-          RUNNER_ENV: ${{ matrix.RUNNER_ENV }}
+          RUNNER_ENV: ${{ matrix.ENV }}
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
           SKIP_CREATE_AMI: ${{ inputs.skip_create_ami }}
