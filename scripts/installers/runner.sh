@@ -9,8 +9,7 @@ if [ "${NV_ARCH}" == "arm64" ]; then
     ARCH_STRING=arm64
 fi
 
-LATEST_VERSION=$(get_github_latest_release_version "actions/runner")
-PKG="https://github.com/actions/runner/releases/download/v${LATEST_VERSION}/actions-runner-linux-${ARCH_STRING}-${LATEST_VERSION}.tar.gz"
+PKG="https://github.com/actions/runner/releases/download/v${NV_RUNNER_VERSION}/actions-runner-linux-${ARCH_STRING}-${NV_RUNNER_VERSION}.tar.gz"
 RUNNER_DIR="/opt/runner"
 
 wget -q "${PKG}" -O actions-runner.tar.gz

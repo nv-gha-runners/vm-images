@@ -28,6 +28,7 @@ build {
       "NV_DRIVER_VERSION=${var.driver_version}",
       "NV_HELPER_SCRIPTS=${local.helpers_directory}",
       "NV_RUNNER_ENV=${var.runner_env}",
+      "NV_RUNNER_VERSION=${var.runner_version}",
       "NV_VARIANT=${local.variant}",
     ]
 
