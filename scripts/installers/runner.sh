@@ -19,7 +19,7 @@ sudo "${RUNNER_DIR}/bin/installdependencies.sh"
 rm -rf ./actions-runner.tar.gz
 
 # Copy scripts and services
-cat "${NV_HELPER_SCRIPTS}/runner.sh" | envsubst '$NV_RUNNER_ENV' | sudo tee /runner.sh
+sudo cp "${NV_HELPER_SCRIPTS}/runner.sh" /runner.sh
 
 _UID=$(id -u)
 _GID=$(id -g)

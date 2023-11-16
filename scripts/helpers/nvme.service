@@ -1,0 +1,9 @@
+[Unit]
+Description=NVME Service
+Before=docker.service containerd.service
+
+[Service]
+ExecStart=/nvme.sh
+
+[Install]
+WantedBy=multi-user.target

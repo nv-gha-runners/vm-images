@@ -34,8 +34,10 @@ DOMAIN=$(yq '.[env(NV_RUNNER_ENV)].domain' "${NV_HELPER_SCRIPTS}/config.yaml")
 export DOMAIN
 cat "${NV_HELPER_SCRIPTS}/dockerd.cpu.json" | envsubst | sudo tee /etc/docker/daemon.json
 
-# Docker daemon takes time to come up after installing
 sudo systemctl restart docker
 docker info
+
+# Patch containerd config to use nvme mount
+sudo sed -i '/root = / s|.*|root = "/data/containerd"|' /etc/containerd/config.toml
 
 sudo rm -rf "${APT}" "${KEYRING}"

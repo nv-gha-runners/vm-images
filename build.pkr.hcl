@@ -47,6 +47,7 @@ build {
       "${path.root}/scripts/installers/gh.sh",
       "${path.root}/scripts/installers/git.sh",
       "${path.root}/scripts/installers/nvidia-container-toolkit.sh",
+      "${path.root}/scripts/installers/nvme.sh",
       "${path.root}/scripts/installers/python.sh",
       "${path.root}/scripts/installers/runner.sh",
 
