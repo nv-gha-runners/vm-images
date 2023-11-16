@@ -1,20 +1,5 @@
 source "amazon-ebs" "ubuntu" {
-  // ami_name matches these formats:
-  //   - linux-cpu-amd64-2.311.0-${timestamp}
-  //   - linux-gpu-535-amd64-2.311.0-${timestamp}
-  ami_name      = join(
-                    "-",
-                    [ for v in
-                      [
-                        var.os,
-                        local.variant,
-                        var.driver_version,
-                        var.arch,
-                        var.runner_version,
-                        local.timestamp
-                      ]
-                    : v if v != "" ]
-                  )
+  ami_name      = local.img_name
   instance_type = local.instance_type
   region        = var.aws_region
 
@@ -33,8 +18,6 @@ source "amazon-ebs" "ubuntu" {
   ssh_username = "runner"
   ssh_password = "runner"
 
-  // TODO: explore adding `Name` tag here to set AMI name
-  // if it's not properly set using `ami_name` attribute above
   tags = {
     for k,v in {
       "arch" = var.arch
@@ -42,6 +25,7 @@ source "amazon-ebs" "ubuntu" {
       "os" = var.os
       "runner-version" = var.runner_version
       "variant" = local.variant
+      "Name" = local.img_name
     }: k => v if v != ""
   }
 }
