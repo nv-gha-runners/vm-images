@@ -29,14 +29,13 @@ sudo mkdir -p /usr/libexec/docker/cli-plugins
 chmod +x docker-compose*
 sudo mv docker-compose* /usr/libexec/docker/cli-plugins/docker-compose
 
-# Enable docker.service
-systemctl is-active --quiet docker.service || systemctl start docker.service
-systemctl is-enabled --quiet docker.service || systemctl enable docker.service
+# Add Docker mirror to daemon.json
+DOMAIN=$(yq '.[env(NV_RUNNER_ENV)].domain' "${NV_HELPER_SCRIPTS}/config.yaml")
+export DOMAIN
+cat "${NV_HELPER_SCRIPTS}/dockerd.cpu.json" | envsubst | sudo tee /etc/docker/daemon.json
 
 # Docker daemon takes time to come up after installing
-sleep 10
+sudo systemctl restart docker
 docker info
-
-# TODO: configure docker mirror
 
 sudo rm -rf "${APT}" "${KEYRING}"

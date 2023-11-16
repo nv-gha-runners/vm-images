@@ -47,6 +47,7 @@ jobs:
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "os=${OS}" \
+            -var "runner_env=${RUNNER_ENV}" \
             -var "runner_version=${RUNNER_VERSION}" \
             -var "skip_create_ami=${SKIP_CREATE_AMI}" \
             .
@@ -55,5 +56,6 @@ jobs:
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           OS: ${{ matrix.OS }}
           PACKER_SOURCE: ${{ matrix.packer_source }}
+          RUNNER_ENV: ${{ matrix.RUNNER_ENV }}
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
           SKIP_CREATE_AMI: ${{ inputs.skip_create_ami }}

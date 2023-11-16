@@ -16,12 +16,18 @@ build {
     destination = "${local.helpers_directory}"
   }
 
+  provisioner "file" {
+    source      = "${path.root}/config.yaml"
+    destination = "${local.helpers_directory}/config.yaml"
+  }
+
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
       "NV_ARCH=${var.arch}",
       "NV_DRIVER_VERSION=${var.driver_version}",
       "NV_HELPER_SCRIPTS=${local.helpers_directory}",
+      "NV_RUNNER_ENV=${var.runner_env}",
       "NV_VARIANT=${local.variant}",
     ]
 
@@ -37,9 +43,9 @@ build {
       // Remaining Packages
       "${path.root}/scripts/installers/awscli.sh",
       "${path.root}/scripts/installers/docker.sh",
-      // TODO: add nvidia-container-toolkit
       "${path.root}/scripts/installers/gh.sh",
       "${path.root}/scripts/installers/git.sh",
+      "${path.root}/scripts/installers/nvidia-container-toolkit.sh",
       "${path.root}/scripts/installers/python.sh",
       "${path.root}/scripts/installers/runner.sh",
 

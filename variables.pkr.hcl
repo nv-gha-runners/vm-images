@@ -23,6 +23,15 @@ variable "driver_version" {
   }
 }
 
+variable "runner_env" {
+  type = string
+
+  validation {
+    condition     = can(regex("(^aws$|^premise$)", var.runner_env))
+    error_message = "The runner_env value must be 'aws' or 'premise'."
+  }
+}
+
 variable "os" {
   type    = string
   default = "linux"

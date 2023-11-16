@@ -14,7 +14,7 @@ if [ "${NV_ARCH}" == "arm64" ]; then
   ARCH=sbsa
 fi
 
-wget "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${ARCH}/${KEYRING}"
+wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${ARCH}/${KEYRING}"
 sudo dpkg --install "${KEYRING}"
 sudo apt-get update
 
