@@ -10,13 +10,21 @@ if [ "${NV_ARCH}" == "arm64" ]; then
 fi
 
 PKG="https://github.com/actions/runner/releases/download/v${NV_RUNNER_VERSION}/actions-runner-linux-${ARCH_STRING}-${NV_RUNNER_VERSION}.tar.gz"
-RUNNER_DIR="/opt/runner"
+RUNNER_DIR="/home/runner"
 
+# Download runner
 wget -q "${PKG}" -O actions-runner.tar.gz
-sudo mkdir -p "${RUNNER_DIR}"
-sudo tar -C "${RUNNER_DIR}" -xzf actions-runner.tar.gz
-sudo chown -R "$(id --user):$(id --group)" "${RUNNER_DIR}"
+tar -C "${RUNNER_DIR}" -xzf actions-runner.tar.gz
 sudo "${RUNNER_DIR}/bin/installdependencies.sh"
 rm -rf ./actions-runner.tar.gz
 
-# TODO: install runner service
+# Copy scripts and services
+cat "${NV_HELPER_SCRIPTS}/runner.sh" | envsubst '$NV_RUNNER_ENV' | sudo tee /runner.sh
+
+_UID=$(id -u)
+_GID=$(id -g)
+sudo chown -R "${_UID}:${_GID}" /runner.sh
+chmod +x /runner.sh
+
+sudo cp "${NV_HELPER_SCRIPTS}/runner.service" /etc/systemd/system/
+sudo systemctl enable runner.service

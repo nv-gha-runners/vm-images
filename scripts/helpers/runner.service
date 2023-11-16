@@ -1,0 +1,13 @@
+[Unit]
+Description=GHA Runner
+After=docker.service,network.target,cloud-final.service
+
+[Service]
+ExecStart=/runner.sh
+User=runner
+KillMode=process
+KillSignal=SIGTERM
+TimeoutStopSec=5min
+
+[Install]
+WantedBy=multi-user.target
