@@ -14,7 +14,7 @@ variable "aws_region" {
 }
 
 variable "driver_version" {
-  type = string
+  type    = string
   default = ""
 
   validation {
@@ -43,7 +43,7 @@ variable "os" {
 }
 
 variable "runner_version" {
-  type     = string
+  type = string
 
   validation {
     condition     = can(regex("^\\d+\\.\\d+\\.\\d+$", var.runner_version))
