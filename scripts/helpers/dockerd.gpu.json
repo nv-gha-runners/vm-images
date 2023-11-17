@@ -1,7 +1,6 @@
 {
   "data-root": "/data/docker",
   "default-runtime": "nvidia",
-  "mtu": 1400,
   "registry-mirrors": ["https://dc.$DOMAIN.gha-runners.nvidia.com"],
   "runtimes": {
     "nvidia": {
