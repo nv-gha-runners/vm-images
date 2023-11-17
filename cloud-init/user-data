@@ -3,7 +3,6 @@ hostname: nv-runner
 locale: en_US.UTF-8
 timezone: US/Eastern
 ssh_pwauth: True
-disable_ec2_metadata: true
 users:
   - name: runner
     plain_text_passwd: runner
