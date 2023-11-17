@@ -1,6 +1,0 @@
-- hosts: all
-  vars:
-    gpu_node: true
-  become: true
-  roles:
-    - nv-gha-runners-roles/install_driver

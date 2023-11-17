@@ -12,14 +12,23 @@ permissions:
   contents: read
 
 jobs:
+  compute-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      MATRIX: ${{ steps.compute-matrix.outputs.MATRIX }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Compute matrix
+        id: compute-matrix
+        run: |
+          MATRIX=$(ci/compute-matrix.sh)
+          echo "MATRIX=${MATRIX}" | tee --append ${GITHUB_OUTPUT}
   build:
+    needs: compute-matrix
     strategy:
+      matrix: ${{ fromJSON(needs.compute-matrix.outputs.MATRIX) }}
       fail-fast: false
-      matrix:
-        KUBERNETES_VERSION:
-          - "1.27"
-        DRIVER_VERSION:
-          - "525.125.06"
     runs-on: ubuntu-latest
     container:
       image: hashicorp/packer:latest
@@ -29,14 +38,24 @@ jobs:
         with:
           role-to-assume: ${{ vars.PACKER_AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
-      - uses: actions/checkout@v3
-      - name: Install Ansible
-        run: apk add ansible
+      - uses: actions/checkout@v4
       - name: Build image
         run: |
           packer init .
           packer build \
-            -var "skip_create_ami=${{ inputs.skip_create_ami }}" \
-            -var "kubernetes_version=${{ matrix.KUBERNETES_VERSION }}" \
-            -var "driver_version=${{ matrix.DRIVER_VERSION }}" \
+            -only="${PACKER_SOURCE}*" \
+            -var "arch=${ARCH}" \
+            -var "driver_version=${DRIVER_VERSION}" \
+            -var "os=${OS}" \
+            -var "runner_env=${RUNNER_ENV}" \
+            -var "runner_version=${RUNNER_VERSION}" \
+            -var "skip_create_ami=${SKIP_CREATE_AMI}" \
             .
+        env:
+          ARCH: ${{ matrix.ARCH }}
+          DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
+          OS: ${{ matrix.OS }}
+          PACKER_SOURCE: ${{ matrix.packer_source }}
+          RUNNER_ENV: ${{ matrix.ENV }}
+          RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
+          SKIP_CREATE_AMI: ${{ inputs.skip_create_ami }}

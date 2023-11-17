@@ -1,0 +1,21 @@
+OS:
+  - linux
+  # - win
+
+DRIVER_VERSION:
+  # keep this blank entry. an empty driver version corresponds to CPU machines
+  - ""
+  - "525"
+
+RUNNER_VERSION:
+  - "2.311.0"
+
+ARCH:
+  - amd64
+  # - arm64
+
+ENV:
+  - aws
+  # - premise
+
+exclude: []

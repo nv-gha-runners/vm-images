@@ -1,0 +1,4 @@
+{
+  "data-root": "/data/docker",
+  "registry-mirrors": ["https://dc.$DOMAIN.gha-runners.nvidia.com"]
+}
