@@ -9,7 +9,8 @@ if [ ! -f "/jitconfig" ]; then
   exit 1
 fi
 
-export ACTIONS_RUNNER_INPUT_JITCONFIG="$(cat /jitconfig)"
+ACTIONS_RUNNER_INPUT_JITCONFIG="$(cat /jitconfig)"
+export ACTIONS_RUNNER_INPUT_JITCONFIG
 
 echo "Removing JITConfig file"
 sudo rm -f /jitconfig

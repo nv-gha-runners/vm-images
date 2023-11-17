@@ -24,7 +24,7 @@ sudo rm -rf "${APT}" "${KEYRING}"
 # Add Docker mirror to daemon.json
 DOMAIN=$(yq '.[env(NV_RUNNER_ENV)].domain' "${NV_HELPER_SCRIPTS}/config.yaml")
 export DOMAIN
-cat "${NV_HELPER_SCRIPTS}/dockerd.gpu.json" | envsubst | sudo tee /etc/docker/daemon.json
+envsubst < "${NV_HELPER_SCRIPTS}/dockerd.gpu.json" | sudo tee /etc/docker/daemon.json
 
 sudo systemctl restart docker
 docker info

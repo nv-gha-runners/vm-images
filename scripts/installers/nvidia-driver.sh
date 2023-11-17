@@ -20,4 +20,4 @@ sudo apt-get update
 
 sudo apt-get -y install "nvidia-driver-${NV_DRIVER_VERSION}"
 
-sudo dpkg --purge $(dpkg -f "${KEYRING}" Package)
+sudo dpkg --purge "$(dpkg -f "${KEYRING}" Package)"

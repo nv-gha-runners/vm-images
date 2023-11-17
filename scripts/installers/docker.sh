@@ -8,9 +8,9 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o 
 sudo chmod a+r "${KEYRING}"
 
 echo \
-  "deb [arch="$(dpkg --print-architecture)" signed-by=${KEYRING}] https://download.docker.com/linux/ubuntu \
-  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-  sudo tee "${APT}" > /dev/null
+  "deb [arch=\"$(dpkg --print-architecture)\" signed-by=${KEYRING}] https://download.docker.com/linux/ubuntu \
+  \"$(. /etc/os-release && echo "$VERSION_CODENAME")\" stable" | \
+  sudo tee "${APT}"
 sudo apt-get update
 
 sudo apt-get install --no-install-recommends \
@@ -32,7 +32,7 @@ sudo mv docker-compose* /usr/libexec/docker/cli-plugins/docker-compose
 # Add Docker mirror to daemon.json
 DOMAIN=$(yq '.[env(NV_RUNNER_ENV)].domain' "${NV_HELPER_SCRIPTS}/config.yaml")
 export DOMAIN
-cat "${NV_HELPER_SCRIPTS}/dockerd.cpu.json" | envsubst | sudo tee /etc/docker/daemon.json
+envsubst < "${NV_HELPER_SCRIPTS}/dockerd.cpu.json" | sudo tee /etc/docker/daemon.json
 
 sudo systemctl restart docker
 docker info

@@ -7,12 +7,12 @@ get_github_latest_release_tag() {
   local RESULTS_PER_PAGE="100"
 
   json=$(curl -fsSL "https://api.github.com/repos/${REPO_ORG}/releases?per_page=${RESULTS_PER_PAGE}")
-  tagName=$(echo $json | jq -r '.[] | select((.prerelease==false) and (.assets | length > 0)).tag_name' | sort --unique --version-sort | egrep -v ".*-[a-z]|beta" | tail -1)
+  tagName=$(echo "${json}" | jq -r '.[] | select((.prerelease==false) and (.assets | length > 0)).tag_name' | sort --unique --version-sort | grep -Ev ".*-[a-z]|beta" | tail -1)
 
   echo "${tagName}"
 }
 
 get_github_latest_release_version() {
   local REPO_ORG=$1
-  echo "$(get_github_latest_release_tag "${REPO_ORG}" | sed 's/[A-Za-z]//')"
+  get_github_latest_release_tag "${REPO_ORG}" | sed 's/[A-Za-z]//'
 }
