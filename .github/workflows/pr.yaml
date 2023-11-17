@@ -23,6 +23,15 @@ jobs:
         uses: actions/checkout@v4
       - name: Check Packer files formatting
         run: packer fmt -check -recursive .
+  shellcheck:
+    runs-on: ubuntu-latest
+    container:
+      image: koalaman/shellcheck-alpine:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run shellcheck on shell scripts
+        run: find . -name "*.sh" | xargs -n 1 shellcheck --color=always
   build:
     uses: ./.github/workflows/build.yaml
     with:
