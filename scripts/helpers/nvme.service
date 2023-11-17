@@ -3,7 +3,9 @@ Description=NVME Service
 Before=docker.service containerd.service
 
 [Service]
+Type=oneshot
 ExecStart=/nvme.sh
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
