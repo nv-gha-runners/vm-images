@@ -42,7 +42,7 @@ jobs:
       - name: Build image
         run: |
           packer init .
-          packer build \
+          exec packer build \
             -only="${PACKER_SOURCE}*" \
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
