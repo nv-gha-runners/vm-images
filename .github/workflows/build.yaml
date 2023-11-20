@@ -34,8 +34,6 @@ jobs:
       matrix: ${{ fromJSON(needs.compute-matrix.outputs.MATRIX) }}
       fail-fast: false
     runs-on: ubuntu-latest
-    container:
-      image: hashicorp/packer:latest
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
