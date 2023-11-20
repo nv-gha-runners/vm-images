@@ -1,12 +1,22 @@
 #!/bin/bash
 set -euo pipefail
 
-if [ -e "/dev/nvme1n1" ] && [ "${NV_RUNNER_ENV}" = "aws" ]; then
-  echo "nvme drive found. mounting..."
-  mkfs -t xfs -f /dev/nvme1n1
+if [ "${NV_RUNNER_ENV}" != "aws" ]; then
+  echo "Not running on AWS. Exiting without doing anything"
+  exit 0
+fi
+
+for disk in $(lsblk -n -e 7 -d -o NAME); do
+  echo "Checking if disk $disk is already mounted"
+  if grep "$disk" /proc/mounts; then
+    echo "Disk $disk already mounted. Skipping"
+    continue
+  fi
+
+  echo "Using disk $disk for /data mountpoint"
+  mkfs -t xfs -f "/dev/$disk"
   rm -rf /data
   mkdir /data
-  mount /dev/nvme1n1 /data
-else
-  echo "nvme drive not found. exiting..."
-fi
+  mount "/dev/$disk" /data
+  exit 0
+done
