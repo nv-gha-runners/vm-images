@@ -1,4 +1,4 @@
-# packer-templates
+# vm-images
 
 This repository contains VM images for NVIDIA's self-hosted runners.
 
