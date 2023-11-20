@@ -11,6 +11,10 @@ permissions:
   id-token: write
   contents: read
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   compute-matrix:
     runs-on: ubuntu-latest
@@ -39,6 +43,15 @@ jobs:
           role-to-assume: ${{ vars.PACKER_AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
       - uses: actions/checkout@v4
+      - name: Compute run ID
+        run: |
+          RUN_ID=$(ci/compute-run-id.sh)
+          echo "RUN_ID=${RUN_ID}" | tee --append "${GITHUB_ENV}"
+        env:
+          ARCH: ${{ matrix.ARCH }}
+          DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
+          OS: ${{ matrix.OS }}
+          RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
       - name: Build image
         run: |
           packer init .
@@ -47,6 +60,7 @@ jobs:
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "os=${OS}" \
+            -var "run_id=${RUN_ID}" \
             -var "runner_env=${RUNNER_ENV}" \
             -var "runner_version=${RUNNER_VERSION}" \
             -var "skip_create_ami=${SKIP_CREATE_AMI}" \

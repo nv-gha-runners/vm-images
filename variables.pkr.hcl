@@ -42,6 +42,11 @@ variable "os" {
   }
 }
 
+variable "run_id" {
+  type    = string
+  default = ""
+}
+
 variable "runner_version" {
   type = string
 

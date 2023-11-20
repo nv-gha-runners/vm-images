@@ -18,6 +18,11 @@ source "amazon-ebs" "ubuntu" {
   ssh_username = "runner"
   ssh_password = "runner"
 
+  run_tags = {
+    "vm-images" = "true",
+    "run-id"    = var.run_id
+  }
+
   tags = {
     for k, v in {
       "arch"           = var.arch
