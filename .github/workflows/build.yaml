@@ -75,5 +75,5 @@ jobs:
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
           SKIP_CREATE_AMI: ${{ inputs.skip_create_ami }}
       - name: Clean Up Instance
-        if: always()
+        if: always() && matrix.env == 'aws'
         run: ci/clean-up-instance.sh
