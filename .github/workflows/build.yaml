@@ -50,6 +50,8 @@ jobs:
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           OS: ${{ matrix.OS }}
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
+        # The `exec` command is used to help forward signals to the child process.
+        # This helps ensure Packer's AWS resources get removed when the job is cancelled.
       - name: Build image
         run: |
           packer init .
@@ -72,3 +74,6 @@ jobs:
           RUNNER_ENV: ${{ matrix.ENV }}
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
           SKIP_CREATE_AMI: ${{ inputs.skip_create_ami }}
+      - name: Clean Up Instance
+        if: always()
+        run: ci/clean-up-instance.sh
