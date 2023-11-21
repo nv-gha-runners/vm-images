@@ -41,14 +41,16 @@ jobs:
           role-to-assume: ${{ vars.VM_IMAGES_AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
       - uses: actions/checkout@v4
-      - name: Compute matrix ID
+      - name: Inject computed environment variables
         run: |
           MATRIX_ID=$(ci/compute-matrix-id.sh)
-          echo "MATRIX_ID=${MATRIX_ID}" | tee --append "${GITHUB_ENV}"
+          echo "NV_MATRIX_ID=${MATRIX_ID}" | tee --append "${GITHUB_ENV}"
+          ci/compute-config-values.sh | tee --append "${GITHUB_ENV}"
         env:
           ARCH: ${{ matrix.ARCH }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           OS: ${{ matrix.OS }}
+          RUNNER_ENV: ${{ matrix.ENV }}
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
         # The `exec` command is used to help forward signals to the child process.
         # This helps ensure Packer's AWS resources get removed when the job is cancelled.
@@ -56,12 +58,12 @@ jobs:
         run: |
           packer init .
           exec packer build \
-            -only="${PACKER_SOURCE}*" \
+            -only="${NV_PACKER_SOURCE}*" \
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "gh_run_id=${GITHUB_RUN_ID}" \
             -var "os=${OS}" \
-            -var "matrix_id=${MATRIX_ID}" \
+            -var "matrix_id=${NV_MATRIX_ID}" \
             -var "runner_env=${RUNNER_ENV}" \
             -var "runner_version=${RUNNER_VERSION}" \
             -var "skip_create_ami=${SKIP_CREATE_AMI}" \
