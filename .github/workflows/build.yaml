@@ -27,6 +27,7 @@ jobs:
       - name: Compute matrix
         id: compute-matrix
         run: |
+          export TZ='America/New_York'
           MATRIX=$(ci/compute-matrix.sh)
           TIMESTAMP=$(date +'%Y%m%d%H%M%S')
           echo "MATRIX=${MATRIX}" | tee --append ${GITHUB_OUTPUT}
