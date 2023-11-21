@@ -74,3 +74,9 @@ variable "skip_create_ami" {
   default     = true
   description = "Whether to skip creating the AMI. If true, the AMI will not be created."
 }
+
+variable "timestamp" {
+  type        = string
+  default     = ""
+  description = "A timestamp used to create unique names for resources."
+}
