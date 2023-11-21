@@ -30,9 +30,9 @@ source "amazon-ebs" "ubuntu" {
   iam_instance_profile = "runner_profile" // this profile is created in Terraform
 
   run_tags = {
-    "gh-run-id" = var.gh_run_id,
+    "gh-run-id"  = var.gh_run_id,
     "image-name" = var.image_name,
-    "vm-images" = "true",
+    "vm-images"  = "true",
   }
 
   tags = {
