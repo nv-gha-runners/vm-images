@@ -32,10 +32,10 @@ variable "gh_run_id" {
   description = "The GitHub run ID. Used to clean up Packer resources in AWS."
 }
 
-variable "matrix_id" {
+variable "image_name" {
   type        = string
   default     = ""
-  description = "The matrix ID of the runner. Used to clean up Packer resources in AWS."
+  description = "The name of the image. Used to clean up Packer resources in AWS."
 }
 
 variable "os" {

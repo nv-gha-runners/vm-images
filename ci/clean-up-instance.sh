@@ -4,7 +4,7 @@ set -euo pipefail
 INSTANCE_ID=$(
   aws ec2 describe-instances \
     --filters \
-    "Name=tag:matrix-id,Values=${NV_MATRIX_ID}" \
+    "Name=tag:image-name,Values=${NV_IMAGE_NAME}" \
     "Name=tag:gh-run-id,Values=${NV_RUN_ID}" \
     --query 'Reservations[*].Instances[*].InstanceId' --output text
 )

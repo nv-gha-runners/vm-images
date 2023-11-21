@@ -8,7 +8,7 @@ fi
 
 export VARIANT
 
-MATRIX_ID=$(
+IMAGE_NAME=$(
   jq -nr '[
     env.OS,
     env.VARIANT,
@@ -18,4 +18,4 @@ MATRIX_ID=$(
   ] | map(select(length > 0)) | join("-")'
 )
 
-echo -n "${MATRIX_ID}"
+echo -n "${IMAGE_NAME}"

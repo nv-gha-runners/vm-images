@@ -43,8 +43,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Inject computed environment variables
         run: |
-          MATRIX_ID=$(ci/compute-matrix-id.sh)
-          echo "NV_MATRIX_ID=${MATRIX_ID}" | tee --append "${GITHUB_ENV}"
+          IMAGE_NAME=$(ci/compute-image-name.sh)
+          echo "NV_IMAGE_NAME=${IMAGE_NAME}" | tee --append "${GITHUB_ENV}"
           echo "NV_RUN_ID=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" | tee --append "${GITHUB_ENV}"
           ci/compute-config-values.sh | tee --append "${GITHUB_ENV}"
         env:
@@ -63,8 +63,8 @@ jobs:
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "gh_run_id=${NV_RUN_ID}" \
+            -var "image_name=${NV_IMAGE_NAME}" \
             -var "os=${OS}" \
-            -var "matrix_id=${NV_MATRIX_ID}" \
             -var "runner_env=${RUNNER_ENV}" \
             -var "runner_version=${RUNNER_VERSION}" \
             -var "skip_create_ami=${SKIP_CREATE_AMI}" \

@@ -1,5 +1,5 @@
 source "amazon-ebs" "ubuntu" {
-  ami_name      = local.img_name
+  ami_name      = local.image_id
   instance_type = local.instance_type
   region        = var.aws_region
 
@@ -30,9 +30,9 @@ source "amazon-ebs" "ubuntu" {
   iam_instance_profile = "runner_profile" // this profile is created in Terraform
 
   run_tags = {
-    "vm-images" = "true",
-    "matrix-id" = var.matrix_id,
     "gh-run-id" = var.gh_run_id,
+    "image-name" = var.image_name,
+    "vm-images" = "true",
   }
 
   tags = {
@@ -42,7 +42,7 @@ source "amazon-ebs" "ubuntu" {
       "os"             = var.os
       "runner-version" = var.runner_version
       "variant"        = local.variant
-      "Name"           = local.img_name
+      "Name"           = local.image_id
     } : k => v if v != ""
   }
 }
