@@ -45,6 +45,7 @@ jobs:
         run: |
           MATRIX_ID=$(ci/compute-matrix-id.sh)
           echo "NV_MATRIX_ID=${MATRIX_ID}" | tee --append "${GITHUB_ENV}"
+          echo "NV_RUN_ID=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" | tee --append "${GITHUB_ENV}"
           ci/compute-config-values.sh | tee --append "${GITHUB_ENV}"
         env:
           ARCH: ${{ matrix.ARCH }}
@@ -61,7 +62,7 @@ jobs:
             -only="${NV_PACKER_SOURCE}*" \
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
-            -var "gh_run_id=${GITHUB_RUN_ID}" \
+            -var "gh_run_id=${NV_RUN_ID}" \
             -var "os=${OS}" \
             -var "matrix_id=${NV_MATRIX_ID}" \
             -var "runner_env=${RUNNER_ENV}" \
