@@ -80,6 +80,7 @@ jobs:
           ARCH: ${{ matrix.ARCH }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           OS: ${{ matrix.OS }}
+          PACKER_GITHUB_API_TOKEN: ${{ github.token }}
           PACKER_SOURCE: ${{ matrix.packer_source }}
           RUNNER_ENV: ${{ matrix.ENV }}
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
