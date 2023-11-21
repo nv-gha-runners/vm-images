@@ -1,6 +1,6 @@
 variable "arch" {
-  type    = string
-  default = "amd64"
+  type        = string
+  default     = "amd64"
   description = "The architecture of the runner. Valid values are 'amd64' or 'arm64'."
 
   validation {
@@ -10,14 +10,14 @@ variable "arch" {
 }
 
 variable "aws_region" {
-  type    = string
-  default = "us-east-2"
+  type        = string
+  default     = "us-east-2"
   description = "The AWS region to provision EC2 instances in."
 }
 
 variable "driver_version" {
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
   description = "The NVIDIA driver version to install on the EC2 instance. If empty, no driver will be installed."
 
   validation {
@@ -27,20 +27,20 @@ variable "driver_version" {
 }
 
 variable "gh_run_id" {
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
   description = "The GitHub run ID. Used to clean up Packer resources in AWS."
 }
 
 variable "matrix_id" {
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
   description = "The matrix ID of the runner. Used to clean up Packer resources in AWS."
 }
 
 variable "os" {
-  type    = string
-  default = "linux"
+  type        = string
+  default     = "linux"
   description = "The operating system of the runner. Valid values are 'linux' or 'win'."
 
   validation {
@@ -50,7 +50,7 @@ variable "os" {
 }
 
 variable "runner_env" {
-  type = string
+  type        = string
   description = "The environment of the runner. Valid values are 'aws' or 'premise'."
 
   validation {
@@ -60,7 +60,7 @@ variable "runner_env" {
 }
 
 variable "runner_version" {
-  type = string
+  type        = string
   description = "The version of the runner to install. Must be in the format 'x.y.z'."
 
   validation {
@@ -70,7 +70,7 @@ variable "runner_version" {
 }
 
 variable "skip_create_ami" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
   description = "Whether to skip creating the AMI. If true, the AMI will not be created."
 }
