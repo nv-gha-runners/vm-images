@@ -41,10 +41,10 @@ jobs:
           role-to-assume: ${{ vars.VM_IMAGES_AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
       - uses: actions/checkout@v4
-      - name: Compute run ID
+      - name: Compute matrix ID
         run: |
-          RUN_ID=$(ci/compute-run-id.sh)
-          echo "RUN_ID=${RUN_ID}" | tee --append "${GITHUB_ENV}"
+          MATRIX_ID=$(ci/compute-matrix-id.sh)
+          echo "MATRIX_ID=${MATRIX_ID}" | tee --append "${GITHUB_ENV}"
         env:
           ARCH: ${{ matrix.ARCH }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
@@ -57,8 +57,9 @@ jobs:
             -only="${PACKER_SOURCE}*" \
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
+            -var "gh_run_id=${GITHUB_RUN_ID}" \
             -var "os=${OS}" \
-            -var "run_id=${RUN_ID}" \
+            -var "matrix_id=${MATRIX_ID}" \
             -var "runner_env=${RUNNER_ENV}" \
             -var "runner_version=${RUNNER_VERSION}" \
             -var "skip_create_ami=${SKIP_CREATE_AMI}" \

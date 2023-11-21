@@ -8,7 +8,7 @@ locals {
     [
       for v in
       [
-        var.run_id,
+        var.matrix_id,
         local.timestamp
       ]
       : v if v != ""

@@ -8,7 +8,7 @@ fi
 
 export VARIANT
 
-RUN_ID=$(
+MATRIX_ID=$(
   jq -nr '[
     env.OS,
     env.VARIANT,
@@ -18,4 +18,4 @@ RUN_ID=$(
   ] | map(select(length > 0)) | join("-")'
 )
 
-echo -n "${RUN_ID}"
+echo -n "${MATRIX_ID}"
