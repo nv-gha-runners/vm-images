@@ -1,12 +1,11 @@
 source "amazon-ebs" "ubuntu" {
-  ami_name      = local.img_name
+  ami_name      = local.image_id
   instance_type = local.instance_type
   region        = var.aws_region
 
-  temporary_security_group_source_public_ip = true
-  skip_create_ami                           = var.skip_create_ami
-  shutdown_behavior                         = "terminate"
-  user_data_file                            = "./cloud-init/user-data"
+  skip_create_ami   = var.skip_create_ami
+  shutdown_behavior = "terminate"
+  user_data_file    = "./cloud-init/user-data"
 
   source_ami_filter {
     filters = {
@@ -15,8 +14,26 @@ source "amazon-ebs" "ubuntu" {
     most_recent = true
     owners      = ["099720109477"] // Canonical
   }
-  ssh_username = "runner"
-  ssh_password = "runner"
+  vpc_filter {
+    filters = {
+      "is-default" : "true"
+    }
+  }
+  security_group_filter {
+    filters = {
+      "group-name" : "default"
+    }
+  }
+  ssh_username         = "runner"
+  ssh_password         = "runner"
+  ssh_interface        = "session_manager"
+  iam_instance_profile = "runner_profile" // this profile is created in Terraform
+
+  run_tags = {
+    "gh-run-id"  = var.gh_run_id,
+    "image-name" = var.image_name,
+    "vm-images"  = "true",
+  }
 
   tags = {
     for k, v in {
@@ -25,7 +42,7 @@ source "amazon-ebs" "ubuntu" {
       "os"             = var.os
       "runner-version" = var.runner_version
       "variant"        = local.variant
-      "Name"           = local.img_name
+      "Name"           = local.image_id
     } : k => v if v != ""
   }
 }

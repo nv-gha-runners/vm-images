@@ -11,51 +11,80 @@ permissions:
   id-token: write
   contents: read
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   compute-matrix:
     runs-on: ubuntu-latest
     outputs:
       MATRIX: ${{ steps.compute-matrix.outputs.MATRIX }}
+      TIMESTAMP: ${{ steps.compute-matrix.outputs.TIMESTAMP }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Compute matrix
         id: compute-matrix
         run: |
+          export TZ='America/New_York'
           MATRIX=$(ci/compute-matrix.sh)
+          TIMESTAMP=$(date +'%Y%m%d%H%M%S')
           echo "MATRIX=${MATRIX}" | tee --append ${GITHUB_OUTPUT}
+          echo "TIMESTAMP=${TIMESTAMP}" | tee --append ${GITHUB_OUTPUT}
   build:
     needs: compute-matrix
     strategy:
       matrix: ${{ fromJSON(needs.compute-matrix.outputs.MATRIX) }}
       fail-fast: false
     runs-on: ubuntu-latest
-    container:
-      image: hashicorp/packer:latest
+    env:
+      NV_TIMESTAMP: ${{ needs.compute-matrix.outputs.TIMESTAMP }}
     steps:
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.PACKER_AWS_ROLE_ARN }}
+          role-to-assume: ${{ vars.VM_IMAGES_AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
       - uses: actions/checkout@v4
+      - name: Inject computed environment variables
+        run: |
+          IMAGE_NAME=$(ci/compute-image-name.sh)
+          echo "NV_IMAGE_NAME=${IMAGE_NAME}" | tee --append "${GITHUB_ENV}"
+          echo "NV_RUN_ID=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" | tee --append "${GITHUB_ENV}"
+          ci/compute-config-values.sh | tee --append "${GITHUB_ENV}"
+        env:
+          ARCH: ${{ matrix.ARCH }}
+          DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
+          OS: ${{ matrix.OS }}
+          RUNNER_ENV: ${{ matrix.ENV }}
+          RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
+        # The `exec` command is used to help forward signals to the child process.
+        # This helps ensure Packer's AWS resources get removed when the job is cancelled.
       - name: Build image
         run: |
           packer init .
-          packer build \
-            -only="${PACKER_SOURCE}*" \
+          exec packer build \
+            -only="${NV_PACKER_SOURCE}*" \
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
+            -var "gh_run_id=${NV_RUN_ID}" \
+            -var "image_name=${NV_IMAGE_NAME}" \
             -var "os=${OS}" \
             -var "runner_env=${RUNNER_ENV}" \
             -var "runner_version=${RUNNER_VERSION}" \
             -var "skip_create_ami=${SKIP_CREATE_AMI}" \
+            -var "timestamp=${NV_TIMESTAMP}" \
             .
         env:
           ARCH: ${{ matrix.ARCH }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           OS: ${{ matrix.OS }}
+          PACKER_GITHUB_API_TOKEN: ${{ github.token }}
           PACKER_SOURCE: ${{ matrix.packer_source }}
           RUNNER_ENV: ${{ matrix.ENV }}
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
           SKIP_CREATE_AMI: ${{ inputs.skip_create_ami }}
+      - name: Clean Up Instance
+        if: always() && matrix.env == 'aws'
+        run: ci/clean-up-instance.sh

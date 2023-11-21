@@ -8,10 +8,7 @@ def filter_excludes($entry; $excludes):
 def lists2dict($keys; $values):
   reduce range($keys | length) as $ind ({}; . + {($keys[$ind]): $values[$ind]});
 
-def add_config($entry; $config):
-  $entry + $config[$entry.ENV];
-
-def compute_matrix($matrix; $config):
+def compute_matrix($matrix):
   ($matrix.exclude // []) as $excludes |
   $matrix | del(.exclude) |
   keys_unsorted as $matrix_keys |
@@ -20,7 +17,6 @@ def compute_matrix($matrix; $config):
   [
     combinations |
     lists2dict($matrix_keys; .) |
-    filter_excludes(.; $excludes) |
-    add_config(.; $config)
+    filter_excludes(.; $excludes)
   ] |
   {include: .};

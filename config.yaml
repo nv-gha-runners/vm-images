@@ -1,3 +1,9 @@
+# This file is used in the following ways:
+#   - In GitHub Actions: to filter which Packer sources are used for a given
+#     job.
+#   - In Packer: the file is copied to the Packer instance so that the domain
+#     can be used to configure the instance.
+
 aws:
   domain: arc-eks
   packer_source: amazon-ebs
