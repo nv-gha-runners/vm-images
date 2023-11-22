@@ -45,7 +45,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ vars.VM_IMAGES_AWS_ROLE_ARN }}
-          aws-region: us-east-1 # ECR public is only available in us-east-1
+          aws-region: ${{ vars.AWS_REGION }}
       - uses: actions/checkout@v4
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
@@ -102,6 +102,8 @@ jobs:
         with:
           registry-type: public
           mask-password: "true"
+        env:
+          AWS_REGION: us-east-1 # public ECR is only available in us-east-1
       - name: Build & push runner image
         # TODO: uncomment this conditional
         # if: matrix.ENV == 'premise' && github.event_name == 'push'
@@ -112,4 +114,4 @@ jobs:
           context: .
           push: true
           pull: true
-          tags: ${{ steps.ecr-login.outputs.registry }}/kubevirt-images:${{ env.NV_IMAGE_NAME }}
+          tags: ${{ steps.ecr-login.outputs.registry }}/nv-gha-runners/kubevirt-images:${{ env.NV_IMAGE_NAME }}
