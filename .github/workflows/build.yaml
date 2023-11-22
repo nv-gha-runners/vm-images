@@ -102,6 +102,8 @@ jobs:
         with:
           registry-type: public
           mask-password: "true"
+        env:
+          AWS_DEFAULT_REGION: us-east-1 # ECR is only available in us-east-1
       - name: Build & push runner image
         # TODO: uncomment this conditional
         # if: matrix.ENV == 'premise' && github.event_name == 'push'
