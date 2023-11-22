@@ -69,7 +69,7 @@ source "qemu" "ubuntu" {
   ssh_username     = "runner"
   ssh_password     = "runner"
   output_directory = "output"
-  vm_name          = "build.qcow2"
+  vm_name          = "img.qcow2"
   cd_files         = ["./cloud-init/*"]
   cd_label         = "cidata"
 

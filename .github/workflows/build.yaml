@@ -93,3 +93,19 @@ jobs:
       - name: Clean Up Instance
         if: always() && matrix.env == 'aws'
         run: ci/clean-up-instance.sh
+      - name: Login to ECR
+        if: matrix.ENV == 'premise' && github.event_name == 'push'
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
+          mask-password: "true"
+      - name: Build & push runner image
+        if: matrix.ENV == 'premise' && github.event_name == 'push'
+        timeout-minutes: 30
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          pull: true
+          tags: ${{ steps.ecr-login.outputs.registry }}/kubevirt-images:${{ env.NV_IMAGE_NAME }}
