@@ -94,14 +94,18 @@ jobs:
         if: always() && matrix.env == 'aws'
         run: ci/clean-up-instance.sh
       - name: Login to ECR
-        if: matrix.ENV == 'premise' && github.event_name == 'push'
+        # TODO: uncomment this conditional
+        # if: matrix.ENV == 'premise' && github.event_name == 'push'
+        if: matrix.ENV == 'premise'
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
         with:
           registry-type: public
           mask-password: "true"
       - name: Build & push runner image
-        if: matrix.ENV == 'premise' && github.event_name == 'push'
+        # TODO: uncomment this conditional
+        # if: matrix.ENV == 'premise' && github.event_name == 'push'
+        if: matrix.ENV == 'premise'
         timeout-minutes: 30
         uses: docker/build-push-action@v5
         with:
