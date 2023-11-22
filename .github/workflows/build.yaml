@@ -37,7 +37,7 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.compute-matrix.outputs.MATRIX) }}
       fail-fast: false
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.RUNNER_LABEL }}
     env:
       NV_TIMESTAMP: ${{ needs.compute-matrix.outputs.TIMESTAMP }}
     steps:
@@ -47,6 +47,11 @@ jobs:
           role-to-assume: ${{ vars.VM_IMAGES_AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
       - uses: actions/checkout@v4
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+      - name: Setup QEMU/KVM
+        if: matrix.env == 'premise'
+        run: ci/setup-qemu-kvm.sh
       - name: Inject computed environment variables
         run: |
           IMAGE_NAME=$(ci/compute-image-name.sh)
