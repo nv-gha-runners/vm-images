@@ -24,6 +24,14 @@ source "amazon-ebs" "ubuntu" {
       "group-name" : "default"
     }
   }
+  // TODO: remove this `launch_block_device_mappings` block in favor of specifying the EBS volume size
+  // when the instance is launched. This will save us $$ on the EBS snapshot sizes.
+  launch_block_device_mappings {
+    device_name           = "/dev/sda1"
+    volume_size           = 30
+    volume_type           = "gp2"
+    delete_on_termination = true
+  }
   ssh_username         = "runner"
   ssh_password         = "runner"
   ssh_interface        = "session_manager"
