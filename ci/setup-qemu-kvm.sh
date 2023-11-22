@@ -16,5 +16,5 @@ case "$(arch)" in
 esac
 
 sudo apt update
-sudo apt install "qemu-system-${QEMU_ARCH}" xorriso
+sudo apt install -y "qemu-system-${QEMU_ARCH}" xorriso
 sudo chmod 666 /dev/kvm
