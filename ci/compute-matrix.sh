@@ -1,7 +1,7 @@
 #!/bin/bash
+# This script computes the matrix for the GHAs matrix job.
 set -euo pipefail
 
-# This script computes the matrix for the GHAs matrix job.
 
 yq -o json \
   '.' \

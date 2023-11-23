@@ -1,4 +1,6 @@
 #!/bin/bash
+# This script computes the image name from the environment variables provided by
+# GitHub Actions.
 set -euo pipefail
 
 VARIANT=gpu

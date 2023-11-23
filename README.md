@@ -23,5 +23,5 @@ packer build -only="qemu*" .
 qemu-system-x86_64 \
     -enable-kvm \
     -m 2048 \
-    -drive file=output/build.qcow2,media=disk,if=virtio
+    -drive file=output/img.qcow2,media=disk,if=virtio
 ```

@@ -8,6 +8,17 @@ def filter_excludes($entry; $excludes):
 def lists2dict($keys; $values):
   reduce range($keys | length) as $ind ({}; . + {($keys[$ind]): $values[$ind]});
 
+def compute_runner_label($entry):
+  if $entry.ENV == "aws" then
+    $entry + {"RUNNER_LABEL": "ubuntu-latest"}
+  elif $entry.ARCH == "amd64" then
+    $entry + {"RUNNER_LABEL": "linux-amd64-cpu72-metal"}
+  elif $entry.ARCH == "arm64" then
+    $entry + {"RUNNER_LABEL": "linux-arm64-cpu64-metal"}
+  else
+    "Unable to compute runner label\n" | halt_error
+  end;
+
 def compute_matrix($matrix):
   ($matrix.exclude // []) as $excludes |
   $matrix | del(.exclude) |
@@ -17,6 +28,7 @@ def compute_matrix($matrix):
   [
     combinations |
     lists2dict($matrix_keys; .) |
-    filter_excludes(.; $excludes)
+    filter_excludes(.; $excludes) |
+    compute_runner_label(.)
   ] |
   {include: .};

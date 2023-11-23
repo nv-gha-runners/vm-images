@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script cleans up the EC2 instance created by Packer.
 set -euo pipefail
 
 INSTANCE_ID=$(

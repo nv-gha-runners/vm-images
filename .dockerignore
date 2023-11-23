@@ -1,0 +1,5 @@
+# Ignore everything
+*
+
+# Allow the output directory where the `img.qcow2` file resides
+!/output
