@@ -37,7 +37,4 @@ envsubst < "${NV_HELPER_SCRIPTS}/dockerd.cpu.json" | sudo tee /etc/docker/daemon
 sudo systemctl restart docker
 docker info
 
-# Patch containerd config to use nvme mount
-sudo sed -i '/root = / s|.*|root = "/data/containerd"|' /etc/containerd/config.toml
-
 sudo rm -rf "${APT}" "${KEYRING}"
