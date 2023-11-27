@@ -1,6 +1,6 @@
 [Unit]
 Description=GHA Runner
-After=docker.service network.target cloud-final.service nvme.service
+After=docker.service network.target cloud-final.service
 
 [Service]
 ExecStart=/runner.sh

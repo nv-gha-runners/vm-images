@@ -15,15 +15,7 @@ export ACTIONS_RUNNER_INPUT_JITCONFIG
 echo "Removing JITConfig file"
 sudo rm -f /jitconfig
 
-echo "Creating work directory"
-WORK_DIR="/data/runner"
-_UID=$(id -u)
-_GID=$(id -g)
-sudo mkdir -p "${WORK_DIR}"
-sudo chown "${_UID}:${_GID}" /data "${WORK_DIR}"
-mv ~/* "${WORK_DIR}"
-
 echo "Starting runner"
-cd /data/runner
+cd "${HOME}"
 # TODO: Consider moving poweroff to systemd service
 ./bin/runsvc.sh && sudo poweroff
