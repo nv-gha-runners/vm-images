@@ -13,4 +13,19 @@ locals {
       : v if v != ""
     ]
   )
+
+  qemu_arch = {
+    "amd64" = "x86_64"
+    "arm64" = "aarch64"
+  }
+  uefi_imp = {
+    "amd64" = "OVMF"
+    "arm64" = "AAVMF"
+  }
+  qemu_machine = {
+    "amd64" = "ubuntu"
+    "arm64" = "virt"
+  }
+  output_directory = "output"
+  output_filename  = "img.qcow2"
 }

@@ -70,10 +70,11 @@ jobs:
         run: |
           packer init .
           exec packer build \
-            -only="${NV_PACKER_SOURCE}*" \
+            -only="*${NV_PACKER_SOURCE}*" \
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "gh_run_id=${NV_RUN_ID}" \
+            -var "headless=true" \
             -var "image_name=${NV_IMAGE_NAME}" \
             -var "os=${OS}" \
             -var "runner_env=${RUNNER_ENV}" \

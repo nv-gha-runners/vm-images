@@ -1,4 +1,16 @@
 build {
+  sources = ["source.null.qemu_dependencies"]
+
+  provisioner "shell-local" {
+    inline = [
+      "cp /usr/share/${lookup(local.uefi_imp, var.arch, "")}/${lookup(local.uefi_imp, var.arch, "")}_VARS.fd ${lookup(local.uefi_imp, var.arch, "")}_VARS.fd",
+      "cloud-localds cloud-init.iso cloud-init/{user,meta}-data"
+    ]
+    inline_shebang = "/bin/bash -e"
+  }
+}
+
+build {
   sources = [
     "source.amazon-ebs.ubuntu",
     "source.qemu.ubuntu",

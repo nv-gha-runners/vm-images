@@ -32,6 +32,12 @@ variable "gh_run_id" {
   description = "The GitHub run ID. Used to clean up Packer resources in AWS."
 }
 
+variable "headless" {
+  type        = bool
+  default     = false
+  description = "Whether VNC viewer should not be launched."
+}
+
 variable "image_name" {
   type        = string
   default     = ""
