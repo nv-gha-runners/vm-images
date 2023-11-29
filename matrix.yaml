@@ -20,4 +20,6 @@ ENV:
   - aws
   - premise
 
-exclude: []
+exclude:
+  - ARCH: arm64
+    DRIVER_VERSION: "470"
