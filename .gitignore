@@ -1,2 +1,4 @@
 *.auto.pkrvars.hcl
 output
+*_VARS.fd
+cloud-init.iso

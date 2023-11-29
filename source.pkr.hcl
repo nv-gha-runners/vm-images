@@ -47,23 +47,35 @@ source "amazon-ebs" "ubuntu" {
   }
 }
 
+// A dummy source to enable shell-local provisioners to run before the QEMU
+// build runs
+source "null" "qemu_dependencies" {
+  communicator = "none"
+}
 
 source "qemu" "ubuntu" {
-  iso_url          = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-${var.arch}.img"
-  iso_checksum     = "file:https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
+  cpus             = 4
   disk_image       = true
-  shutdown_command = "echo 'ubuntu' | sudo -S shutdown -P now"
-  cores            = 4
-  memory           = 2048
   disk_size        = "150G"
   format           = "qcow2"
-  accelerator      = "kvm"
-  ssh_username     = "runner"
-  ssh_password     = "runner"
-  output_directory = "output"
-  vm_name          = "img.qcow2"
-  cd_files         = ["./cloud-init/*"]
-  cd_label         = "cidata"
-
-  headless = var.headless
+  headless         = var.headless
+  iso_checksum     = "file:https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
+  iso_url          = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-${var.arch}.img"
+  memory           = 2048
+  output_directory = local.output_directory
+  qemu_binary      = "qemu-system-${lookup(local.qemu_arch, var.arch, "")}"
+  qemuargs = [
+    ["-machine", "${lookup(local.qemu_machine, var.arch, "")},accel=kvm"],
+    ["-cpu", "host"],
+    ["-device", "virtio-gpu-pci"], // this is needed for arm64 QEMU machine to boot
+    ["-drive", "if=pflash,format=raw,id=ovmf_code,readonly=on,file=/usr/share/${lookup(local.uefi_imp, var.arch, "")}/${lookup(local.uefi_imp, var.arch, "")}_CODE.fd"],
+    ["-drive", "if=pflash,format=raw,id=ovmf_vars,file=${lookup(local.uefi_imp, var.arch, "")}_VARS.fd"],
+    ["-drive", "file=${local.output_directory}/${local.output_filename},format=qcow2"],
+    ["-drive", "file=cloud-init.iso,format=raw"]
+  ]
+  shutdown_command       = "echo 'ubuntu' | sudo -S shutdown -P now"
+  ssh_handshake_attempts = 30
+  ssh_password           = "runner"
+  ssh_username           = "runner"
+  vm_name                = local.output_filename
 }

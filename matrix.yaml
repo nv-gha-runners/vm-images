@@ -18,7 +18,4 @@ ENV:
   - aws
   - premise
 
-exclude:
-  # TODO: get premise && arm64 working
-  - ENV: premise
-    ARCH: arm64
+exclude: []
