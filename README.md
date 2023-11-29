@@ -8,6 +8,14 @@ The `qcow2` files are then packaged and published as a Docker image for use as a
 
 All images use the latest Ubuntu Jammy image as their base.
 
+## System Requirements for Building `qcow2` files
+
+Install the following packages:
+
+```sh
+sudo apt install qemu-system xorriso cloud-utils
+```
+
 ## Building `qcow2` Files Locally
 
 Create a `variables.auto.pkrvars.hcl` file and run `packer build`:
