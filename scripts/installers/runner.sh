@@ -20,6 +20,7 @@ rm -rf ./actions-runner.tar.gz
 
 # Copy scripts and services
 sudo cp "${NV_HELPER_SCRIPTS}/runner.sh" /runner.sh
+sudo cp "${NV_HELPER_SCRIPTS}/check_event_type.sh" /home/runner/.check_event_type.sh
 
 _UID=$(id -u)
 _GID=$(id -g)
