@@ -10,7 +10,8 @@ if [ ! -f "/jitconfig" ]; then
 fi
 
 ACTIONS_RUNNER_INPUT_JITCONFIG="$(cat /jitconfig)"
-export ACTIONS_RUNNER_INPUT_JITCONFIG
+ACTIONS_RUNNER_HOOK_JOB_STARTED=/home/runner/.check_event_type.sh
+export ACTIONS_RUNNER_INPUT_JITCONFIG ACTIONS_RUNNER_HOOK_JOB_STARTED
 
 echo "Removing JITConfig file"
 sudo rm -f /jitconfig
