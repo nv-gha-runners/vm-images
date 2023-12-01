@@ -22,7 +22,7 @@ Create a `variables.auto.pkrvars.hcl` file and run `packer build`:
 
 ```sh
 cp ./variables.auto.pkrvars.hcl.sample ./variables.auto.pkrvars.hcl
-packer build -only="qemu*" .
+packer build -only="*qemu*" .
 ```
 
 ## Running `qcow2` Files Locally
