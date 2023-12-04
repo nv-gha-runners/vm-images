@@ -1,0 +1,14 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "regexManagers": [
+    {
+      "datasourceTemplate": "github-releases",
+      "fileMatch": ["^matrix.yaml$"],
+      "matchStrings": [
+        "\\s*#\\s*renovate:\\s*repo=(?<depName>.*?)\\s*-\\s*\"?(?<currentValue>.*?)\"?\\s"
+      ],
+      "extractVersion": "^v(?<version>.*)$"
+    }
+  ]
+}
