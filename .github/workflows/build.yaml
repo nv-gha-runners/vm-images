@@ -3,7 +3,7 @@ name: build
 on:
   workflow_call:
     inputs:
-      skip_create_ami:
+      upload_artifacts:
         required: true
         type: boolean
 
@@ -79,7 +79,7 @@ jobs:
             -var "os=${OS}" \
             -var "runner_env=${RUNNER_ENV}" \
             -var "runner_version=${RUNNER_VERSION}" \
-            -var "skip_create_ami=${SKIP_CREATE_AMI}" \
+            -var "upload_ami=${UPLOAD_ARTIFACTS}" \
             -var "timestamp=${NV_TIMESTAMP}" \
             .
         env:
@@ -90,12 +90,12 @@ jobs:
           PACKER_SOURCE: ${{ matrix.packer_source }}
           RUNNER_ENV: ${{ matrix.ENV }}
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
-          SKIP_CREATE_AMI: ${{ inputs.skip_create_ami }}
+          UPLOAD_ARTIFACTS: ${{ inputs.upload_artifacts }}
       - name: Clean Up Instance
         if: always() && matrix.env == 'aws'
         run: ci/clean-up-instance.sh
       - name: Login to ECR
-        if: matrix.ENV == 'premise' && github.event_name == 'push'
+        if: inputs.upload_artifacts
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
         with:
@@ -104,7 +104,7 @@ jobs:
         env:
           AWS_REGION: us-east-1 # public ECR is only available in us-east-1
       - name: Build & push runner image
-        if: matrix.ENV == 'premise' && github.event_name == 'push'
+        if: inputs.upload_artifacts
         timeout-minutes: 30
         uses: docker/build-push-action@v5
         with:

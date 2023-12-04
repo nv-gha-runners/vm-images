@@ -75,10 +75,10 @@ variable "runner_version" {
   }
 }
 
-variable "skip_create_ami" {
+variable "upload_ami" {
   type        = bool
-  default     = true
-  description = "Whether to skip creating the AMI. If true, the AMI will not be created."
+  default     = false
+  description = "Whether to create the AMI."
 }
 
 variable "timestamp" {

@@ -10,6 +10,7 @@ DRIVER_VERSION:
   - "535"
 
 RUNNER_VERSION:
+  # renovate: repo=actions/runner
   - "2.311.0"
 
 ARCH:

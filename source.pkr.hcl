@@ -3,7 +3,7 @@ source "amazon-ebs" "ubuntu" {
   instance_type = local.instance_type
   region        = var.aws_region
 
-  skip_create_ami   = var.skip_create_ami
+  skip_create_ami   = !var.upload_ami
   shutdown_behavior = "terminate"
   user_data_file    = "./cloud-init/user-data"
 

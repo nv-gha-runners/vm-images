@@ -17,5 +17,5 @@ jobs:
   build:
     uses: ./.github/workflows/build.yaml
     with:
-      skip_create_ami: false
+      upload_artifacts: true
     secrets: inherit
