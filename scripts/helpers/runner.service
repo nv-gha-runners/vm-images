@@ -4,6 +4,7 @@ After=docker.service network.target cloud-final.service
 
 [Service]
 ExecStart=/runner.sh
+ExecStop=sudo poweroff
 User=runner
 KillMode=process
 KillSignal=SIGTERM
