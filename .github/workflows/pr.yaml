@@ -35,5 +35,5 @@ jobs:
   build:
     uses: ./.github/workflows/build.yaml
     with:
-      skip_create_ami: true
+      upload_artifacts: false
     secrets: inherit
