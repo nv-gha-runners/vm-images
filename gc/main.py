@@ -37,7 +37,7 @@ if __name__ == "__main__":
         help="an optional argument to run the script in dry-run mode (default: true)",
     )
     args = parser.parse_args()
-    dry_run = args.dry_run.lower() in ("true", "1", "t")
+    dry_run = args.dry_run != "false"
     current_images = load_current_images()
     if not current_images:
         print()

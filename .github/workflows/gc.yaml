@@ -49,4 +49,4 @@ jobs:
       - name: Run garbage collection
         run: python main.py --dry-run="${DRY_RUN}"
         env:
-          DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || github.event.inputs.dry_run }}
+          DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || inputs.dry_run }}
