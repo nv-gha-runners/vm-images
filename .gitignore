@@ -2,3 +2,6 @@
 output
 *_VARS.fd
 cloud-init.iso
+venv
+__pycache__
+.mypy_cache
