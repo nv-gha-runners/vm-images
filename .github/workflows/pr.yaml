@@ -32,6 +32,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Run shellcheck on shell scripts
         run: find . -name "*.sh" | xargs -n 1 shellcheck --color=always
+  gc:
+    uses: ./.github/workflows/gc.yaml
+    with:
+      dry_run: true
+    secrets: inherit
   build:
     uses: ./.github/workflows/build.yaml
     with:

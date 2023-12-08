@@ -1,0 +1,50 @@
+name: garbage collection
+
+on:
+  workflow_call:
+    inputs:
+      dry_run:
+        default: true
+        type: boolean
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        default: true
+        type: boolean
+  schedule:
+    # Run every Monday at 1pm UTC / 8am ET
+    - cron: "0 13 * * 1"
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: ./gc
+
+jobs:
+  gc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.VM_IMAGES_AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Check mypy
+        run: mypy main.py collectors/*.py
+      - name: Check black
+        run: black --check main.py collectors/*.py
+      - name: Run garbage collection
+        run: python main.py --dry-run="${DRY_RUN}"
+        env:
+          DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || github.event.inputs.dry_run }}
