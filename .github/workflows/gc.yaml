@@ -20,7 +20,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: "${{ github.workflow }}-${{ github.ref }}"
+  # keep `gc-` prefix to avoid collisions with other workflows
+  # when used with `workflow_call` event
+  group: "gc-${{ github.workflow }}-${{ github.ref }}"
   cancel-in-progress: true
 
 defaults:
