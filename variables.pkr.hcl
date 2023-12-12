@@ -32,6 +32,12 @@ variable "gh_run_id" {
   description = "The GitHub run ID. Used to clean up Packer resources in AWS."
 }
 
+variable "gh_token" {
+  type        = string
+  default     = ""
+  description = "A GitHub token used to authenticate GitHub API calls."
+}
+
 variable "headless" {
   type        = bool
   default     = false

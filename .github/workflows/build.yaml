@@ -74,6 +74,7 @@ jobs:
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "gh_run_id=${NV_RUN_ID}" \
+            -var "gh_token=${GH_TOKEN}" \
             -var "headless=true" \
             -var "image_name=${NV_IMAGE_NAME}" \
             -var "os=${OS}" \
@@ -85,6 +86,7 @@ jobs:
         env:
           ARCH: ${{ matrix.ARCH }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
+          GH_TOKEN: ${{ github.token }}
           OS: ${{ matrix.OS }}
           PACKER_GITHUB_API_TOKEN: ${{ github.token }}
           PACKER_SOURCE: ${{ matrix.packer_source }}

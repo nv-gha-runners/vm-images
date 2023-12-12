@@ -1,5 +1,6 @@
 // arch = "amd64"
 // driver_version = "525.147.05"
+// gh_token = ""
 // headless = true
 // os = "linux"
 runner_version = "2.311.0"
