@@ -33,3 +33,4 @@ qemu-system-x86_64 \
     -m 2048 \
     -drive file=output/img.qcow2,media=disk,if=virtio
 ```
+asdfasdfa
