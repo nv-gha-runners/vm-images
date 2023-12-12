@@ -29,10 +29,12 @@ sudo mkdir -p /usr/libexec/docker/cli-plugins
 chmod +x docker-compose*
 sudo mv docker-compose* /usr/libexec/docker/cli-plugins/docker-compose
 
-# Add Docker mirror to daemon.json
+# Add Docker mirror to daemon.json and buildkitd.toml
+sudo mkdir -p /etc/docker /etc/buildkit
 DOMAIN=$(yq '.[env(NV_RUNNER_ENV)].domain' "${NV_HELPER_SCRIPTS}/config.yaml")
 export DOMAIN
 envsubst < "${NV_HELPER_SCRIPTS}/dockerd.cpu.json" | sudo tee /etc/docker/daemon.json
+envsubst < "${NV_HELPER_SCRIPTS}/buildkitd.toml" | sudo tee /etc/buildkit/buildkitd.toml
 
 sudo systemctl restart docker
 docker info
