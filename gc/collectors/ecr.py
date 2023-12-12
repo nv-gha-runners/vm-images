@@ -16,7 +16,10 @@ class ECRGarbageCollector(gc.GarbageCollector):
     def _run(self) -> None:
         ecr_images = self._get_ecr_images()
         expired_ecr_images = self._find_expired_ecr_images(ecr_images)
-        self._delete_images(expired_ecr_images)
+        if expired_ecr_images:
+            self._delete_images(expired_ecr_images)
+            return
+        print("No expired ECR images found.")
 
     def _get_ecr_images(self) -> list[ImageDetailTypeDef]:
         images = []

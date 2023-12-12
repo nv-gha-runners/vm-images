@@ -19,7 +19,10 @@ class AMIGarbageCollector(gc.GarbageCollector):
     def _run(self) -> None:
         amis = self._get_amis()
         expired_amis = self._find_expired_amis(amis)
-        self._delete_amis(expired_amis)
+        if expired_amis:
+            self._delete_amis(expired_amis)
+            return
+        print("No expired AMIs found.")
 
     def _get_amis(self) -> list[ImageTypeDef]:
         amis = []
