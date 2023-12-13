@@ -1,3 +1,10 @@
+# This file represents the supported image versions at any given time. When an
+# element is removed from this matrix, its resources will be removed from AWS
+# the next time the garbage collection job runs.
+#
+# Therefore, entries should only be removed from the matrix when their
+# corresponding image is no longer needed.
+
 OS:
   - linux
   # - win

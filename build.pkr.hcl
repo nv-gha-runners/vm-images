@@ -36,6 +36,7 @@ build {
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
+      "GH_TOKEN=${var.gh_token}",
       "NV_ARCH=${var.arch}",
       "NV_DRIVER_VERSION=${var.driver_version}",
       "NV_HELPER_SCRIPTS=${local.helpers_directory}",

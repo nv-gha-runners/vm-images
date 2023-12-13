@@ -29,6 +29,8 @@ source "amazon-ebs" "ubuntu" {
   ssh_interface        = "session_manager"
   iam_instance_profile = "runner_profile" // this profile is created in Terraform
 
+  // These tags are used for cleaning up resources during GHAs provisioning
+  // and cleaning up old AMIs when new ones are created.
   run_tags = {
     "gh-run-id"  = var.gh_run_id,
     "image-name" = var.image_name,

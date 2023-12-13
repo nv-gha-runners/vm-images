@@ -5,8 +5,13 @@ set -euo pipefail
 get_github_latest_release_tag() {
   local REPO_ORG=$1
   local RESULTS_PER_PAGE="100"
+  local CURL_HEADERS=()
 
-  json=$(curl -fsSL "https://api.github.com/repos/${REPO_ORG}/releases?per_page=${RESULTS_PER_PAGE}")
+  if [[ -n "${GH_TOKEN:-}" ]]; then
+    CURL_HEADERS+=("-H" "Authorization: Bearer ${GH_TOKEN}")
+  fi
+
+  json=$(curl "${CURL_HEADERS[@]}" -fsSL "https://api.github.com/repos/${REPO_ORG}/releases?per_page=${RESULTS_PER_PAGE}")
   tagName=$(echo "${json}" | jq -r '.[] | select((.prerelease==false) and (.assets | length > 0)).tag_name' | sort --unique --version-sort | grep -Ev ".*-[a-z]|beta" | tail -1)
 
   echo "${tagName}"
