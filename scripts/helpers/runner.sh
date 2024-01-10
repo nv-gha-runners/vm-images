@@ -8,7 +8,7 @@ if [ ! -f "/jitconfig" ]; then
 fi
 
 ACTIONS_RUNNER_INPUT_JITCONFIG="$(cat /jitconfig)"
-ACTIONS_RUNNER_HOOK_JOB_STARTED=/home/runner/.check_event_type.sh
+ACTIONS_RUNNER_HOOK_JOB_STARTED=/home/runner/.initialize_runner.sh
 PARALLEL_LEVEL=$(nproc)
 export ACTIONS_RUNNER_INPUT_JITCONFIG ACTIONS_RUNNER_HOOK_JOB_STARTED PARALLEL_LEVEL
 
