@@ -13,7 +13,6 @@ DRIVER_VERSION:
   # keep this blank entry. an empty driver version corresponds to CPU machines
   - ""
   - "470"
-  - "525"
   - "535"
 
 RUNNER_VERSION:
