@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-source "${NV_HELPER_SCRIPTS}/github.sh"
+source "${NV_CONTEXT_DIR}/github.sh"
 
 ARCH_STRING=x64
 
@@ -19,13 +19,13 @@ sudo "${RUNNER_DIR}/bin/installdependencies.sh"
 rm -rf ./actions-runner.tar.gz
 
 # Copy scripts and services
-sudo cp "${NV_HELPER_SCRIPTS}/runner.sh" /runner.sh
-sudo cp "${NV_HELPER_SCRIPTS}/initialize_runner.sh" /home/runner/.initialize_runner.sh
+sudo cp "${NV_CONTEXT_DIR}/runner.sh" /runner.sh
+sudo cp "${NV_CONTEXT_DIR}/initialize_runner.sh" /home/runner/.initialize_runner.sh
 
 _UID=$(id -u)
 _GID=$(id -g)
 sudo chown -R "${_UID}:${_GID}" /runner.sh
 chmod +x /runner.sh
 
-sudo cp "${NV_HELPER_SCRIPTS}/runner.service" /etc/systemd/system/
+sudo cp "${NV_CONTEXT_DIR}/runner.service" /etc/systemd/system/
 sudo systemctl enable runner.service

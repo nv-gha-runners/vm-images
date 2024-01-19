@@ -4,7 +4,7 @@ build {
   provisioner "shell-local" {
     inline = [
       "cp /usr/share/${lookup(local.uefi_imp, var.arch, "")}/${lookup(local.uefi_imp, var.arch, "")}_VARS.fd ${lookup(local.uefi_imp, var.arch, "")}_VARS.fd",
-      "cloud-localds cloud-init.iso cloud-init/{user,meta}-data"
+      "cloud-localds cloud-init.iso linux/init/{user,meta}-data"
     ]
     inline_shebang = "/bin/bash -e"
   }
@@ -19,18 +19,18 @@ build {
   provisioner "shell" {
     inline = [
       "cloud-init status --wait",
-      "mkdir -p ${local.helpers_directory}"
+      "mkdir -p ${local.context_directory}"
     ]
   }
 
   provisioner "file" {
-    source      = "${path.root}/scripts/helpers/"
-    destination = "${local.helpers_directory}"
+    source      = "${path.root}/linux/context/"
+    destination = "${local.context_directory}"
   }
 
   provisioner "file" {
     source      = "${path.root}/config.yaml"
-    destination = "${local.helpers_directory}/config.yaml"
+    destination = "${local.context_directory}/config.yaml"
   }
 
   provisioner "shell" {
@@ -39,7 +39,7 @@ build {
       "GH_TOKEN=${var.gh_token}",
       "NV_ARCH=${var.arch}",
       "NV_DRIVER_VERSION=${var.driver_version}",
-      "NV_HELPER_SCRIPTS=${local.helpers_directory}",
+      "NV_CONTEXT_DIR=${local.context_directory}",
       "NV_RUNNER_ENV=${var.runner_env}",
       "NV_RUNNER_VERSION=${var.runner_version}",
       "NV_VARIANT=${local.variant}",
@@ -47,30 +47,30 @@ build {
 
     scripts = [
       // Core pkgs used in subsequent scripts
-      "${path.root}/scripts/installers/apt.sh",
-      "${path.root}/scripts/installers/jq.sh",
-      "${path.root}/scripts/installers/yq.sh",
+      "${path.root}/linux/installers/apt.sh",
+      "${path.root}/linux/installers/jq.sh",
+      "${path.root}/linux/installers/yq.sh",
 
       // NVIDIA CTK & Driver
-      "${path.root}/scripts/installers/nvidia-driver.sh",
+      "${path.root}/linux/installers/nvidia-driver.sh",
 
       // Remaining Packages
-      "${path.root}/scripts/installers/awscli.sh",
-      "${path.root}/scripts/installers/docker.sh",
-      "${path.root}/scripts/installers/gh.sh",
-      "${path.root}/scripts/installers/git.sh",
-      "${path.root}/scripts/installers/nvidia-container-toolkit.sh",
-      "${path.root}/scripts/installers/python.sh",
-      "${path.root}/scripts/installers/runner.sh",
+      "${path.root}/linux/installers/awscli.sh",
+      "${path.root}/linux/installers/docker.sh",
+      "${path.root}/linux/installers/gh.sh",
+      "${path.root}/linux/installers/git.sh",
+      "${path.root}/linux/installers/nvidia-container-toolkit.sh",
+      "${path.root}/linux/installers/python.sh",
+      "${path.root}/linux/installers/runner.sh",
 
       // Cleanup
-      "${path.root}/scripts/installers/cleanup.sh",
+      "${path.root}/linux/installers/cleanup.sh",
     ]
   }
 
   provisioner "shell" {
     inline = [
-      "rm -rf ${local.helpers_directory}"
+      "rm -rf ${local.context_directory}"
     ]
   }
 }

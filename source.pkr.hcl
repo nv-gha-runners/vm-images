@@ -5,7 +5,7 @@ source "amazon-ebs" "ubuntu" {
 
   skip_create_ami   = !var.upload_ami
   shutdown_behavior = "terminate"
-  user_data_file    = "./cloud-init/user-data"
+  user_data_file    = "./linux/init/user-data"
 
   source_ami_filter {
     filters = {

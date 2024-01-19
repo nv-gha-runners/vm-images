@@ -1,7 +1,7 @@
 locals {
   variant           = var.driver_version == "" ? "cpu" : "gpu"
   instance_type     = var.arch == "amd64" ? "m7i.large" : "m7g.large"
-  helpers_directory = "/home/runner/helpers"
+  context_directory = "/home/runner/context"
   image_id = join(
     "-",
     [
