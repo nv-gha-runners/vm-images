@@ -1,5 +1,7 @@
 build {
-  sources = ["source.null.qemu_dependencies"]
+  source "source.null.qemu_dependencies" {
+    name = "linux-premise"
+  }
 
   provisioner "shell-local" {
     inline = [
@@ -11,10 +13,13 @@ build {
 }
 
 build {
-  sources = [
-    "source.amazon-ebs.ubuntu",
-    "source.qemu.ubuntu",
-  ]
+  source "source.amazon-ebs.ubuntu" {
+    name = "linux-aws"
+  }
+
+  source "source.qemu.ubuntu" {
+    name = "linux-premise"
+  }
 
   provisioner "shell" {
     inline = [

@@ -57,7 +57,6 @@ jobs:
           IMAGE_NAME=$(ci/compute-image-name.sh)
           echo "NV_IMAGE_NAME=${IMAGE_NAME}" | tee --append "${GITHUB_ENV}"
           echo "NV_RUN_ID=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" | tee --append "${GITHUB_ENV}"
-          ci/compute-config-values.sh | tee --append "${GITHUB_ENV}"
         env:
           ARCH: ${{ matrix.ARCH }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
@@ -70,7 +69,7 @@ jobs:
         run: |
           packer init .
           exec packer build \
-            -only="*${NV_PACKER_SOURCE}*" \
+            -only="*${OS}-${RUNNER_ENV}*" \
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "gh_run_id=${NV_RUN_ID}" \
