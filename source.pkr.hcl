@@ -100,8 +100,8 @@ source "amazon-ebs" "windows" {
   }
 
   communicator         = "ssh"
-  ssh_username         = "runner"
-  ssh_password         = "runner"
+  ssh_username         = "Administrator"
+  ssh_password         = "Runner1!"
   ssh_interface        = "session_manager"
   iam_instance_profile = "runner_profile" // this profile is created in Terraform
 

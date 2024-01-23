@@ -8,8 +8,9 @@ $ssh_server = Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH.S
 $ssh_client | Add-WindowsCapability -Online
 $ssh_server | Add-WindowsCapability -Online
 
-$password = ConvertTo-SecureString -Force -AsPlainText -String "runner"
+$password = ConvertTo-SecureString -Force -AsPlainText -String "Runner1!"
 Set-LocalUser -Name Administrator -Password $password
+# TODO: Determine if we need a runner user
 New-LocalUser -Name runner -Password $password
 
 Set-Service -Name sshd -StartupType Automatic
