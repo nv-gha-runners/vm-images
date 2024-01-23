@@ -86,6 +86,10 @@ build {
     name = "win-aws"
   }
 
+  provisioner "powershell" {
+    inline = ["mkdir ${local.context_directory}"]
+  }
+
   provisioner "file" {
     source      = "${path.root}/win/context/"
     destination = "${local.context_directory}"
