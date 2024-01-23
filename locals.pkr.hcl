@@ -12,7 +12,7 @@ locals {
   context_directory = lookup(local.context_directory_map, var.os, "")
   exe_directory_map = {
     "linux" = "/usr/local/bin"
-    "win"   = "C:/tools"
+    "win"   = "C:/Windows"
   }
   exe_directory = lookup(local.exe_directory_map, var.os, "")
   image_id = join(
