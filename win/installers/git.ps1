@@ -1,3 +1,6 @@
+$ProgressPreference = "SilentlyContinue"
+$ErrorActionPreference = "Stop"
+
 $nul = mkdir -Force C:/git -ErrorAction Ignore
 Set-Location C:/git
 
