@@ -56,11 +56,11 @@ source "null" "qemu_dependencies" {
 }
 
 source "qemu" "ubuntu" {
-  cpus       = 4
-  disk_image = true
-  disk_size  = "150G"
-  format     = "qcow2"
-  headless   = var.headless
+  cpus             = 4
+  disk_image       = true
+  disk_size        = "150G"
+  format           = "qcow2"
+  headless         = var.headless
   iso_checksum     = "file:https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
   iso_url          = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-${var.arch}.img"
   memory           = 2048
