@@ -56,24 +56,24 @@ source "null" "qemu_dependencies" {
 }
 
 source "qemu" "ubuntu" {
-  cpus             = 4
-  disk_image       = true
-  disk_size        = "150G"
-  format           = "qcow2"
-  headless         = var.headless
+  cpus       = 4
+  disk_image = true
+  disk_size  = "150G"
+  format     = "qcow2"
+  headless   = var.headless
   // FIXME: change pin from `20240115` to `current` after a new release is out.
   // `20240117` has SSH issues that prevent CI from completing.
   iso_checksum     = "file:https://cloud-images.ubuntu.com/jammy/20240115/SHA256SUMS"
   iso_url          = "https://cloud-images.ubuntu.com/jammy/20240115/jammy-server-cloudimg-${var.arch}.img"
   memory           = 2048
   output_directory = local.output_directory
-  qemu_binary      = "qemu-system-${lookup(local.qemu_arch, var.arch, "")}"
+  qemu_binary      = "qemu-system-${local.qemu_arch}"
   qemuargs = [
-    ["-machine", "${lookup(local.qemu_machine, var.arch, "")},accel=kvm"],
+    ["-machine", "${local.qemu_machine},accel=kvm"],
     ["-cpu", "host"],
     ["-device", "virtio-gpu-pci"], // this is needed for arm64 QEMU machine to boot
-    ["-drive", "if=pflash,format=raw,id=ovmf_code,readonly=on,file=/usr/share/${lookup(local.uefi_imp, var.arch, "")}/${lookup(local.uefi_imp, var.arch, "")}_CODE.fd"],
-    ["-drive", "if=pflash,format=raw,id=ovmf_vars,file=${lookup(local.uefi_imp, var.arch, "")}_VARS.fd"],
+    ["-drive", "if=pflash,format=raw,id=ovmf_code,readonly=on,file=/usr/share/${local.uefi_imp}/${local.uefi_imp}_CODE.fd"],
+    ["-drive", "if=pflash,format=raw,id=ovmf_vars,file=${local.uefi_imp}_VARS.fd"],
     ["-drive", "file=${local.output_directory}/${local.output_filename},format=qcow2"],
     ["-drive", "file=cloud-init.iso,format=raw"]
   ]

@@ -3,7 +3,7 @@ build {
 
   provisioner "shell-local" {
     inline = [
-      "cp /usr/share/${lookup(local.uefi_imp, var.arch, "")}/${lookup(local.uefi_imp, var.arch, "")}_VARS.fd ${lookup(local.uefi_imp, var.arch, "")}_VARS.fd",
+      "cp /usr/share/${local.uefi_imp}/${local.uefi_imp}_VARS.fd ${local.uefi_imp}_VARS.fd",
       "cloud-localds cloud-init.iso linux/init/{user,meta}-data"
     ]
     inline_shebang = "/bin/bash -e"
@@ -40,6 +40,7 @@ build {
       "NV_ARCH=${var.arch}",
       "NV_DRIVER_VERSION=${var.driver_version}",
       "NV_CONTEXT_DIR=${local.context_directory}",
+      "NV_EXE_DIR=${local.exe_directory}",
       "NV_RUNNER_ENV=${var.runner_env}",
       "NV_RUNNER_VERSION=${var.runner_version}",
       "NV_VARIANT=${local.variant}",
