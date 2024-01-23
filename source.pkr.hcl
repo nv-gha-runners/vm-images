@@ -31,22 +31,9 @@ source "amazon-ebs" "ubuntu" {
 
   // These tags are used for cleaning up resources during GHAs provisioning
   // and cleaning up old AMIs when new ones are created.
-  run_tags = {
-    "gh-run-id"  = var.gh_run_id,
-    "image-name" = var.image_name,
-    "vm-images"  = "true",
-  }
+  run_tags = local.ami_run_tags
 
-  tags = {
-    for k, v in {
-      "arch"           = var.arch
-      "driver-version" = var.driver_version
-      "os"             = var.os
-      "runner-version" = var.runner_version
-      "variant"        = local.variant
-      "Name"           = local.image_id
-    } : k => v if v != ""
-  }
+  tags = local.ami_tags
 }
 
 // A dummy source to enable shell-local provisioners to run before the QEMU
@@ -80,4 +67,47 @@ source "qemu" "ubuntu" {
   ssh_password           = "runner"
   ssh_username           = "runner"
   vm_name                = local.output_filename
+}
+
+source "amazon-ebs" "windows" {
+  ami_name      = local.image_id
+  instance_type = local.instance_type
+  region        = var.aws_region
+
+  skip_create_ami   = !var.upload_ami
+  shutdown_behavior = "terminate"
+  user_data_file    = "./win/init/bootstrap.ps1"
+
+  source_ami_filter {
+    filters = {
+      name                = "Windows_Server-2022-English-Core-Base*"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+    }
+    most_recent = true
+    owners      = ["amazon"]
+  }
+
+  vpc_filter {
+    filters = {
+      "is-default" : "true"
+    }
+  }
+  security_group_filter {
+    filters = {
+      "group-name" : "default"
+    }
+  }
+
+  communicator         = "ssh"
+  ssh_username         = "runner"
+  ssh_password         = "runner"
+  ssh_interface        = "session_manager"
+  iam_instance_profile = "runner_profile" // this profile is created in Terraform
+
+  // These tags are used for cleaning up resources during GHAs provisioning
+  // and cleaning up old AMIs when new ones are created.
+  run_tags = local.ami_run_tags
+
+  tags = local.ami_tags
 }

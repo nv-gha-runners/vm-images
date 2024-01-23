@@ -80,3 +80,49 @@ build {
     ]
   }
 }
+
+build {
+  source "source.amazon-ebs.windows" {
+    name = "win-aws"
+  }
+
+  provisioner "file" {
+    source      = "${path.root}/win/context/"
+    destination = "${local.context_directory}"
+  }
+
+  provisioner "file" {
+    source      = "${path.root}/config.yaml"
+    destination = "${local.context_directory}/config.yaml"
+  }
+
+  provisioner "powershell" {
+    environment_vars = [
+      "NV_CONTEXT_DIR=${local.context_directory}",
+      "NV_EXE_DIR=${local.exe_directory}",
+      "NV_RUNNER_ENV=${var.runner_env}",
+      "NV_RUNNER_VERSION=${var.runner_version}",
+      "NV_VARIANT=${local.variant}",
+    ]
+
+    scripts = [
+      "${path.root}/win/installers/jq.ps1",
+      "${path.root}/win/installers/yq.ps1",
+      "${path.root}/win/installers/docker.ps1",
+      "${path.root}/win/installers/git.ps1",
+      "${path.root}/win/installers/runner.ps1",
+    ]
+  }
+
+  provisioner "windows-restart" {}
+
+  provisioner "powershell" {
+    scripts = ["${path.root}/win/context/docker_imgs.ps1"]
+  }
+
+  provisioner "powershell" {
+    inline = [
+      "Remove-Item -Recurse -Force -Path ${local.context_directory} -ErrorAction Ignore"
+    ]
+  }
+}

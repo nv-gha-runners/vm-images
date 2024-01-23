@@ -7,10 +7,12 @@ locals {
   instance_type = lookup(local.instance_type_map, var.arch, "")
   context_directory_map = {
     "linux" = "/home/runner/context"
+    "win"   = "C:/context"
   }
   context_directory = lookup(local.context_directory_map, var.os, "")
   exe_directory_map = {
     "linux" = "/usr/local/bin"
+    "win"   = "C:/tools"
   }
   exe_directory = lookup(local.exe_directory_map, var.os, "")
   image_id = join(
@@ -42,4 +44,20 @@ locals {
   qemu_machine     = lookup(local.qemu_machine_map, var.arch, "")
   output_directory = "output"
   output_filename  = "img.qcow2"
+
+  ami_tags = {
+    for k, v in {
+      "arch"           = var.arch
+      "driver-version" = var.driver_version
+      "os"             = var.os
+      "runner-version" = var.runner_version
+      "variant"        = local.variant
+      "Name"           = local.image_id
+    } : k => v if v != ""
+  }
+  ami_run_tags = {
+    "gh-run-id"  = var.gh_run_id,
+    "image-name" = var.image_name,
+    "vm-images"  = "true",
+  }
 }
