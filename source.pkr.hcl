@@ -61,10 +61,8 @@ source "qemu" "ubuntu" {
   disk_size  = "150G"
   format     = "qcow2"
   headless   = var.headless
-  // FIXME: change pin from `20240115` to `current` after a new release is out.
-  // `20240117` has SSH issues that prevent CI from completing.
-  iso_checksum     = "file:https://cloud-images.ubuntu.com/jammy/20240115/SHA256SUMS"
-  iso_url          = "https://cloud-images.ubuntu.com/jammy/20240115/jammy-server-cloudimg-${var.arch}.img"
+  iso_checksum     = "file:https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
+  iso_url          = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-${var.arch}.img"
   memory           = 2048
   output_directory = local.output_directory
   qemu_binary      = "qemu-system-${local.qemu_arch}"
