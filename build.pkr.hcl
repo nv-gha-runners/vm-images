@@ -87,7 +87,7 @@ build {
   }
 
   provisioner "powershell" {
-    inline = ["mkdir ${local.context_directory}"]
+    inline = ["mkdir ${local.context_directory}; mkdir ${local.exe_directory}"]
   }
 
   provisioner "file" {

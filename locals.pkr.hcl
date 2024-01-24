@@ -24,7 +24,7 @@ locals {
 
   exe_directory_map = {
     "linux" = "/usr/local/bin"
-    "win"   = "C:/Windows"
+    "win"   = "C:/local"
   }
   exe_directory = lookup(local.exe_directory_map, var.os, "")
 
