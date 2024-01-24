@@ -18,5 +18,17 @@ Invoke-WebRequest -UseBasicParsing -OutFile docker.zip -Uri "${uri}"
 tar --strip-components=1 -xf docker.zip
 Remove-Item docker.zip
 
+
+$dockerDefaultConfigPath = "$env:ProgramData/docker/config"
+mkdir -Force -ErrorAction SilentlyContinue -Path "$dockerDefaultConfigPath"
+
+@"
+{
+    "group": "docker"
+}
+"@ > "$dockerDefaultConfigPath/daemon.json"
+
+
 ./dockerd.exe --register-service
+./dockerd.exe --validate
 Set-MachineEnvironmentVariable -Append -Variable "Path" -Value "${root}"
