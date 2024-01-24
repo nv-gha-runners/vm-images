@@ -114,6 +114,7 @@ build {
       "${path.root}/win/installers/yq.ps1",
       "${path.root}/win/installers/docker.ps1",
       "${path.root}/win/installers/git.ps1",
+      "${path.root}/win/installers/gh.ps1",
       "${path.root}/win/installers/runner.ps1",
     ]
   }
