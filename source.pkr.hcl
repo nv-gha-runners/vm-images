@@ -111,3 +111,34 @@ source "amazon-ebs" "windows" {
 
   tags = local.ami_tags
 }
+
+source "qemu" "windows" {
+  cpus             = 8
+  disk_size        = "150G"
+  memory           = 8192
+  format           = "qcow2"
+  headless         = var.headless
+  iso_checksum     = "sha256:3e4fa6d8507b554856fc9ca6079cc402df11a8b79344871669f0251535255325"
+  iso_urls         = ["https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/SERVER_EVAL_x64FRE_en-us.iso"]
+  output_directory = local.output_directory
+  qemu_binary      = "qemu-system-${local.qemu_arch}"
+  machine_type     = "q35"
+  accelerator      = "kvm"
+  net_device       = "virtio-net"
+
+  floppy_files     = [
+    "win/init/Autounattend.xml",
+    "win/init/bootstrap.ps1"
+  ]
+
+  qemuargs = [
+    ["-cpu", "host"],
+    ["-cdrom", "./local/virtio-win.iso"]
+  ]
+
+  communicator  = "ssh"
+  ssh_username  = "Administrator"
+  ssh_password  = "Runner1!"
+
+  vm_name       = local.output_filename
+}

@@ -1,6 +1,6 @@
 param (
     [string]
-    $root="C:\ghcli"
+    $root="${env:NV_EXE_DIR}"
 )
 
 $ProgressPreference = "SilentlyContinue"
@@ -12,12 +12,11 @@ $ErrorActionPreference = "Stop"
 $latestVersion = Get-GithubLatestRelease -Repo "cli/cli"
 
 $repoBaseUri = "https://github.com/cli/cli/releases/download/v${latestVersion}/"
-$ghClientZip = "gh_${latestVersion}_windows_${ENV:NV_ARCH}.zip"
+$ghClientZip = "gh_${latestVersion}_windows_amd64.zip"
 
 $webreqChk = @{
     UseBasicParsing = $true
     Uri = "${repoBaseUri}/gh_${latestVersion}_checksums.txt"
-    Headers = @{ "Content-Type" = "text/plain; charset=utf-8" }
 }
 $webreqPkg = @{
     UseBasicParsing = $true
@@ -29,7 +28,7 @@ $webreqPkg = @{
 # Top it off by getting only the sha for the file we're fetching
 $checksum = [String]::new((Invoke-WebRequest @webreqChk).Content).Split("`n") | Select-String -Pattern "[a-zA-Z0-9]+ +$ghClientZip"
 
-$pkg = (Invoke-WebRequest @webreqPkg)
+$pkg = Invoke-WebRequest @webreqPkg
 $hash = (Get-FileHash -Algorithm SHA256 -InputStream $pkg.RawContentStream).Hash
 
 # Hash might have some extra characters, so ignore those
@@ -37,10 +36,8 @@ if ("$checksum" -inotlike "$hash*") {
     Write-Error "GitHub Client download failed, SHA256 mismatch"
 }
 
-Out-File -FilePath "./$ghClientZip" -InputObject $pkg.Content
+[System.IO.File]::WriteAllBytes("$(pwd)/$ghClientZip", $pkg.Content)
 
-mkdir -p "$root"
-tar -C "$root" -xf --strip-components=1 "./$ghClientZip"
+mkdir -Force -ErrorAction Ignore -Path "$root" | Out-Null
+tar -C "$root" --strip-components=1 -xf "./$ghClientZip"
 Remove-Item "./$ghClientZip"
-
-Set-MachineEnvironmentVariable -Append -Variable "Path" -Value "$root"

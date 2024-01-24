@@ -85,9 +85,12 @@ build {
   source "source.amazon-ebs.windows" {
     name = "win-aws"
   }
+  source "source.qemu.windows" {
+    name = "win-premise"
+  }
 
   provisioner "powershell" {
-    inline = ["mkdir ${local.context_directory}; mkdir ${local.exe_directory}"]
+    inline = ["mkdir ${local.context_directory}; mkdir -p ${local.exe_directory}"]
   }
 
   provisioner "file" {
@@ -99,6 +102,19 @@ build {
     source      = "${path.root}/config.yaml"
     destination = "${local.context_directory}/config.yaml"
   }
+
+  provisioner "powershell" {
+    environment_vars = [
+      "NV_CONTEXT_DIR=${local.context_directory}",
+      "NV_EXE_DIR=${local.exe_directory}",
+    ]
+
+    scripts = [
+      "${path.root}/win/installers/environment.ps1",
+    ]
+  }
+
+  provisioner "windows-restart" {}
 
   provisioner "powershell" {
     environment_vars = [
@@ -122,7 +138,10 @@ build {
   provisioner "windows-restart" {}
 
   provisioner "powershell" {
-    scripts = ["${path.root}/win/context/docker_imgs.ps1"]
+    scripts = [
+      "${path.root}/win/context/docker_imgs.ps1",
+      "${path.root}/win/context/verification.ps1"
+    ]
   }
 
   provisioner "powershell" {

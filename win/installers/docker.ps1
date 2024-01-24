@@ -6,7 +6,7 @@ $root = "C:/docker"
 
 Stop-Service docker -ErrorAction Ignore
 Remove-Item -Recurse -Force -Path "${root}" -ErrorAction Ignore
-$nul = mkdir -Force "${root}" -ErrorAction Ignore
+mkdir -ErrorAction Ignore -Force "${root}" | Out-Null
 
 Enable-WindowsOptionalFeature -NoRestart -Online -FeatureName Containers
 
