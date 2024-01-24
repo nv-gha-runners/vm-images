@@ -1,7 +1,10 @@
 *.auto.pkrvars.hcl
-output
 *_VARS.fd
 cloud-init.iso
 venv
 __pycache__
 .mypy_cache
+# Ignore local artifacts
+/local
+# Ignore packer output directory
+/output
