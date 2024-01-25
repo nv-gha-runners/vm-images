@@ -76,7 +76,12 @@ source "amazon-ebs" "windows" {
 
   skip_create_ami   = !var.upload_ami
   shutdown_behavior = "terminate"
-  user_data_file    = "./win/init/bootstrap.ps1"
+  # the `user_data` file for AWS must be wrapped in a <powershell> tag
+  user_data    = <<-EOF
+  <powershell>
+  ${file("${path.root}/win/init/bootstrap.ps1")}
+  </powershell>
+  EOF
 
   source_ami_filter {
     filters = {
