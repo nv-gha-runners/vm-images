@@ -7,3 +7,4 @@ yq --version
 git --version
 gh --version
 docker --version
+docker info
