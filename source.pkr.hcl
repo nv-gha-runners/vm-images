@@ -77,7 +77,7 @@ source "amazon-ebs" "windows" {
   skip_create_ami   = !var.upload_ami
   shutdown_behavior = "terminate"
   # the `user_data` file for AWS must be wrapped in a <powershell> tag
-  user_data    = <<-EOF
+  user_data = <<-EOF
   <powershell>
   ${file("${path.root}/win/init/bootstrap.ps1")}
   </powershell>
@@ -104,8 +104,8 @@ source "amazon-ebs" "windows" {
     }
   }
 
-  communicator         = "ssh"
-  ssh_username         = "Administrator"
+  communicator = "ssh"
+  ssh_username = "Administrator"
   # password must meet complexity requirements:
   # https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
   ssh_password         = "Runner1!"
@@ -133,7 +133,7 @@ source "qemu" "windows" {
   accelerator      = "kvm"
   net_device       = "virtio-net"
 
-  floppy_files     = [
+  floppy_files = [
     "win/init/Autounattend.xml",
     "win/init/bootstrap.ps1"
   ]
@@ -143,11 +143,11 @@ source "qemu" "windows" {
     ["-cdrom", "./local/virtio-win.iso"]
   ]
 
-  communicator  = "ssh"
-  ssh_username  = "Administrator"
+  communicator = "ssh"
+  ssh_username = "Administrator"
   # password must meet complexity requirements:
   # https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
-  ssh_password  = "Runner1!"
+  ssh_password = "Runner1!"
 
-  vm_name       = local.output_filename
+  vm_name = local.output_filename
 }
