@@ -1,5 +1,5 @@
 build {
-  source "source.null.qemu_dependencies" {
+  source "source.null.preprovision" {
     name = "linux-premise"
   }
 
@@ -78,6 +78,20 @@ build {
     inline = [
       "rm -rf ${local.context_directory}"
     ]
+  }
+}
+
+build {
+  source "source.null.preprovision" {
+    name = "win-premise"
+  }
+
+  provisioner "shell-local" {
+    inline = [
+      "mkdir -p local",
+      "wget --no-verbose -c -O local/virtio-win.iso https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso"
+    ]
+    inline_shebang = "/bin/bash -e"
   }
 }
 

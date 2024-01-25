@@ -1,3 +1,9 @@
+// A dummy source to enable shell-local provisioners to run before the actual
+// provisioning begins
+source "null" "preprovision" {
+  communicator = "none"
+}
+
 source "amazon-ebs" "ubuntu" {
   ami_name      = local.image_id
   instance_type = local.instance_type
@@ -34,12 +40,6 @@ source "amazon-ebs" "ubuntu" {
   run_tags = local.ami_run_tags
 
   tags = local.ami_tags
-}
-
-// A dummy source to enable shell-local provisioners to run before the QEMU
-// build runs
-source "null" "qemu_dependencies" {
-  communicator = "none"
 }
 
 source "qemu" "ubuntu" {
