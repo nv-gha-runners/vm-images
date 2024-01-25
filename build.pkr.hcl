@@ -128,6 +128,8 @@ build {
     ]
   }
 
+  # this restart is necessary to make sure the environment variables are
+  # available to the subsequent scripts
   provisioner "windows-restart" {}
 
   provisioner "powershell" {

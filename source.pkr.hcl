@@ -106,6 +106,8 @@ source "amazon-ebs" "windows" {
 
   communicator         = "ssh"
   ssh_username         = "Administrator"
+  # password must meet complexity requirements:
+  # https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
   ssh_password         = "Runner1!"
   ssh_interface        = "session_manager"
   iam_instance_profile = "runner_profile" // this profile is created in Terraform
@@ -143,6 +145,8 @@ source "qemu" "windows" {
 
   communicator  = "ssh"
   ssh_username  = "Administrator"
+  # password must meet complexity requirements:
+  # https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
   ssh_password  = "Runner1!"
 
   vm_name       = local.output_filename
