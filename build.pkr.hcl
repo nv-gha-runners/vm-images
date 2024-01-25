@@ -155,8 +155,8 @@ build {
 
   provisioner "powershell" {
     scripts = [
-      "${path.root}/win/context/docker_imgs.ps1",
-      "${path.root}/win/context/verification.ps1"
+      "${path.root}/win/context/verification.ps1",
+      "${path.root}/win/context/docker_imgs.ps1"
     ]
   }
 
