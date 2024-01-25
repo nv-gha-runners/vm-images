@@ -22,7 +22,15 @@ Create a `variables.auto.pkrvars.hcl` file and run `packer build`:
 
 ```sh
 cp ./variables.auto.pkrvars.hcl.sample ./variables.auto.pkrvars.hcl
+
+# build linux premise image variant
 packer build -only="*linux-premise*" .
+
+# build linux AWS image variant
+packer build -only="*linux-aws*" .
+
+# build Windows AWS image variant
+packer build -only="*win-aws*" .
 ```
 
 ## Running `qcow2` Files Locally
