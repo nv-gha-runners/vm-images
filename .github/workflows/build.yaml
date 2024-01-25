@@ -65,10 +65,15 @@ jobs:
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
         # The `exec` command is used to help forward signals to the child process.
         # This helps ensure Packer's AWS resources get removed when the job is cancelled.
+        #
+        # The `parallel-builds=1` flag ensures that the build jobs are run
+        # serially. This allows the "preprovision" builds to run before the
+        # actual builds since they are defined first in the templates.
       - name: Build image
         run: |
           packer init .
           exec packer build \
+            -parallel-builds=1 \
             -only="*${OS}-${RUNNER_ENV}*" \
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
