@@ -5,5 +5,5 @@
 image_name = "local-image"
 // os = "linux"
 runner_version = "2.312.0"
-runner_env = "premise"
+runner_env = "kvm"
 // upload_ami = false

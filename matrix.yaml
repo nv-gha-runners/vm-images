@@ -25,7 +25,7 @@ ARCH:
 
 ENV:
   - aws
-  - premise
+  - kvm
 
 exclude:
   - ARCH: arm64
@@ -42,4 +42,4 @@ exclude:
     DRIVER_VERSION: "535"
   # only make AMI images for windows
   - OS: win
-    ENV: premise
+    ENV: kvm

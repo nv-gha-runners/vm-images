@@ -23,8 +23,8 @@ Create a `variables.auto.pkrvars.hcl` file and run `packer build`:
 ```sh
 cp ./variables.auto.pkrvars.hcl.sample ./variables.auto.pkrvars.hcl
 
-# build linux premise image variant
-packer build -only="*linux-premise*" .
+# build linux kvm image variant
+packer build -only="*linux-kvm*" .
 
 # build linux AWS image variant
 packer build -only="*linux-aws*" .
