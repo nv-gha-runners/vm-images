@@ -139,6 +139,7 @@ build {
       "NV_RUNNER_ENV=${var.runner_env}",
       "NV_RUNNER_VERSION=${var.runner_version}",
       "NV_VARIANT=${local.variant}",
+      "NV_COPY_JITCONFIG=${var.local_jitconfig}"
     ]
 
     scripts = [
@@ -156,7 +157,8 @@ build {
   provisioner "powershell" {
     scripts = [
       "${path.root}/win/context/verification.ps1",
-      "${path.root}/win/context/docker_imgs.ps1"
+      "${path.root}/win/context/docker_imgs.ps1",
+      "${path.root}/win/context/enable_runner_service.ps1"
     ]
   }
 

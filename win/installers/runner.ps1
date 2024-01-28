@@ -1,3 +1,6 @@
+$ProgressPreference = "SilentlyContinue"
+$ErrorActionPreference = "Stop"
+
 $nul = mkdir -Force C:/actions-runner -ErrorAction Ignore
 Set-Location C:/actions-runner
 
@@ -8,3 +11,11 @@ Invoke-WebRequest -UseBasicParsing -Uri "${actionRunnerUri}" -OutFile actions-ru
 # Extract the installer
 tar -xf actions-runner.zip
 Remove-Item actions-runner.zip
+
+# Setup runner scripts
+Copy-Item "${env:NV_CONTEXT_DIR}/initialize_runner.ps1" "C:/actions-runner/.initialize_runner.ps1"
+Copy-Item "${env:NV_CONTEXT_DIR}/runner.ps1" "C:/actions-runner/runner.ps1"
+
+if ($env:NV_COPY_JITCONFIG) {
+    Copy-Item C:\context\jitconfig C:\jitconfig
+}

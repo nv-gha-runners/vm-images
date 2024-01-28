@@ -8,3 +8,5 @@ __pycache__
 /local
 # Ignore packer output directory
 /output
+# Ignore local jitconfigs
+jitconfig

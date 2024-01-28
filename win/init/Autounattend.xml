@@ -139,5 +139,4 @@
             </AutoLogon>
         </component>
     </settings>
-    <cpi:offlineImage cpi:source="wim:c:/users/wes/downloads/server_eval_x64fre_en-us/sources/install.wim#Windows Server 2022 SERVERSTANDARDCORE" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
 </unattend>
