@@ -24,13 +24,16 @@ Create a `variables.auto.pkrvars.hcl` file and run `packer build`:
 cp ./variables.auto.pkrvars.hcl.sample ./variables.auto.pkrvars.hcl
 
 # build linux kvm image variant
-packer build -only="*linux-kvm*" .
+packer build -parallel-builds=1 -only="*linux-kvm*" .
 
 # build linux AWS image variant
-packer build -only="*linux-aws*" .
+packer build -parallel-builds=1 -only="*linux-aws*" .
 
 # build Windows AWS image variant
-packer build -only="*win-aws*" .
+packer build -parallel-builds=1 -only="*win-aws*" .
+
+# build Windows kvm image variant
+packer build -parallel-builds=1 -only="*win-kvm*" .
 ```
 
 ## Running `qcow2` Files Locally
