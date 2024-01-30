@@ -1,13 +1,6 @@
 $ProgressPreference = "SilentlyContinue"
 $ErrorActionPreference = "Stop"
 
-# Getting CPU info
-$cpuInfo = Get-CimInstance -ClassName Win32_Processor
-# $coreCountPhysical = $cpuInfo.NumberOfCores
-$coreCountLogical = $cpuInfo.NumberOfLogicalProcessors
-
-$ENV:PARALLEL_LEVEL="$coreCountLogical"
-
 # Briefly wait to start the runner
 Start-Sleep -Seconds 10
 
