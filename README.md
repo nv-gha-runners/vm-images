@@ -44,3 +44,24 @@ qemu-system-x86_64 \
     -m 2048 \
     -drive file=output/img.qcow2,media=disk,if=virtio
 ```
+
+To populate the `jitconfig` file and test the runner service, run the following commands:
+
+```sh
+# First, copy the sample files and populate a user-data file with a token:
+cp test/linux-init/user-data.sample test/linux-init/user-data
+cp test/win-init/user-data.sample test/win-init/user-data
+
+# If running Linux, generate a cloud-init image:
+cloud-localds test-init.iso test/linux-init/{user,meta}-data
+
+# If running Windows, generate a cloudbase-init image:
+cloud-localds test-init.iso test/win-init/{user,meta}-data
+
+# Then start the VM with the init image:
+qemu-system-x86_64 \
+    -enable-kvm \
+    -m 2048 \
+    -drive file=output/img.qcow2,media=disk,if=virtio \
+    -drive file=test-init.iso,format=raw
+```

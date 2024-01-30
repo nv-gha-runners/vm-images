@@ -8,3 +8,6 @@ __pycache__
 /local
 # Ignore packer output directory
 /output
+# Ignore test user-data files
+/test/*/user-data
+test-init.iso
