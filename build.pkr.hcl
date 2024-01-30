@@ -139,7 +139,6 @@ build {
       "NV_RUNNER_ENV=${var.runner_env}",
       "NV_RUNNER_VERSION=${var.runner_version}",
       "NV_VARIANT=${local.variant}",
-      "NV_COPY_JITCONFIG=${var.local_jitconfig}"
     ]
 
     scripts = [

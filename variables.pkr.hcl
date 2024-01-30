@@ -92,9 +92,3 @@ variable "timestamp" {
   default     = ""
   description = "A timestamp used to create unique names for resources."
 }
-
-variable "local_jitconfig" {
-  type        = bool
-  default     = false
-  description = "Use local jitconfig to prepare image for testing"
-}

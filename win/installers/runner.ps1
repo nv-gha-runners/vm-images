@@ -15,7 +15,3 @@ Remove-Item actions-runner.zip
 # Setup runner scripts
 Copy-Item "${env:NV_CONTEXT_DIR}/initialize_runner.ps1" "C:/actions-runner/.initialize_runner.ps1"
 Copy-Item "${env:NV_CONTEXT_DIR}/runner.ps1" "C:/actions-runner/runner.ps1"
-
-if ($env:NV_COPY_JITCONFIG) {
-    Copy-Item C:\context\jitconfig C:\jitconfig
-}
