@@ -4,9 +4,20 @@ $root = "C:/docker"
 
 Set-Location "${root}"
 
-# TODO: Get latest release version from `moby/moby` repository. Requires adapting `linux/context/github.sh` for Windows.
-$uri = "https://download.docker.com/win/static/stable/x86_64/docker-25.0.0.zip"
-Invoke-WebRequest -UseBasicParsing -OutFile docker.zip -Uri "${uri}"
+$webreqCommon = @{
+    UseBasicParsing = $true;
+}
+
+$uri = "https://download.docker.com/win/static/stable/x86_64/"
+
+Write-Output "Finding latest docker release"
+# Fetch list of docker releases
+$resp = Invoke-WebRequest @webreqCommon -Uri $uri
+# Match input strings for binary downloads, files are ordered so just set the latest each time a match is encountered
+$resp.Content.Split() | %{ $_ -match "(docker-[0-9\.]+\.zip)" | Out-Null; if ($matches) { $script:latest = $matches.1 } }
+
+Write-Output "Found $latest"
+Invoke-WebRequest @webreqCommon -OutFile docker.zip -Uri "${uri}${latest}"
 tar --strip-components=1 -xf docker.zip
 Remove-Item docker.zip
 
