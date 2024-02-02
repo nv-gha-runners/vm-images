@@ -37,3 +37,19 @@ function Set-MachineEnvironmentVariable {
     }
 
 }
+
+function Get-MachineEnvironmentVariable {
+    param(
+        [string]
+        [parameter(Mandatory=$true)]
+        $Variable
+    )
+
+    $ProgressPreference = "SilentlyContinue"
+    $ErrorActionPreference = "Stop"
+
+    $val = [Environment]::GetEnvironmentVariable("${Variable}", [System.EnvironmentVariableTarget]::Machine)
+    New-Item -Path "env:${Variable}" -Value "${val}"
+
+    Write-Warning "Set env:${Variable} to $val"
+}

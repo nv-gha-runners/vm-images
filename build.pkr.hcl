@@ -104,7 +104,10 @@ build {
   }
 
   provisioner "powershell" {
-    inline = ["mkdir ${local.context_directory}; mkdir -p ${local.exe_directory}"]
+    inline = [
+      "mkdir ${local.context_directory}",
+      "mkdir ${local.exe_directory}",
+      "Enable-WindowsOptionalFeature -NoRestart -Online -FeatureName Containers"]
   }
 
   provisioner "file" {
@@ -115,17 +118,6 @@ build {
   provisioner "file" {
     source      = "${path.root}/config.yaml"
     destination = "${local.context_directory}/config.yaml"
-  }
-
-  provisioner "powershell" {
-    environment_vars = [
-      "NV_CONTEXT_DIR=${local.context_directory}",
-      "NV_EXE_DIR=${local.exe_directory}",
-    ]
-
-    scripts = [
-      "${path.root}/win/installers/environment.ps1",
-    ]
   }
 
   # this restart is necessary to make sure the environment variables are
