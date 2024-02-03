@@ -1,4 +1,4 @@
-. "$PSScriptRoot/init.ps1"
+. "${env:NV_CONTEXT_DIR}\init.ps1"
 
 Write-Output "Testing fetched tools"
 jq --version
