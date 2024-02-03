@@ -1,7 +1,8 @@
-$ProgressPreference = "SilentlyContinue"
-$ErrorActionPreference = "Stop"
+. "${env:NV_CONTEXT_DIR}\init.ps1"
+
 $root = "C:/docker"
 
+mkdir -Force -ErrorAction SilentlyContinue "$root" | Out-Null
 Set-Location "${root}"
 
 $webreqCommon = @{
@@ -32,6 +33,10 @@ $domain = yq '.[env(NV_RUNNER_ENV)].domain' "${env:NV_CONTEXT_DIR}/config.yaml"
 }
 "@ > "$dockerDefaultConfigPath/daemon.json"
 
-./dockerd.exe --register-service
-./dockerd.exe --validate
+# Write and update envvars
+Set-MachineEnvironmentVariable -Append -Variable "Path" -Value "C:/docker"
+Write-MachineEnvironmentVariable -Variable "Path"
+
+dockerd --register-service
+dockerd --validate
 Start-Service Docker

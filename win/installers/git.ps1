@@ -1,17 +1,19 @@
-param (
-    [string]
-    $root="C:/git"
-)
-
-$ProgressPreference = "SilentlyContinue"
-$ErrorActionPreference = "Stop"
-
-mkdir -Force $root -ErrorAction Ignore | Out-Null
-Set-Location $root
+. "${env:NV_CONTEXT_DIR}\init.ps1"
+. "${env:NV_CONTEXT_DIR}\github.ps1"
 
 # Download the latest git package
 # TODO: Use the latest version. Requires adapting `linux/context/github.sh` for Windows.
-$gitUri = "https://github.com/git-for-windows/git/releases/download/v2.42.0.windows.2/Git-2.42.0.2-64-bit.exe"
-Invoke-WebRequest -UseBasicParsing -Uri "${gitUri}" -OutFile "${root}/git_setup.exe"
 
-Start-Process -Wait -FilePath "${root}/git_setup.exe" -ArgumentList "/SP- /VERYSILENT /NORESTART /NOCLOSEAPPLICATIONS"
+$latestVersion = Get-GithubLatestRelease -Repo "git-for-windows/git"
+
+# .0 is typically an RC, .2 is a patch release of git-for-windows.
+# Hardcode the .1 release version.
+$gitUri = "https://github.com/git-for-windows/git/releases/download/v$latestVersion.windows.1/Git-$latestVersion-64-bit.exe"
+Write-Output "Fetching: $gitUri"
+Invoke-WebRequest -UseBasicParsing -Uri "${gitUri}" -OutFile "./git_setup.exe"
+
+# Use Start-Process to wait for installer to finish completely
+Start-Process -Wait -FilePath "./git_setup.exe" -ArgumentList "/SP- /VERYSILENT /NORESTART /NOCLOSEAPPLICATIONS"
+
+# Cleanup
+Remove-Item "./git_setup.exe"

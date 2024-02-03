@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+. "$PSScriptRoot/init.ps1"
 
 $pshost = [Diagnostics.Process]::GetCurrentProcess().Path
 

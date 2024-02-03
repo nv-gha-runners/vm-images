@@ -1,5 +1,4 @@
-$ProgressPreference = "SilentlyContinue"
-$ErrorActionPreference = "Stop"
+. "${env:NV_CONTEXT_DIR}\init.ps1"
 
 $nul = mkdir -Force C:/actions-runner -ErrorAction Ignore
 Set-Location C:/actions-runner

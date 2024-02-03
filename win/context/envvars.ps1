@@ -38,7 +38,7 @@ function Set-MachineEnvironmentVariable {
 
 }
 
-function Get-MachineEnvironmentVariable {
+function Write-MachineEnvironmentVariable {
     param(
         [string]
         [parameter(Mandatory=$true)]
@@ -49,7 +49,7 @@ function Get-MachineEnvironmentVariable {
     $ErrorActionPreference = "Stop"
 
     $val = [Environment]::GetEnvironmentVariable("${Variable}", [System.EnvironmentVariableTarget]::Machine)
-    New-Item -Path "env:${Variable}" -Value "${val}"
+    Set-Item -Path "env:${Variable}" -Value "${val}"
 
     Write-Warning "Set env:${Variable} to $val"
 }

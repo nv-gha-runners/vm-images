@@ -3,4 +3,4 @@ $ErrorActionPreference = "Stop"
 
 . "$PSScriptRoot/envvars.ps1"
 
-Get-MachineEnvironmentVariable -Variable "Path"
+Write-MachineEnvironmentVariable -Variable "Path"

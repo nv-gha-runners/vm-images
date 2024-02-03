@@ -136,18 +136,11 @@ build {
     scripts = [
       "${path.root}/win/installers/jq.ps1",
       "${path.root}/win/installers/yq.ps1",
-      "${path.root}/win/installers/cloudbase-init.ps1",
       "${path.root}/win/installers/docker.ps1",
       "${path.root}/win/installers/git.ps1",
       "${path.root}/win/installers/gh.ps1",
       "${path.root}/win/installers/runner.ps1",
-    ]
-  }
-
-  provisioner "windows-restart" {}
-
-  provisioner "powershell" {
-    scripts = [
+      "${path.root}/win/installers/cloudbase-init.ps1",
       "${path.root}/win/context/verification.ps1",
       "${path.root}/win/context/docker_imgs.ps1",
       "${path.root}/win/context/enable_runner_service.ps1"

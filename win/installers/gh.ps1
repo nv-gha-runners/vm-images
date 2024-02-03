@@ -3,10 +3,7 @@ param (
     $root="${env:NV_EXE_DIR}"
 )
 
-$ProgressPreference = "SilentlyContinue"
-$ErrorActionPreference = "Stop"
-
-. "${env:NV_CONTEXT_DIR}\envvars.ps1"
+. "${env:NV_CONTEXT_DIR}\init.ps1"
 . "${env:NV_CONTEXT_DIR}\github.ps1"
 
 $latestVersion = Get-GithubLatestRelease -Repo "cli/cli"

@@ -3,7 +3,8 @@ function Get-GithubLatestRelease {
         [String]
         [ValidatePattern(".+/.+")]
         [Parameter(Position=0, Mandatory=$true)]
-        $Repo
+        $Repo,
+        $Regex=".*-[a-z]|beta"
     )
 
     # Probe that jq is on the path
@@ -19,11 +20,16 @@ function Get-GithubLatestRelease {
         $webreqParams["Headers"] = @{ Authorization = "Bearer ${env:GH_TOKEN}" }
     }
 
-    $latestVersion = (Invoke-WebRequest @webreqParams).Content |
-                        jq -r '.[] | select((.prerelease==false) and (.assets | length > 0)).tag_name' |
-                        Select-String -NotMatch -Pattern ".*-[a-z]|beta" |
-                        %{ [Version]"$_".Replace("v", "") } | # Cast input string to a version 'type'
-                        Sort-Object -Unique | Select-Object -Last 1 | %{ $_.ToString() }
+    # Matches v2.3.4.foo.bar -> 2.3.4
+    $versionRegex = "v?([0-9]+\.[0-9]+\.[0-9]+)\.?.*"
 
-    Write-Output "$latestVersion"
+    $versions = @()
+    (Invoke-WebRequest @webreqParams).Content |
+        jq -r '.[] | select((.prerelease==false) and (.assets | length > 0)).tag_name' |
+        Select-String -NotMatch -Pattern "$Regex" |
+        %{ $_ -match "$versionRegex" | Out-Null; if ($Matches) {$versions += $Matches.1} }
+
+    $versions = [Version[]]$versions | Sort-Object -Unique | Select-Object -Last 1 | %{ $_.ToString() }
+
+    return $versions
 }

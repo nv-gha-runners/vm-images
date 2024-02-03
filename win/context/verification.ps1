@@ -1,5 +1,4 @@
-$ProgressPreference = "SilentlyContinue"
-$ErrorActionPreference = "Stop"
+. "$PSScriptRoot/init.ps1"
 
 Write-Output "Testing fetched tools"
 jq --version

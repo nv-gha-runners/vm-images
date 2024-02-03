@@ -9,6 +9,9 @@ $ssh_server | Add-WindowsCapability -Online
 $password = ConvertTo-SecureString -Force -AsPlainText -String "Runner1!"
 Set-LocalUser -Name Administrator -Password $password
 
+# Create docker group
+New-LocalGroup -Name docker
+
 Set-Service -Name sshd -StartupType Automatic
 $pshost = [Diagnostics.Process]::GetCurrentProcess().Path
 New-ItemProperty -Path "HKLM:/SOFTWARE/OpenSSH" -Name DefaultShell -Value "$pshost" -PropertyType String -Force
