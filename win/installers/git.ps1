@@ -1,9 +1,7 @@
 . "${env:NV_CONTEXT_DIR}\init.ps1"
 . "${env:NV_CONTEXT_DIR}\github.ps1"
 
-# Download the latest git package
-# TODO: Use the latest version. Requires adapting `linux/context/github.sh` for Windows.
-
+# Find the latest git package
 $latestVersion = Get-GithubLatestRelease -Repo "git-for-windows/git"
 
 # .0 is typically an RC, .2 is a patch release of git-for-windows.
