@@ -107,7 +107,8 @@ build {
     inline = [
       "mkdir ${local.context_directory}",
       "mkdir ${local.exe_directory}",
-      "Enable-WindowsOptionalFeature -NoRestart -Online -FeatureName Containers"]
+      "Enable-WindowsOptionalFeature -NoRestart -Online -FeatureName Containers"
+    ]
   }
 
   provisioner "file" {
