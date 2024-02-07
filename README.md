@@ -30,10 +30,10 @@ packer build -parallel-builds=1 -only="*linux-kvm*" .
 packer build -parallel-builds=1 -only="*linux-aws*" .
 
 # build Windows AWS image variant
-packer build -parallel-builds=1 -only="*win-aws*" .
+packer build -parallel-builds=1 -only="*windows-aws*" .
 
 # build Windows kvm image variant
-packer build -parallel-builds=1 -only="*win-kvm*" .
+packer build -parallel-builds=1 -only="*windows-kvm*" .
 ```
 
 ## Running `qcow2` Files Locally
@@ -50,13 +50,13 @@ To populate the `jitconfig` file and test the runner service, run the following 
 ```sh
 # First, copy the sample files and populate a user-data file with a token:
 cp test/linux-init/user-data.sample test/linux-init/user-data
-cp test/win-init/user-data.sample test/win-init/user-data
+cp test/windows-init/user-data.sample test/windows-init/user-data
 
 # If running Linux, generate a cloud-init image:
 cloud-localds test-init.iso test/linux-init/{user,meta}-data
 
 # If running Windows, generate a cloudbase-init image:
-cloud-localds test-init.iso test/win-init/{user,meta}-data
+cloud-localds test-init.iso test/windows-init/{user,meta}-data
 
 # Then start the VM with the init image:
 qemu-system-x86_64 \

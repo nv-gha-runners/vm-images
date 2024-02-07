@@ -53,11 +53,11 @@ variable "image_name" {
 variable "os" {
   type        = string
   default     = "linux"
-  description = "The operating system of the runner. Valid values are 'linux' or 'win'."
+  description = "The operating system of the runner. Valid values are 'linux' or 'windows'."
 
   validation {
-    condition     = can(regex("^(linux|win)$", var.os))
-    error_message = "The arch value must be either 'linux' or 'win'."
+    condition     = can(regex("^(linux|windows)$", var.os))
+    error_message = "The arch value must be either 'linux' or 'windows'."
   }
 }
 

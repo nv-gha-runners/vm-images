@@ -83,7 +83,7 @@ build {
 
 build {
   source "source.null.preprovision" {
-    name = "win-kvm"
+    name = "windows-kvm"
   }
 
   provisioner "shell-local" {
@@ -97,10 +97,10 @@ build {
 
 build {
   source "source.amazon-ebs.windows" {
-    name = "win-aws"
+    name = "windows-aws"
   }
   source "source.qemu.windows" {
-    name = "win-kvm"
+    name = "windows-kvm"
   }
 
   provisioner "powershell" {
@@ -112,7 +112,7 @@ build {
   }
 
   provisioner "file" {
-    source      = "${path.root}/win/context/"
+    source      = "${path.root}/windows/context/"
     destination = "${local.context_directory}"
   }
 
@@ -135,16 +135,16 @@ build {
     ]
 
     scripts = [
-      "${path.root}/win/installers/jq.ps1",
-      "${path.root}/win/installers/yq.ps1",
-      "${path.root}/win/installers/docker.ps1",
-      "${path.root}/win/installers/git.ps1",
-      "${path.root}/win/installers/gh.ps1",
-      "${path.root}/win/installers/runner.ps1",
-      "${path.root}/win/installers/cloudbase-init.ps1",
-      "${path.root}/win/context/verification.ps1",
-      "${path.root}/win/context/docker_imgs.ps1",
-      "${path.root}/win/context/enable_runner_service.ps1"
+      "${path.root}/windows/installers/jq.ps1",
+      "${path.root}/windows/installers/yq.ps1",
+      "${path.root}/windows/installers/docker.ps1",
+      "${path.root}/windows/installers/git.ps1",
+      "${path.root}/windows/installers/gh.ps1",
+      "${path.root}/windows/installers/runner.ps1",
+      "${path.root}/windows/installers/cloudbase-init.ps1",
+      "${path.root}/windows/context/verification.ps1",
+      "${path.root}/windows/context/docker_imgs.ps1",
+      "${path.root}/windows/context/enable_runner_service.ps1"
     ]
   }
 

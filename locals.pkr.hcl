@@ -18,13 +18,13 @@ locals {
 
   context_directory_map = {
     "linux" = "/home/runner/context"
-    "win"   = "C:/context"
+    "windows"   = "C:/context"
   }
   context_directory = lookup(local.context_directory_map, var.os, "")
 
   exe_directory_map = {
     "linux" = "/usr/local/bin"
-    "win"   = "C:/local"
+    "windows"   = "C:/local"
   }
   exe_directory = lookup(local.exe_directory_map, var.os, "")
 

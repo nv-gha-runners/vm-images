@@ -7,7 +7,7 @@
 
 OS:
   - linux
-  - win
+  - windows
 
 DRIVER_VERSION:
   # keep this blank entry. an empty driver version corresponds to CPU machines
@@ -33,13 +33,13 @@ exclude:
   # TODO: temporarily ignore linux while working on windows
   - OS: linux
   # only use amd64 for windows
-  - OS: win
+  - OS: windows
     ARCH: arm64
   # only make CPU images for windows
-  - OS: win
+  - OS: windows
     DRIVER_VERSION: "470"
-  - OS: win
+  - OS: windows
     DRIVER_VERSION: "535"
   # only make AMI images for windows
-  - OS: win
+  - OS: windows
     ENV: kvm

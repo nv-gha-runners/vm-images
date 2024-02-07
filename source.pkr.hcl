@@ -79,7 +79,7 @@ source "amazon-ebs" "windows" {
   # the `user_data` file for AWS must be wrapped in a <powershell> tag
   user_data = <<-EOF
   <powershell>
-  ${file("${path.root}/win/init/bootstrap.ps1")}
+  ${file("${path.root}/windows/init/bootstrap.ps1")}
   </powershell>
   EOF
 
@@ -134,8 +134,8 @@ source "qemu" "windows" {
   net_device       = "virtio-net"
 
   floppy_files = [
-    "win/init/Autounattend.xml",
-    "win/init/bootstrap.ps1"
+    "windows/init/Autounattend.xml",
+    "windows/init/bootstrap.ps1"
   ]
 
   qemuargs = [
