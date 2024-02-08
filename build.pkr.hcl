@@ -150,7 +150,8 @@ build {
 
   provisioner "powershell" {
     inline = [
-      "Remove-Item -Recurse -Force -Path ${local.context_directory} -ErrorAction Ignore"
+      "Remove-Item -Recurse -Force -Path ${local.context_directory} -ErrorAction Ignore",
+      "Optimize-Volume -DriveLetter C -ReTrim -Verbose"
     ]
   }
 }

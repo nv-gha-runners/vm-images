@@ -131,7 +131,16 @@ source "qemu" "windows" {
   qemu_binary      = "qemu-system-${local.qemu_arch}"
   machine_type     = "q35"
   accelerator      = "kvm"
-  net_device       = "virtio-net"
+  net_device       = "virtio-net-pci"
+
+  # Disk space optimizations for detecting TRIM on Windows
+  disk_interface     = "virtio-scsi"
+  disk_discard       = "unmap"
+  disk_detect_zeroes = "unmap"
+# Disk compression is *not* fast, maybe we consider enabling this inside the VM instead
+# Currently compresses to about 6gb
+#  disk_compression   = true
+  skip_compaction    = false
 
   floppy_files = [
     "windows/init/Autounattend.xml",
