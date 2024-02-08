@@ -30,8 +30,6 @@ ENV:
 exclude:
   - ARCH: arm64
     DRIVER_VERSION: "470"
-  # TODO: temporarily ignore linux while working on windows
-  - OS: linux
   # only use amd64 for windows
   - OS: windows
     ARCH: arm64
