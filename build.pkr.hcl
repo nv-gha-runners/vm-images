@@ -151,7 +151,13 @@ build {
   provisioner "powershell" {
     inline = [
       "Remove-Item -Recurse -Force -Path ${local.context_directory} -ErrorAction Ignore",
-      "Optimize-Volume -DriveLetter C -ReTrim -Verbose -ErrorAction Ignore"
+    ]
+  }
+
+  provisioner "powershell" {
+    only = ["qemu.windows-qemu"]
+    inline = [
+      "Optimize-Volume -DriveLetter C -ReTrim -Verbose"
     ]
   }
 }
