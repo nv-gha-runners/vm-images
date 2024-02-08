@@ -24,7 +24,7 @@ if (-not $exists) {
 # Setup runner hook and config
 Write-Output "Trying to fetch JITConfig"
 $ENV:ACTIONS_RUNNER_INPUT_JITCONFIG = Get-Content -Path $jitconfig -ErrorAction Stop
-$ENV:ACTIONS_RUNNER_HOOK_JOB_STARTED = "C:/actions-runner/.initialize_runner.sh"
+$ENV:ACTIONS_RUNNER_HOOK_JOB_STARTED = "C:/actions-runner/.initialize_runner.ps1"
 
 # Remove runner config
 Write-Output "Removing JITConfig file"
