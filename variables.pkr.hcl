@@ -53,21 +53,21 @@ variable "image_name" {
 variable "os" {
   type        = string
   default     = "linux"
-  description = "The operating system of the runner. Valid values are 'linux' or 'win'."
+  description = "The operating system of the runner. Valid values are 'linux' or 'windows'."
 
   validation {
-    condition     = can(regex("^(linux|win)$", var.os))
-    error_message = "The arch value must be either 'linux' or 'win'."
+    condition     = can(regex("^(linux|windows)$", var.os))
+    error_message = "The arch value must be either 'linux' or 'windows'."
   }
 }
 
 variable "runner_env" {
   type        = string
-  description = "The environment of the runner. Valid values are 'aws' or 'premise'."
+  description = "The environment of the runner. Valid values are 'aws' or 'qemu'."
 
   validation {
-    condition     = can(regex("(^aws$|^premise$)", var.runner_env))
-    error_message = "The runner_env value must be 'aws' or 'premise'."
+    condition     = can(regex("(^aws$|^qemu$)", var.runner_env))
+    error_message = "The runner_env value must be 'aws' or 'qemu'."
   }
 }
 

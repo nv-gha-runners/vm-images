@@ -7,7 +7,7 @@
 
 OS:
   - linux
-  # - win
+  - windows
 
 DRIVER_VERSION:
   # keep this blank entry. an empty driver version corresponds to CPU machines
@@ -25,8 +25,19 @@ ARCH:
 
 ENV:
   - aws
-  - premise
+  - qemu
 
 exclude:
   - ARCH: arm64
     DRIVER_VERSION: "470"
+  # only use amd64 for windows
+  - OS: windows
+    ARCH: arm64
+  # only make CPU images for windows
+  - OS: windows
+    DRIVER_VERSION: "470"
+  - OS: windows
+    DRIVER_VERSION: "535"
+  # only make AMI images for windows
+  - OS: windows
+    ENV: qemu

@@ -2,7 +2,8 @@
 // driver_version = "525.147.05"
 // gh_token = ""
 // headless = true
+image_name = "local-image"
 // os = "linux"
-runner_version = "2.311.0"
-runner_env = "premise"
+runner_version = "2.312.0"
+runner_env = "qemu"
 // upload_ami = false

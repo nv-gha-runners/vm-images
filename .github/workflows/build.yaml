@@ -50,14 +50,13 @@ jobs:
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
       - name: Setup QEMU/KVM
-        if: matrix.env == 'premise'
+        if: matrix.ENV == 'qemu'
         run: ci/setup-qemu-kvm.sh
       - name: Inject computed environment variables
         run: |
           IMAGE_NAME=$(ci/compute-image-name.sh)
           echo "NV_IMAGE_NAME=${IMAGE_NAME}" | tee --append "${GITHUB_ENV}"
           echo "NV_RUN_ID=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" | tee --append "${GITHUB_ENV}"
-          ci/compute-config-values.sh | tee --append "${GITHUB_ENV}"
         env:
           ARCH: ${{ matrix.ARCH }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
@@ -66,11 +65,16 @@ jobs:
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
         # The `exec` command is used to help forward signals to the child process.
         # This helps ensure Packer's AWS resources get removed when the job is cancelled.
+        #
+        # The `parallel-builds=1` flag ensures that the build jobs are run
+        # serially. This allows the "preprovision" builds to run before the
+        # actual builds since they are defined first in the templates.
       - name: Build image
         run: |
           packer init .
           exec packer build \
-            -only="*${NV_PACKER_SOURCE}*" \
+            -parallel-builds=1 \
+            -only="*${OS}-${RUNNER_ENV}*" \
             -var "arch=${ARCH}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "gh_run_id=${NV_RUN_ID}" \
@@ -89,15 +93,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           OS: ${{ matrix.OS }}
           PACKER_GITHUB_API_TOKEN: ${{ github.token }}
-          PACKER_SOURCE: ${{ matrix.packer_source }}
           RUNNER_ENV: ${{ matrix.ENV }}
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
           UPLOAD_ARTIFACTS: ${{ inputs.upload_artifacts }}
+      - name: Inspect Image Size
+        if: matrix.ENV == 'qemu'
+        run: du -h output/*
       - name: Clean Up Instance
-        if: always() && matrix.env == 'aws'
+        if: always() && matrix.ENV == 'aws'
         run: ci/clean-up-instance.sh
       - name: Login to ECR
-        if: matrix.ENV == 'premise' && inputs.upload_artifacts
+        if: matrix.ENV == 'qemu' && inputs.upload_artifacts
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
         with:
@@ -106,7 +112,7 @@ jobs:
         env:
           AWS_REGION: us-east-1 # public ECR is only available in us-east-1
       - name: Build & push runner image
-        if: matrix.ENV == 'premise' && inputs.upload_artifacts
+        if: matrix.ENV == 'qemu' && inputs.upload_artifacts
         timeout-minutes: 30
         uses: docker/build-push-action@v5
         with:

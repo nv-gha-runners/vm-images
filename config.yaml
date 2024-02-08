@@ -6,7 +6,5 @@
 
 aws:
   domain: arc-eks
-  packer_source: amazon-ebs
-premise:
+qemu:
   domain: arc-nvks
-  packer_source: qemu

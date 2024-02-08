@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-source "${NV_HELPER_SCRIPTS}/github.sh"
+source "${NV_CONTEXT_DIR}/github.sh"
 
 LATEST_VERSION=$(get_github_latest_release_version "cli/cli")
 CHECKSUM="https://github.com/cli/cli/releases/download/v${LATEST_VERSION}/gh_${LATEST_VERSION}_checksums.txt"

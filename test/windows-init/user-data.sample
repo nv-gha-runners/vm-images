@@ -1,0 +1,7 @@
+#cloud-config
+write_files:
+  encoding: b64
+  # Replace with your base64 encoded JIT token
+  content: <base64 encoded JIT token>
+  path: C:/jitconfig
+  permissions: 0o777
