@@ -1,6 +1,6 @@
 build {
   source "source.null.preprovision" {
-    name = "linux-kvm"
+    name = "linux-qemu"
   }
 
   provisioner "shell-local" {
@@ -18,7 +18,7 @@ build {
   }
 
   source "source.qemu.ubuntu" {
-    name = "linux-kvm"
+    name = "linux-qemu"
   }
 
   provisioner "shell" {
@@ -83,7 +83,7 @@ build {
 
 build {
   source "source.null.preprovision" {
-    name = "windows-kvm"
+    name = "windows-qemu"
   }
 
   provisioner "shell-local" {
@@ -100,7 +100,7 @@ build {
     name = "windows-aws"
   }
   source "source.qemu.windows" {
-    name = "windows-kvm"
+    name = "windows-qemu"
   }
 
   provisioner "powershell" {

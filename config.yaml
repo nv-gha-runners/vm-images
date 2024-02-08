@@ -6,5 +6,5 @@
 
 aws:
   domain: arc-eks
-kvm:
+qemu:
   domain: arc-nvks

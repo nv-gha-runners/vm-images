@@ -50,7 +50,7 @@ jobs:
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
       - name: Setup QEMU/KVM
-        if: matrix.env == 'kvm'
+        if: matrix.env == 'qemu'
         run: ci/setup-qemu-kvm.sh
       - name: Inject computed environment variables
         run: |
@@ -101,7 +101,7 @@ jobs:
         if: always() && matrix.env == 'aws'
         run: ci/clean-up-instance.sh
       - name: Login to ECR
-        if: matrix.ENV == 'kvm' && inputs.upload_artifacts
+        if: matrix.ENV == 'qemu' && inputs.upload_artifacts
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
         with:
@@ -110,7 +110,7 @@ jobs:
         env:
           AWS_REGION: us-east-1 # public ECR is only available in us-east-1
       - name: Build & push runner image
-        if: matrix.ENV == 'kvm' && inputs.upload_artifacts
+        if: matrix.ENV == 'qemu' && inputs.upload_artifacts
         timeout-minutes: 30
         uses: docker/build-push-action@v5
         with:

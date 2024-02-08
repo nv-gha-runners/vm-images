@@ -63,11 +63,11 @@ variable "os" {
 
 variable "runner_env" {
   type        = string
-  description = "The environment of the runner. Valid values are 'aws' or 'kvm'."
+  description = "The environment of the runner. Valid values are 'aws' or 'qemu'."
 
   validation {
-    condition     = can(regex("(^aws$|^kvm$)", var.runner_env))
-    error_message = "The runner_env value must be 'aws' or 'kvm'."
+    condition     = can(regex("(^aws$|^qemu$)", var.runner_env))
+    error_message = "The runner_env value must be 'aws' or 'qemu'."
   }
 }
 
