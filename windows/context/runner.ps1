@@ -5,18 +5,20 @@ $jitconfig = "C:/jitconfig"
 $maxPollCount = 20
 
 for ($count = 0; $count -lt $maxPollCount; $count++) {
-    Write-Output "waiting for jitconfig ($count / $maxPollCount)"
-    Start-Sleep -Seconds 10
     $exists = Test-Path $jitconfig
 
     if ($exists) {
         break
     }
+
+    Write-Output "waiting for jitconfig ($count / $maxPollCount)"
+    Start-Sleep -Seconds 10
 }
 
 if (-not $exists) {
-    Stop-Computer -Force & # background job so that we can exit after writing an error.
-    Write-Error "$jitconfig not found after 200 seconds, exiting"
+    Write-Error -ErrorAction Continue "$jitconfig not found after 200 seconds, exiting"
+    Stop-Computer -Force
+    exit 1
 }
 
 # Setup runner hook and config
