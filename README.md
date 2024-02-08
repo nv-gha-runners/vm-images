@@ -63,5 +63,5 @@ qemu-system-x86_64 \
     -enable-kvm \
     -m 2048 \
     -drive file=output/img.qcow2,media=disk,if=virtio \
-    -drive file=test-init.iso,format=raw
+    -cdrom test-init.iso
 ```
