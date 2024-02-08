@@ -137,10 +137,10 @@ source "qemu" "windows" {
   disk_interface     = "virtio-scsi"
   disk_discard       = "unmap"
   disk_detect_zeroes = "unmap"
-# Disk compression is *not* fast, maybe we consider enabling this inside the VM instead
-# Currently compresses to about 6gb
-#  disk_compression   = true
-  skip_compaction    = false
+  # Disk compression is *not* fast, maybe we consider enabling this inside the VM instead
+  # Currently compresses to about 6gb
+  #  disk_compression   = true
+  skip_compaction = false
 
   floppy_files = [
     "windows/init/Autounattend.xml",
