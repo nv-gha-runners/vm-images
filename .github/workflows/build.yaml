@@ -50,7 +50,7 @@ jobs:
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
       - name: Setup QEMU/KVM
-        if: matrix.env == 'qemu'
+        if: matrix.ENV == 'qemu'
         run: ci/setup-qemu-kvm.sh
       - name: Inject computed environment variables
         run: |
@@ -100,7 +100,7 @@ jobs:
         if: matrix.ENV == 'qemu'
         run: du -h output/*
       - name: Clean Up Instance
-        if: always() && matrix.env == 'aws'
+        if: always() && matrix.ENV == 'aws'
         run: ci/clean-up-instance.sh
       - name: Login to ECR
         if: matrix.ENV == 'qemu' && inputs.upload_artifacts
