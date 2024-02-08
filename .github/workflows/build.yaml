@@ -93,7 +93,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           OS: ${{ matrix.OS }}
           PACKER_GITHUB_API_TOKEN: ${{ github.token }}
-          PACKER_SOURCE: ${{ matrix.packer_source }}
           RUNNER_ENV: ${{ matrix.ENV }}
           RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
           UPLOAD_ARTIFACTS: ${{ inputs.upload_artifacts }}
