@@ -5,5 +5,6 @@ jq --version
 yq --version
 git --version
 gh --version
+bash --version
 docker --version
 docker info
