@@ -13,5 +13,8 @@ Invoke-WebRequest -UseBasicParsing -Uri "${gitUri}" -OutFile "./git_setup.exe"
 # Use Start-Process to wait for installer to finish completely
 Start-Process -Wait -FilePath "./git_setup.exe" -ArgumentList "/SP- /VERYSILENT /NORESTART /NOCLOSEAPPLICATIONS"
 
+# For bash.exe, add 'C:\Program Files\Git\bin' to PATH
+Set-MachineEnvironmentVariable -Append -Variable "Path" -Value "C:\Program Files\Git\bin"
+
 # Cleanup
 Remove-Item "./git_setup.exe"
