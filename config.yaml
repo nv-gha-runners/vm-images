@@ -7,4 +7,4 @@
 aws:
   domain: arc-eks
 qemu:
-  domain: arc-nvks
+  domain: local
