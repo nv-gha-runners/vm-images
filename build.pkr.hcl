@@ -68,6 +68,7 @@ build {
       "${path.root}/linux/installers/nvidia-container-toolkit.sh",
       "${path.root}/linux/installers/python.sh",
       "${path.root}/linux/installers/runner.sh",
+      "${path.root}/linux/installers/fluent-bit.sh",
 
       // Cleanup
       "${path.root}/linux/installers/cleanup.sh",
