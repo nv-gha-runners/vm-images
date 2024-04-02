@@ -1,5 +1,4 @@
 {
-  "exec-opts": ["native.cgroupdriver=cgroupfs"],
   "default-runtime": "nvidia",
   "registry-mirrors": ["https://dc.$DOMAIN.gha-runners.nvidia.com"],
   "runtimes": {
