@@ -21,10 +21,8 @@ sudo apt-get install -y --no-install-recommends nvidia-container-toolkit-base
 
 sudo rm -rf "${APT}" "${KEYRING}"
 
-# Add Docker mirror to daemon.json
-DOMAIN=$(yq '.[env(NV_RUNNER_ENV)].domain' "${NV_CONTEXT_DIR}/config.yaml")
-export DOMAIN
-envsubst < "${NV_CONTEXT_DIR}/dockerd.gpu.json" | sudo tee /etc/docker/daemon.json
+# Add nvidia runtime to docker and set as default
+sudo nvidia-ctk runtime configure --runtime docker --set-as-default
 
 # Enable CDI
 sudo nvidia-ctk config --in-place --set nvidia-container-runtime.mode=cdi

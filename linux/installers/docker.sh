@@ -33,7 +33,7 @@ sudo mv docker-compose* /usr/libexec/docker/cli-plugins/docker-compose
 sudo mkdir -p /etc/docker /etc/buildkit
 DOMAIN=$(yq '.[env(NV_RUNNER_ENV)].domain' "${NV_CONTEXT_DIR}/config.yaml")
 export DOMAIN
-envsubst < "${NV_CONTEXT_DIR}/dockerd.cpu.json" | sudo tee /etc/docker/daemon.json
+envsubst < "${NV_CONTEXT_DIR}/dockerd.json" | sudo tee /etc/docker/daemon.json
 envsubst < "${NV_CONTEXT_DIR}/buildkitd.toml" | sudo tee /etc/buildkit/buildkitd.toml
 
 sudo systemctl restart docker
