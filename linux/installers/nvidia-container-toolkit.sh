@@ -17,18 +17,19 @@ curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-contai
 
 sudo apt-get update
 
-sudo apt-get install -y --no-install-recommends nvidia-container-toolkit-base
+sudo apt-get install -y --no-install-recommends nvidia-container-toolkit
 
 sudo rm -rf "${APT}" "${KEYRING}"
 
 # Add nvidia runtime to docker and set as default
 sudo nvidia-ctk runtime configure --runtime docker --set-as-default
 
-# Enable CDI
-sudo nvidia-ctk config --in-place --set nvidia-container-runtime.mode=cdi
-
-# Add udev rule to generate CDI spec at boot
-sudo cp "${NV_CONTEXT_DIR}/nvidia-cdi.rules" /lib/udev/rules.d/71-nvidia-cdi.rules
+# TODO: Enable CDI once `libcuda.so` symlink is created by nvcr
+# # Enable CDI
+# sudo nvidia-ctk config --in-place --set nvidia-container-runtime.mode=cdi
+#
+# # Add udev rule to generate CDI spec at boot
+# sudo cp "${NV_CONTEXT_DIR}/nvidia-cdi.rules" /lib/udev/rules.d/71-nvidia-cdi.rules
 
 sudo systemctl restart docker
 docker info
