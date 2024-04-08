@@ -36,6 +36,13 @@ export DOMAIN
 envsubst < "${NV_CONTEXT_DIR}/dockerd.json" | sudo tee /etc/docker/daemon.json
 envsubst < "${NV_CONTEXT_DIR}/buildkitd.toml" | sudo tee /etc/buildkit/buildkitd.toml
 
+# Set MTU for qemu env
+# shellcheck disable=SC2002
+if [ "${NV_RUNNER_ENV}" == "qemu" ]; then
+  cat /etc/docker/daemon.json | jq '. + {"mtu": 1480}' | sudo tee /etc/docker/daemon.json
+  cat /etc/docker/daemon.json | jq '. + {"default-network-opts": {"bridge": {"com.docker.network.driver.mtu": "1480"}}}' | sudo tee /etc/docker/daemon.json
+fi
+
 sudo systemctl restart docker
 docker info
 
