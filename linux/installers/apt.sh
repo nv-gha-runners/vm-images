@@ -16,3 +16,8 @@ sudo apt install -y \
   unzip \
   wget \
   zip
+
+# Disable unattended-upgrades
+sudo systemctl disable --now unattended-upgrades
+echo 'APT::Periodic::Update-Package-Lists "0";' | sudo tee /etc/apt/apt.conf.d/20auto-upgrades
+echo 'APT::Periodic::Unattended-Upgrade "0";' | sudo tee -a /etc/apt/apt.conf.d/20auto-upgrades
