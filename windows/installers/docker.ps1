@@ -24,12 +24,11 @@ Remove-Item docker.zip
 
 $dockerDefaultConfigPath = "$env:ProgramData/docker/config"
 mkdir -Force -ErrorAction SilentlyContinue -Path "$dockerDefaultConfigPath"
-$domain = yq '.[env(NV_RUNNER_ENV)].domain' "${env:NV_CONTEXT_DIR}/config.yaml"
 
 @"
 {
     "group": "docker",
-    "registry-mirrors": ["https://dc.${domain}.gha-runners.nvidia.com"]
+    "registry-mirrors": ["https://dc.local.gha-runners.nvidia.com"]
 }
 "@ > "$dockerDefaultConfigPath/daemon.json"
 

@@ -1,2 +1,2 @@
 [registry."docker.io"]
-  mirrors = ["https://dc.$DOMAIN.gha-runners.nvidia.com"]
+  mirrors = ["https://dc.local.gha-runners.nvidia.com"]
