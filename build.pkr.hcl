@@ -33,11 +33,6 @@ build {
     destination = "${local.context_directory}"
   }
 
-  provisioner "file" {
-    source      = "${path.root}/config.yaml"
-    destination = "${local.context_directory}/config.yaml"
-  }
-
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
@@ -115,11 +110,6 @@ build {
   provisioner "file" {
     source      = "${path.root}/windows/context/"
     destination = "${local.context_directory}"
-  }
-
-  provisioner "file" {
-    source      = "${path.root}/config.yaml"
-    destination = "${local.context_directory}/config.yaml"
   }
 
   # this restart is necessary to make sure the environment variables are

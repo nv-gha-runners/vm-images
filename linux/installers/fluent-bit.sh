@@ -19,14 +19,11 @@ sudo apt-get update
 sudo apt-get install --no-install-recommends -y fluent-bit
 sudo systemctl enable fluent-bit
 
-DOMAIN=$(yq '.[env(NV_RUNNER_ENV)].domain' "${NV_CONTEXT_DIR}/config.yaml")
-export DOMAIN
-
 FLUENTBIT_CONFD="/etc/fluent-bit/conf.d"
 sudo mkdir -p "${FLUENTBIT_CONFD}"
 
 sudo cp "${NV_CONTEXT_DIR}/fluent-bit/fluent-bit.conf" /etc/fluent-bit/fluent-bit.conf
-envsubst < "${NV_CONTEXT_DIR}/fluent-bit/common.conf" | sudo tee "${FLUENTBIT_CONFD}/common.conf"
+sudo cp "${NV_CONTEXT_DIR}/fluent-bit/common.conf" "${FLUENTBIT_CONFD}/common.conf"
 
 if [ -d "${NV_CONTEXT_DIR}/fluent-bit/${NV_RUNNER_ENV}" ]; then
   sudo cp -r "${NV_CONTEXT_DIR}/fluent-bit/${NV_RUNNER_ENV}"/* "${FLUENTBIT_CONFD}/"

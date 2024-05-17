@@ -1,4 +1,4 @@
 {
   "exec-opts": ["native.cgroupdriver=cgroupfs"],
-  "registry-mirrors": ["https://dc.$DOMAIN.gha-runners.nvidia.com"]
+  "registry-mirrors": ["https://dc.local.gha-runners.nvidia.com"]
 }
