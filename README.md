@@ -64,4 +64,14 @@ qemu-system-x86_64 \
     -m 2048 \
     -drive file=output/img.qcow2,media=disk,if=virtio \
     -cdrom test-init.iso
+
+# Using `--nographic` will instruct `qemu` to print the output to stdout.
+# This is useful to inspect the VM output since our images are programmed to
+# shutdown if no token is present.
+qemu-system-x86_64 \
+    -enable-kvm \
+    -m 2048 \
+    -drive file=output/img.qcow2,media=disk,if=virtio \
+    -cdrom test-init.iso \
+    --nographic
 ```
