@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+trap "sudo poweroff -ff" EXIT
+
 echo "Trying to fetch JITConfig"
 if [ ! -f "/jitconfig" ]; then
   echo "JITConfig not found. Exiting."
