@@ -74,10 +74,10 @@ source "amazon-ebs" "windows" {
   instance_type = local.instance_type
   region        = var.aws_region
 
-  skip_create_ami   = !var.upload_ami
+  skip_create_ami = !var.upload_ami
   aws_polling {
     delay_seconds = 25
-    max_attempts = 60
+    max_attempts  = 60
   }
   shutdown_behavior = "terminate"
   # the `user_data` file for AWS must be wrapped in a <powershell> tag
