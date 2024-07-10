@@ -11,12 +11,18 @@ fi
 export VARIANT
 
 IMAGE_NAME=$(
-  jq -nr '[
-    env.OS,
-    env.VARIANT,
-    env.DRIVER_VERSION,
-    env.ARCH,
-    env.RUNNER_VERSION
+  jq -nr \
+    --arg OS "${RUNNER_OS}" \
+    --arg VARIANT "${VARIANT}" \
+    --arg DRIVER_VERSION "${DRIVER_VERSION}" \
+    --arg ARCH "${RUNNER_ARCH}" \
+    --arg RUNNER_VERSION "${RUNNER_VERSION}" \
+  '[
+    $OS,
+    $VARIANT,
+    $DRIVER_VERSION,
+    $ARCH,
+    $RUNNER_VERSION
   ] | map(select(length > 0)) | join("-")'
 )
 
