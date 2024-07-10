@@ -9,9 +9,13 @@ variable "arch" {
   }
 }
 
-variable "aws_region" {
+variable "backup_aws_regions" {
   type        = string
-  default     = "us-east-2"
+  description = "A comma-separated list of the AWS regions to copy the AMIs to."
+}
+
+variable "default_aws_region" {
+  type        = string
   description = "The AWS region to provision EC2 instances in."
 }
 
