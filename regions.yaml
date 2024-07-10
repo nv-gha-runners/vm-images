@@ -1,0 +1,7 @@
+# default region for Packer to provision AMIs to
+default_region: us-east-2
+# regions to copy AMIs to
+backup_regions:
+  - us-west-1
+# region required for public ECR images
+public_ecr_region: us-east-1
