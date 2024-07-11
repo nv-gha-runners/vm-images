@@ -4,3 +4,4 @@ types-python-dateutil
 black
 mypy
 pyyaml
+types-PyYAML
