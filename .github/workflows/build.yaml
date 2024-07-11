@@ -16,30 +16,28 @@ defaults:
     shell: bash
 
 jobs:
-  compute-matrix:
+  compute-constants:
     runs-on: ubuntu-latest
     outputs:
-      MATRIX: ${{ steps.compute-matrix.outputs.MATRIX }}
-      TIMESTAMP: ${{ steps.compute-matrix.outputs.TIMESTAMP }}
+      MATRIX: ${{ steps.compute-constants.outputs.MATRIX }}
+      TIMESTAMP: ${{ steps.compute-constants.outputs.TIMESTAMP }}
+      DEFAULT_AWS_REGION: ${{ steps.compute-constants.outputs.DEFAULT_AWS_REGION }}
+      BACKUP_AWS_REGIONS: ${{ steps.compute-constants.outputs.BACKUP_AWS_REGIONS }}
+      PUBLIC_ECR_REGION: ${{ steps.compute-constants.outputs.PUBLIC_ECR_REGION }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Compute matrix
-        id: compute-matrix
-        run: |
-          export TZ='America/New_York'
-          MATRIX=$(ci/compute-matrix.sh)
-          TIMESTAMP=$(date +'%Y%m%d%H%M%S')
-          echo "MATRIX=${MATRIX}" | tee --append ${GITHUB_OUTPUT}
-          echo "TIMESTAMP=${TIMESTAMP}" | tee --append ${GITHUB_OUTPUT}
+      - name: Compute workflow constants
+        id: compute-constants
+        run: ci/compute-constants.sh
   build:
-    needs: compute-matrix
+    needs: compute-constants
     strategy:
-      matrix: ${{ fromJSON(needs.compute-matrix.outputs.MATRIX) }}
+      matrix: ${{ fromJSON(needs.compute-constants.outputs.MATRIX) }}
       fail-fast: false
     runs-on: ${{ matrix.RUNNER_LABEL }}
     env:
-      NV_TIMESTAMP: ${{ needs.compute-matrix.outputs.TIMESTAMP }}
+      NV_TIMESTAMP: ${{ needs.compute-constants.outputs.TIMESTAMP }}
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -53,10 +51,7 @@ jobs:
         if: matrix.ENV == 'qemu'
         run: ci/setup-qemu-kvm.sh
       - name: Inject computed environment variables
-        run: |
-          IMAGE_NAME=$(ci/compute-image-name.sh)
-          echo "NV_IMAGE_NAME=${IMAGE_NAME}" | tee --append "${GITHUB_ENV}"
-          echo "NV_RUN_ID=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" | tee --append "${GITHUB_ENV}"
+        run: ci/compute-variables.sh
         env:
           ARCH: ${{ matrix.ARCH }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
@@ -76,6 +71,8 @@ jobs:
             -parallel-builds=1 \
             -only="*${OS}-${RUNNER_ENV}*" \
             -var "arch=${ARCH}" \
+            -var "backup_aws_regions=${BACKUP_AWS_REGIONS}" \
+            -var "default_aws_region=${DEFAULT_AWS_REGION}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "gh_run_id=${NV_RUN_ID}" \
             -var "gh_token=${GH_TOKEN}" \
@@ -89,6 +86,8 @@ jobs:
             .
         env:
           ARCH: ${{ matrix.ARCH }}
+          BACKUP_AWS_REGIONS: ${{ needs.compute-constants.outputs.BACKUP_AWS_REGIONS }}
+          DEFAULT_AWS_REGION: ${{ needs.compute-constants.outputs.DEFAULT_AWS_REGION }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           GH_TOKEN: ${{ github.token }}
           OS: ${{ matrix.OS }}
@@ -110,7 +109,7 @@ jobs:
           registry-type: public
           mask-password: "true"
         env:
-          AWS_REGION: us-east-1 # public ECR is only available in us-east-1
+          AWS_REGION: ${{ needs.compute-constants.outputs.PUBLIC_ECR_REGION }}
       - name: Build & push runner image
         if: matrix.ENV == 'qemu' && inputs.upload_artifacts
         timeout-minutes: 30

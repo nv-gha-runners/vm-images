@@ -9,9 +9,9 @@ from mypy_boto3_ec2.paginator import (
 
 
 class AMIGarbageCollector(gc.GarbageCollector):
-    def __init__(self, current_images: list[str], dry_run: bool):
-        super().__init__("AMI Collector", dry_run)
-        self.ec2_client = boto3.client("ec2", region_name="us-east-2")
+    def __init__(self, current_images: list[str], region: str, dry_run: bool):
+        super().__init__("AMI Collector", region, dry_run)
+        self.ec2_client = boto3.client("ec2", region_name=region)
         self.current_images = current_images
         self.search_tag_name = "vm-images"
         self.search_tag_value = "true"

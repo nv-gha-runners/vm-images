@@ -7,7 +7,8 @@ source "null" "preprovision" {
 source "amazon-ebs" "ubuntu" {
   ami_name      = local.image_id
   instance_type = local.instance_type
-  region        = var.aws_region
+  region        = var.default_aws_region
+  ami_regions   = split(",", var.backup_aws_regions)
 
   skip_create_ami   = !var.upload_ami
   shutdown_behavior = "terminate"
@@ -72,7 +73,8 @@ source "qemu" "ubuntu" {
 source "amazon-ebs" "windows" {
   ami_name      = local.image_id
   instance_type = local.instance_type
-  region        = var.aws_region
+  region        = var.default_aws_region
+  ami_regions   = split(",", var.backup_aws_regions)
 
   skip_create_ami = !var.upload_ami
   aws_polling {

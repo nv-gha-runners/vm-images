@@ -7,9 +7,9 @@ from mypy_boto3_ecr_public.paginator import (
 
 
 class ECRGarbageCollector(gc.GarbageCollector):
-    def __init__(self, current_images: list[str], dry_run: bool):
-        super().__init__("ECR Collector", dry_run)
-        self.ecr_client = boto3.client("ecr-public", region_name="us-east-1")
+    def __init__(self, current_images: list[str], region: str, dry_run: bool):
+        super().__init__("ECR Collector", region, dry_run)
+        self.ecr_client = boto3.client("ecr-public", region_name=region)
         self.current_images = current_images
         self.repository_name = "kubevirt-images"
 
