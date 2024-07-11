@@ -3,3 +3,4 @@ boto3-stubs[boto3,ec2,ecr-public]
 types-python-dateutil
 black
 mypy
+pyyaml
