@@ -3,10 +3,7 @@
 set -euo pipefail
 
 # Compute the matrix
-MATRIX=$(
-  yq -o json '.' matrix.yaml | \
-  jq -c 'include "ci/compute-matrix"; compute_matrix(.)'
-)
+MATRIX=$(ci/compute-matrix.sh)
 
 # Compute the timestamp
 export TZ='America/New_York'
