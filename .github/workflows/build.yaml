@@ -42,6 +42,7 @@ jobs:
       NV_TIMESTAMP: ${{ needs.compute-matrix.outputs.TIMESTAMP }}
     steps:
       - name: Configure AWS Credentials
+        id: aws-creds
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ vars.VM_IMAGES_AWS_ROLE_ARN }}
@@ -120,3 +121,8 @@ jobs:
           push: true
           pull: true
           tags: ${{ steps.ecr-login.outputs.registry }}/nv-gha-runners/kubevirt-images:${{ env.NV_IMAGE_NAME }}
+      - name: Publish message to image-puller SNS topic
+        if: matrix.ENV == 'qemu' && inputs.upload_artifacts
+        run: |
+          aws sns publish --topic-arn "arn:aws:sns:${{ vars.AWS_REGION }}:${{ steps.aws-creds.outputs.aws-account-id }}:arc-nvks-image-puller" \
+            --message ${{ steps.ecr-login.outputs.registry }}/nv-gha-runners/kubevirt-images:${{ env.NV_IMAGE_NAME }}
