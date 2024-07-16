@@ -78,8 +78,8 @@ source "amazon-ebs" "windows" {
 
   skip_create_ami = !var.upload_ami
   aws_polling {
-    delay_seconds = 25
-    max_attempts  = 60
+    delay_seconds = 45
+    max_attempts  = 120
   }
   shutdown_behavior = "terminate"
   # the `user_data` file for AWS must be wrapped in a <powershell> tag
