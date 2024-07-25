@@ -21,3 +21,6 @@ sudo apt install -y \
 sudo systemctl disable --now unattended-upgrades
 echo 'APT::Periodic::Update-Package-Lists "0";' | sudo tee /etc/apt/apt.conf.d/20auto-upgrades
 echo 'APT::Periodic::Unattended-Upgrade "0";' | sudo tee -a /etc/apt/apt.conf.d/20auto-upgrades
+
+# Disable snap auto refresh
+sudo snap refresh --hold
