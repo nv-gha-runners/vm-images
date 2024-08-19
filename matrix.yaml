@@ -36,6 +36,8 @@ exclude:
   # only make CPU images for windows
   - OS: windows
     DRIVER_VERSION: "470"
+  - OS: windows
+    DRIVER_VERSION: "550"
   # only make AMI images for windows
   - OS: windows
     ENV: qemu
