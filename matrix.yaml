@@ -14,6 +14,7 @@ DRIVER_VERSION:
   - ""
   - "470"
   - "550"
+  - "560"
 
 RUNNER_VERSION:
   # renovate: repo=actions/runner
@@ -38,6 +39,8 @@ exclude:
     DRIVER_VERSION: "470"
   - OS: windows
     DRIVER_VERSION: "550"
+  - OS: windows
+    DRIVER_VERSION: "560"
   # only make AMI images for windows
   - OS: windows
     ENV: qemu
