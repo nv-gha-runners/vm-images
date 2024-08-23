@@ -17,11 +17,6 @@ RUNFILE_NAME="NVIDIA-Linux-${ARCH}-${NV_DRIVER_VERSION}.run"
 RUNFILE_URL="https://download.nvidia.com/XFree86/Linux-${ARCH}/${NV_DRIVER_VERSION}/${RUNFILE_NAME}"
 RUNFILE_PATH="${TMP_DIR}/${RUNFILE_NAME}"
 
-sudo apt-get update
-sudo apt-get install -y --no-install-recommends build-essential
-
 wget --no-verbose -O "${RUNFILE_PATH}" "${RUNFILE_URL}"
 sudo sh "${RUNFILE_PATH}" --no-questions --ui=none
 rm -rf "${TMP_DIR}"
-
-sudo apt-get purge build-essential --autoremove -y

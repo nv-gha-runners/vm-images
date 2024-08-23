@@ -12,7 +12,6 @@ OS:
 DRIVER_VERSION:
   # keep this blank entry. an empty driver version corresponds to CPU machines
   - ""
-  - "470.57.02"
   - "550.107.02"
   - "560.35.03"
 
@@ -29,14 +28,10 @@ ENV:
   - qemu
 
 exclude:
-  - ARCH: arm64
-    DRIVER_VERSION: "470.57.02"
   # only use amd64 for windows
   - OS: windows
     ARCH: arm64
   # only make CPU images for windows
-  - OS: windows
-    DRIVER_VERSION: "470.57.02"
   - OS: windows
     DRIVER_VERSION: "550.107.02"
   - OS: windows
