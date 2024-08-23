@@ -12,6 +12,7 @@ OS:
 DRIVER_VERSION:
   # keep this blank entry. an empty driver version corresponds to CPU machines
   - ""
+  - "535.183.01"
   - "550.107.02"
   - "560.35.03"
 
@@ -32,6 +33,8 @@ exclude:
   - OS: windows
     ARCH: arm64
   # only make CPU images for windows
+  - OS: windows
+    DRIVER_VERSION: "535.183.01"
   - OS: windows
     DRIVER_VERSION: "550.107.02"
   - OS: windows
