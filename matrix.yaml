@@ -12,9 +12,9 @@ OS:
 DRIVER_VERSION:
   # keep this blank entry. an empty driver version corresponds to CPU machines
   - ""
-  - "470"
-  - "550"
-  - "560"
+  - "535.183.01"
+  - "550.107.02"
+  - "560.35.03"
 
 RUNNER_VERSION:
   # renovate: repo=actions/runner
@@ -29,18 +29,16 @@ ENV:
   - qemu
 
 exclude:
-  - ARCH: arm64
-    DRIVER_VERSION: "470"
   # only use amd64 for windows
   - OS: windows
     ARCH: arm64
   # only make CPU images for windows
   - OS: windows
-    DRIVER_VERSION: "470"
+    DRIVER_VERSION: "535.183.01"
   - OS: windows
-    DRIVER_VERSION: "550"
+    DRIVER_VERSION: "550.107.02"
   - OS: windows
-    DRIVER_VERSION: "560"
+    DRIVER_VERSION: "560.35.03"
   # only make AMI images for windows
   - OS: windows
     ENV: qemu
