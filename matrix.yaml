@@ -13,7 +13,7 @@ DRIVER_VERSION:
   # keep this blank entry. an empty driver version corresponds to CPU machines
   - ""
   - "535.183.01"
-  - "550.107.02"
+  - "550.54.14"
   - "560.35.03"
 
 RUNNER_VERSION:
@@ -36,7 +36,7 @@ exclude:
   - OS: windows
     DRIVER_VERSION: "535.183.01"
   - OS: windows
-    DRIVER_VERSION: "550.107.02"
+    DRIVER_VERSION: "550.54.14"
   - OS: windows
     DRIVER_VERSION: "560.35.03"
   # only make AMI images for windows
