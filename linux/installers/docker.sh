@@ -42,6 +42,10 @@ if [ "${NV_RUNNER_ENV}" == "qemu" ]; then
 fi
 
 sudo systemctl restart docker
-docker info
+sudo docker info
+
+# Ensure user is part of docker group
+sudo groupadd docker -f
+sudo usermod -aG docker "${USER}"
 
 sudo rm -rf "${APT}" "${KEYRING}"
