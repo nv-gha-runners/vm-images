@@ -32,4 +32,4 @@ sudo nvidia-ctk runtime configure --runtime docker --set-as-default
 # sudo cp "${NV_CONTEXT_DIR}/nvidia-cdi.rules" /lib/udev/rules.d/71-nvidia-cdi.rules
 
 sudo systemctl restart docker
-docker info
+sudo docker info
