@@ -2,7 +2,7 @@ locals {
   ami_tags = {
     for k, v in {
       "arch"           = var.arch
-      "driver-version" = var.driver_version
+      "driver-version" = split(".", var.driver_version)[0]
       "os"             = var.os
       "runner-version" = var.runner_version
       "variant"        = local.variant
