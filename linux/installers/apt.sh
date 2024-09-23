@@ -4,6 +4,7 @@ set -euo pipefail
 echo 'APT::Update::Error-Mode "any";' | sudo tee /etc/apt/apt.conf.d/warnings-as-errors
 
 # Prevent kernel upgrades
+sudo apt-mark hold linux-generic linux-headers-generic linux-image-generic
 sudo apt-mark hold "$(uname -r)"
 
 sudo apt update
