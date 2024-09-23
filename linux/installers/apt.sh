@@ -5,16 +5,10 @@ echo 'APT::Update::Error-Mode "any";' | sudo tee /etc/apt/apt.conf.d/warnings-as
 
 # Prevent kernel upgrades
 sudo apt-mark hold \
-  linux-generic \
-  linux-headers-generic \
-  linux-headers-virtual \
-  linux-image-generic \
-  linux-image-virtual
-  linux-virtual
+  linux-{aws,generic,virtual} \
+  linux-headers-{aws,generic,virtual} \
+  linux-image-{aws,generic,virtual}
 sudo apt-mark hold "$(uname -r)"
-if [ "${NV_RUNNER_ENV}" == "aws" ]; then
-  sudo apt-mark hold linux-aws linux-headers-aws linux-image-aws
-fi
 
 sudo apt update
 sudo apt upgrade -y
