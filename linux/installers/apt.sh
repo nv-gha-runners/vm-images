@@ -4,7 +4,13 @@ set -euo pipefail
 echo 'APT::Update::Error-Mode "any";' | sudo tee /etc/apt/apt.conf.d/warnings-as-errors
 
 # Prevent kernel upgrades
-sudo apt-mark hold linux-generic linux-headers-generic linux-image-generic
+sudo apt-mark hold \
+  linux-generic \
+  linux-headers-generic \
+  linux-headers-virtual \
+  linux-image-generic \
+  linux-image-virtual
+  linux-virtual
 sudo apt-mark hold "$(uname -r)"
 if [ "${NV_RUNNER_ENV}" == "aws" ]; then
   sudo apt-mark hold linux-aws linux-headers-aws linux-image-aws
