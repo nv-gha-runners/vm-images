@@ -7,16 +7,17 @@ if [ "${NV_VARIANT}" != "gpu" ]; then
   exit 0
 fi
 
+KEYRING=cuda-keyring_1.1-1_all.deb
 ARCH=x86_64
+
 if [ "${NV_ARCH}" == "arm64" ]; then
-  ARCH=aarch64
+  ARCH=sbsa
 fi
 
-TMP_DIR=$(mktemp -d)
-RUNFILE_NAME="NVIDIA-Linux-${ARCH}-${NV_DRIVER_VERSION}.run"
-RUNFILE_URL="https://download.nvidia.com/XFree86/Linux-${ARCH}/${NV_DRIVER_VERSION}/${RUNFILE_NAME}"
-RUNFILE_PATH="${TMP_DIR}/${RUNFILE_NAME}"
+wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${ARCH}/${KEYRING}"
+sudo dpkg --install "${KEYRING}"
+sudo apt-get update
 
-wget --no-verbose -O "${RUNFILE_PATH}" "${RUNFILE_URL}"
-sudo sh "${RUNFILE_PATH}" --no-questions --ui=none
-rm -rf "${TMP_DIR}"
+sudo apt-get -y install "nvidia-driver-${NV_DRIVER_VERSION}"
+
+sudo dpkg --purge "$(dpkg -f "${KEYRING}" Package)"

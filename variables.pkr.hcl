@@ -25,8 +25,8 @@ variable "driver_version" {
   description = "The NVIDIA driver version to install on the EC2 instance. If empty, no driver will be installed."
 
   validation {
-    condition     = can(regex("(^\\d{3}\\.\\d{2,3}\\.\\d{2,3}$|^$)", var.driver_version))
-    error_message = "The driver_version value must be an empty string or 3 groups of digits splitted by dots."
+    condition     = can(regex("(^\\d{3}$|^$)", var.driver_version))
+    error_message = "The driver_version value must be an empty string or 3 digits."
   }
 }
 
