@@ -2,12 +2,6 @@
 
 set -eu
 
-# reset GPU if there is one
-if command -v "nvidia-smi" &> /dev/null; then
-  sudo nvidia-smi --gpu-reset
-  nvidia-smi
-fi
-
 # these strings are case-sensitive and should match the case of the GH org
 CLOUD_ONLY_ORGS=(
   "dask-contrib"
