@@ -18,6 +18,6 @@ wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${A
 sudo dpkg --install "${KEYRING}"
 sudo apt-get update
 
-sudo apt-get -y install "nvidia-driver-${NV_DRIVER_VERSION}"
+sudo apt-get -y install "nvidia-driver-${NV_DRIVER_VERSION}-server-open"
 
 sudo dpkg --purge "$(dpkg -f "${KEYRING}" Package)"
