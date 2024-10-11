@@ -21,3 +21,10 @@ sudo apt-get update
 sudo apt-get -y install "nvidia-driver-${NV_DRIVER_VERSION}-server-open"
 
 sudo dpkg --purge "$(dpkg -f "${KEYRING}" Package)"
+
+# Set nvidia kernel module params
+sudo sh -c "cat <<EOF > /etc/modprobe.d/nvidia.conf
+options nvidia NVreg_NvLinkDisable=1
+options nvidia NVreg_OpenRmEnableUnsupportedGpus=1
+EOF"
+sudo update-initramfs -u
