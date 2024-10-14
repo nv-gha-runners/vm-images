@@ -28,3 +28,8 @@ options nvidia NVreg_NvLinkDisable=1
 options nvidia NVreg_OpenRmEnableUnsupportedGpus=1
 EOF"
 sudo update-initramfs -u
+
+# Set persistence mode on
+OVERRIDE_DIR="/etc/systemd/system/nvidia-persistenced.service.d"
+sudo mkdir -p "${OVERRIDE_DIR}"
+sudo cp "${NV_CONTEXT_DIR}/nvidia-persistenced-override.conf" "${OVERRIDE_DIR}/override.conf"
