@@ -1,12 +1,12 @@
 [Unit]
 Description=GHA Runner
 After=docker.service network.target cloud-final.service
-FailureAction=poweroff-immediate
-SuccessAction=poweroff-immediate
+FailureAction=poweroff
+SuccessAction=poweroff
 
 [Service]
 ExecStart=/runner.sh
-ExecStop=sudo poweroff -ff
+ExecStop=sudo poweroff
 User=runner
 KillMode=process
 KillSignal=SIGTERM
