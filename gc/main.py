@@ -28,7 +28,10 @@ def load_current_images() -> list[str]:
             compute_image_name_path,
             cwd="..",
             stdout=subprocess.PIPE,
-            env={**entry, "BRANCH_NAME": getenv("BRANCH_NAME")},
+            env={
+                **{"RUNNER_ENV" if k == "ENV" else k: v for k, v in entry.items()},
+                "BRANCH_NAME": getenv("BRANCH_NAME"),
+            },
             check=True,
         )
         images.append(result.stdout.decode("utf-8").strip())
