@@ -23,7 +23,7 @@ IMAGE_NAME=$(
     $DRIVER_VERSION,
     $ARCH,
     $RUNNER_VERSION,
-    if $RUNNER_ENV != "aws" then ($BRANCH_NAME | sub("/"; "-")) else empty end,
+    if $RUNNER_ENV != "aws" then ($BRANCH_NAME | sub("/"; "-")) else empty end
   ] | map(select(length > 0)) | join("-")'
 )
 
