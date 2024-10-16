@@ -6,11 +6,17 @@ on:
       dry_run:
         default: true
         type: boolean
+      branch_name:
+        required: true
+        type: string
   workflow_dispatch:
     inputs:
       dry_run:
         default: true
         type: boolean
+      branch_name:
+        required: true
+        type: string
   schedule:
     # Run every Monday at 1pm UTC / 8am ET
     - cron: "0 13 * * 1"
@@ -50,3 +56,4 @@ jobs:
         run: python main.py --dry-run="${DRY_RUN}"
         env:
           DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || inputs.dry_run }}
+          BRANCH_NAME: ${{ inputs.branch_name }}

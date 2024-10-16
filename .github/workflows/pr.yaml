@@ -36,6 +36,7 @@ jobs:
     uses: ./.github/workflows/gc.yaml
     with:
       dry_run: true
+      branch_name: ${{ github.ref_name }}
     secrets: inherit
   build:
     uses: ./.github/workflows/build.yaml
