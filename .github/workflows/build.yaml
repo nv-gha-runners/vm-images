@@ -6,6 +6,9 @@ on:
       upload_artifacts:
         required: true
         type: boolean
+      branch_name:
+        required: true
+        type: string
 
 permissions:
   id-token: write
@@ -55,6 +58,7 @@ jobs:
         run: ci/compute-variables.sh
         env:
           ARCH: ${{ matrix.ARCH }}
+          BRANCH_NAME: ${{ inputs.branch_name }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           OS: ${{ matrix.OS }}
           RUNNER_ENV: ${{ matrix.ENV }}
@@ -73,6 +77,7 @@ jobs:
             -only="*${OS}-${RUNNER_ENV}*" \
             -var "arch=${ARCH}" \
             -var "backup_aws_regions=${BACKUP_AWS_REGIONS}" \
+            -var "branch_name=${BRANCH_NAME}"
             -var "default_aws_region=${DEFAULT_AWS_REGION}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "gh_run_id=${NV_RUN_ID}" \
@@ -88,6 +93,7 @@ jobs:
         env:
           ARCH: ${{ matrix.ARCH }}
           BACKUP_AWS_REGIONS: ${{ needs.compute-constants.outputs.BACKUP_AWS_REGIONS }}
+          BRANCH_NAME: ${{ inputs.branch_name }}
           DEFAULT_AWS_REGION: ${{ needs.compute-constants.outputs.DEFAULT_AWS_REGION }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           GH_TOKEN: ${{ github.token }}

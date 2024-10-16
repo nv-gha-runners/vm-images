@@ -41,4 +41,5 @@ jobs:
     uses: ./.github/workflows/build.yaml
     with:
       upload_artifacts: false
+      branch_name: ${{ github.ref_name }}
     secrets: inherit

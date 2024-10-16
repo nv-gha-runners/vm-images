@@ -15,12 +15,15 @@ IMAGE_NAME=$(
     --arg DRIVER_VERSION "${DRIVER_VERSION}" \
     --arg ARCH "${ARCH}" \
     --arg RUNNER_VERSION "${RUNNER_VERSION}" \
+    --arg RUNNER_ENV "${RUNNER_ENV}" \
+    --arg BRANCH_NAME "${BRANCH_NAME}" \
   '[
     $OS,
     $VARIANT,
     $DRIVER_VERSION,
     $ARCH,
-    $RUNNER_VERSION
+    $RUNNER_VERSION,
+    if $RUNNER_ENV != "aws" then ($BRANCH_NAME | sub("/"; "-")) else empty end,
   ] | map(select(length > 0)) | join("-")'
 )
 

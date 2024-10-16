@@ -14,6 +14,11 @@ variable "backup_aws_regions" {
   description = "A comma-separated list of the AWS regions to copy the AMIs to."
 }
 
+variable "branch_name" {
+  type        = string
+  description = "The name of the GitHub branch the image originated from."
+}
+
 variable "default_aws_region" {
   type        = string
   description = "The AWS region to provision EC2 instances in."
