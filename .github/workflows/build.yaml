@@ -77,7 +77,7 @@ jobs:
             -only="*${OS}-${RUNNER_ENV}*" \
             -var "arch=${ARCH}" \
             -var "backup_aws_regions=${BACKUP_AWS_REGIONS}" \
-            -var "branch_name=${BRANCH_NAME}"
+            -var "branch_name=${BRANCH_NAME}" \
             -var "default_aws_region=${DEFAULT_AWS_REGION}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "gh_run_id=${NV_RUN_ID}" \
