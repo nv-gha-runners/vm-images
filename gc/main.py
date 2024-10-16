@@ -27,7 +27,7 @@ def load_current_images() -> list[str]:
         result = subprocess.run(
             compute_image_name_path,
             cwd="..",
-            capture_output=True,
+            stdout=subprocess.PIPE,
             env={**entry, "BRANCH_NAME": getenv("BRANCH_NAME")},
             check=True,
         )
