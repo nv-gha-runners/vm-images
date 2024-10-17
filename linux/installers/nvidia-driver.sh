@@ -8,17 +8,22 @@ if [ "${NV_VARIANT}" != "gpu" ]; then
 fi
 
 KEYRING=cuda-keyring_1.1-1_all.deb
-ARCH=x86_64
 
+ARCH=x86_64
 if [ "${NV_ARCH}" == "arm64" ]; then
   ARCH=sbsa
+fi
+
+DRIVER_PKG_NAME="nvidia-driver-${NV_DRIVER_VERSION}-server"
+if [ "${NV_DRIVER_FLAVOR}" == "open" ]; then
+  DRIVER_PKG_NAME="nvidia-driver-${NV_DRIVER_VERSION}-server-open"
 fi
 
 wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${ARCH}/${KEYRING}"
 sudo dpkg --install "${KEYRING}"
 sudo apt-get update
 
-sudo apt-get -y install "nvidia-driver-${NV_DRIVER_VERSION}-server-open"
+sudo apt-get -y install "${DRIVER_PKG_NAME}"
 
 sudo dpkg --purge "$(dpkg -f "${KEYRING}" Package)"
 

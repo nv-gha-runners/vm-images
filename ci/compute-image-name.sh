@@ -13,12 +13,14 @@ IMAGE_NAME=$(
     --arg OS "${OS}" \
     --arg VARIANT "${VARIANT}" \
     --arg DRIVER_VERSION "${DRIVER_VERSION}" \
+    --arg DRIVER_FLAVOR "${DRIVER_FLAVOR}" \
     --arg ARCH "${ARCH}" \
     --arg RUNNER_VERSION "${RUNNER_VERSION}" \
   '[
     $OS,
     $VARIANT,
     $DRIVER_VERSION,
+    $DRIVER_FLAVOR,
     $ARCH,
     $RUNNER_VERSION
   ] | map(select(length > 0)) | join("-")'

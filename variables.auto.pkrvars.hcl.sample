@@ -1,5 +1,6 @@
 // arch = "amd64"
 // driver_version = "525.147.05"
+// driver_flavor = "open"
 // gh_token = ""
 // headless = true
 image_name = "local-image"

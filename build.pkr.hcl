@@ -39,6 +39,7 @@ build {
       "GH_TOKEN=${var.gh_token}",
       "NV_ARCH=${var.arch}",
       "NV_DRIVER_VERSION=${var.driver_version}",
+      "NV_DRIVER_FLAVOR=${var.driver_flavor}",
       "NV_CONTEXT_DIR=${local.context_directory}",
       "NV_EXE_DIR=${local.exe_directory}",
       "NV_RUNNER_ENV=${var.runner_env}",
