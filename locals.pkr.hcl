@@ -4,7 +4,6 @@ locals {
       "arch"           = var.arch
       "driver-version" = var.driver_version
       "os"             = var.os
-      "runner-version" = var.runner_version
       "branch-name"    = var.branch_name
       "variant"        = local.variant
       "Name"           = local.image_id
