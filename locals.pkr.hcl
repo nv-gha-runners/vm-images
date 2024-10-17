@@ -3,6 +3,7 @@ locals {
     for k, v in {
       "arch"           = var.arch
       "driver-version" = var.driver_version
+      "driver-flavor"  = var.driver_flavor
       "os"             = var.os
       "runner-version" = var.runner_version
       "variant"        = local.variant
