@@ -2,7 +2,7 @@ import argparse
 import subprocess
 import json
 import yaml
-from os import path
+from os import path, getenv
 from collectors.ecr import ECRGarbageCollector
 from collectors.amis import AMIGarbageCollector
 from collectors.gc import GarbageCollector
@@ -27,8 +27,11 @@ def load_current_images() -> list[str]:
         result = subprocess.run(
             compute_image_name_path,
             cwd="..",
-            capture_output=True,
-            env=entry,
+            stdout=subprocess.PIPE,
+            env={
+                **{"RUNNER_ENV" if k == "ENV" else k: v for k, v in entry.items()},
+                "BRANCH_NAME": getenv("BRANCH_NAME"),
+            },
             check=True,
         )
         images.append(result.stdout.decode("utf-8").strip())
