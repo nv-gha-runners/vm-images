@@ -13,12 +13,14 @@ def deserialize_image_name($matrix):
     pick_from_list($matrix.OS; "OS") | .value as $os | .rest |
     pick_from_list(["cpu", "gpu"]; "variant") | .value as $variant | .rest |
     pick_from_list($matrix.DRIVER_VERSION; "") | .value as $driver_version | .rest |
+    pick_from_list($matrix.DRIVER_FLAVOR; "") | .value as $driver_flavor | .rest |
     pick_from_list($matrix.ARCH; "arch") | .value as $arch | .rest |
     (if any then join("-") else null end) as $branch_name |
     {
         "os": $os,
         "variant": $variant,
         "driver_version": $driver_version,
+        "driver_flavor": $driver_flavor,
         "arch": $arch,
         "branch_name": $branch_name
     };
