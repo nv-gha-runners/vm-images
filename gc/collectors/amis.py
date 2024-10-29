@@ -56,7 +56,7 @@ class AMIGarbageCollector(gc.GarbageCollector):
                         ami_groups[branch_name].append(ami)
                         break
                 else:
-                    ami_groups[None].append(ami)
+                    expired_amis.append(ami)
 
         # Sort AMIs by creation date.
         # If image is currently supported, keep only the newest AMI. Expire the rest.

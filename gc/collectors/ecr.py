@@ -41,11 +41,12 @@ class ECRGarbageCollector(gc.GarbageCollector):
         for image in images:
             image_tags = image.get("imageTags")
             hasSupportedTags = False
-            for tag in image_tags:
-                parsed_image_name = deserialize_image_name(tag)
-                if parsed_image_name and parsed_image_name.branch_name in branches:
-                    hasSupportedTags = True
-                    break
+            if image_tags:
+                for tag in image_tags:
+                    parsed_image_name = deserialize_image_name(tag)
+                    if parsed_image_name and parsed_image_name.branch_name in branches:
+                        hasSupportedTags = True
+                        break
 
             # Remove images that don't have any tags or don't have any supported tags
             if not hasSupportedTags:
