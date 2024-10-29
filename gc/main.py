@@ -14,7 +14,8 @@ def load_current_branches() -> list[str]:
     Loads the currently existing branches from the repository and returns them as a list.
     """
     client = Github()
-    repository: str = getenv("REPOSITORY")
+    repository = getenv("REPOSITORY")
+    assert repository is not None
     return [b.name for b in client.get_repo(repository).get_branches()]
 
 
