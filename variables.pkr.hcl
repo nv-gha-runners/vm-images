@@ -35,6 +35,17 @@ variable "driver_version" {
   }
 }
 
+variable "driver_flavor" {
+  type        = string
+  default     = ""
+  description = "The NVIDIA driver flavor to install."
+
+  validation {
+    condition     = can(regex("^(open|legacy|)$", var.driver_flavor))
+    error_message = "The driver_flavor value must be either 'open' or 'legacy'."
+  }
+}
+
 variable "gh_run_id" {
   type        = string
   default     = ""
