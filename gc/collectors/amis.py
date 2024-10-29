@@ -9,10 +9,10 @@ from mypy_boto3_ec2.paginator import (
 
 
 class AMIGarbageCollector(gc.GarbageCollector):
-    def __init__(self, current_images: list[str], region: str, dry_run: bool):
+    def __init__(self, current_branches: list[str], region: str, dry_run: bool):
         super().__init__("AMI Collector", region, dry_run)
         self.ec2_client = boto3.client("ec2", region_name=region)
-        self.current_images = current_images
+        self.current_branches = current_branches
         self.search_tag_name = "vm-images"
         self.search_tag_value = "true"
 
@@ -51,19 +51,21 @@ class AMIGarbageCollector(gc.GarbageCollector):
             img_tags = ami["Tags"]
             if img_tags:
                 for tag in img_tags:
-                    if tag["Key"] == "image-name":
-                        img_name = tag["Value"]
-                        ami_groups[img_name].append(ami)
+                    if tag["Key"] == "branch-name":
+                        branch_name = tag["Value"]
+                        ami_groups[branch_name].append(ami)
                         break
+                else:
+                    ami_groups[None].append(ami)
 
         # Sort AMIs by creation date.
         # If image is currently supported, keep only the newest AMI. Expire the rest.
         # If image is not currently supported, expire all AMIs.
-        for img_name, amis in ami_groups.items():
+        for branch_name, amis in ami_groups.items():
             amis = sorted(
                 amis, key=lambda x: parser.parse(x["CreationDate"]), reverse=True
             )
-            if img_name in self.current_images:
+            if branch_name in self.current_branches:
                 expired_amis.extend(amis[1:])
             else:
                 expired_amis.extend(amis)
