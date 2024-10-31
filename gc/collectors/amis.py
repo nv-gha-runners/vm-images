@@ -1,3 +1,5 @@
+from typing import Optional
+
 import boto3
 from collectors import gc
 from collections import defaultdict
@@ -52,6 +54,8 @@ class AMIGarbageCollector(gc.GarbageCollector):
         for ami in amis:
             img_tags = ami["Tags"]
             if img_tags:
+                image_name: Optional[str] = None
+                branch_name: Optional[str] = None
                 for tag in img_tags:
                     if tag["Key"] == "image-name":
                         image_name = tag["Value"]
