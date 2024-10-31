@@ -44,7 +44,7 @@ class AMIGarbageCollector(gc.GarbageCollector):
 
     def _find_expired_amis(self, amis: list[ImageTypeDef]) -> list[ImageTypeDef]:
         expired_amis = []
-        ami_groups = defaultdict(lambda: defaultdict(list))
+        ami_groups: dict[str, dict[str, str]] = defaultdict(lambda: defaultdict(list))
 
         # Group AMIs by "image-name" tag
         for ami in amis:
