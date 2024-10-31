@@ -44,31 +44,37 @@ class AMIGarbageCollector(gc.GarbageCollector):
 
     def _find_expired_amis(self, amis: list[ImageTypeDef]) -> list[ImageTypeDef]:
         expired_amis = []
-        ami_groups = defaultdict(list)
+        ami_groups = defaultdict(lambda: defaultdict(list))
 
         # Group AMIs by "image-name" tag
         for ami in amis:
             img_tags = ami["Tags"]
             if img_tags:
                 for tag in img_tags:
+                    if tag["Key"] == "image-name":
+                        image_name = tag["Value"]
                     if tag["Key"] == "branch-name":
                         branch_name = tag["Value"]
-                        ami_groups[branch_name].append(ami)
+                if image_name:
+                    if branch_name:
+                        ami_groups[branch_name][image_name].append(ami)
                         break
-                else:
-                    expired_amis.append(ami)
+                    else:
+                        expired_amis.append(ami)
 
         # Sort AMIs by creation date.
         # If image is currently supported, keep only the newest AMI. Expire the rest.
         # If image is not currently supported, expire all AMIs.
-        for branch_name, amis in ami_groups.items():
-            amis = sorted(
-                amis, key=lambda x: parser.parse(x["CreationDate"]), reverse=True
-            )
-            if branch_name in self.current_branches:
-                expired_amis.extend(amis[1:])
-            else:
-                expired_amis.extend(amis)
+        for branch_name, images in ami_groups.items():
+            if branch_name == "main":
+                for image_name, amis in images.items():
+                    amis = sorted(
+                        amis, key=lambda x: parser.parse(x["CreationDate"]), reverse=True
+                    )
+                    expired_amis.extend(amis[1:])
+            elif branch_name not in self.current_branches:
+                for image_name, amis in images.items():
+                    expired_amis.extend(amis)
 
         return expired_amis
 
