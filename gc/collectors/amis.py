@@ -44,7 +44,9 @@ class AMIGarbageCollector(gc.GarbageCollector):
 
     def _find_expired_amis(self, amis: list[ImageTypeDef]) -> list[ImageTypeDef]:
         expired_amis = []
-        ami_groups: dict[str, dict[str, list[ImageTypeDef]]] = defaultdict(lambda: defaultdict(list))
+        ami_groups: dict[str, dict[str, list[ImageTypeDef]]] = defaultdict(
+            lambda: defaultdict(list)
+        )
 
         # Group AMIs by "image-name" tag
         for ami in amis:
@@ -69,7 +71,9 @@ class AMIGarbageCollector(gc.GarbageCollector):
             if branch_name == "main":
                 for image_name, amis in images.items():
                     amis = sorted(
-                        amis, key=lambda x: parser.parse(x["CreationDate"]), reverse=True
+                        amis,
+                        key=lambda x: parser.parse(x["CreationDate"]),
+                        reverse=True,
                     )
                     expired_amis.extend(amis[1:])
             elif branch_name not in self.current_branches:
