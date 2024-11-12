@@ -34,7 +34,8 @@ def load_current_images(runner_env: str) -> list[str]:
                 cwd="..",
                 stdout=subprocess.PIPE,
                 text=True,
-                env=dict(filter(lambda item: item[0] != "ENV", entry.items())) | {"RUNNER_ENV": runner_env, "BRANCH_NAME": branch_name},
+                env=dict(filter(lambda item: item[0] != "ENV", entry.items()))
+                | {"RUNNER_ENV": runner_env, "BRANCH_NAME": branch_name},
                 check=True,
             )
             images.append(result.stdout.strip())
