@@ -25,6 +25,8 @@ def load_current_images(runner_env: str) -> list[str]:
     )
     matrix: list[dict[str, str]] = json.loads(result.stdout)["include"]
     images = []
+    branch_name = getenv("BRANCH_NAME")
+    assert branch_name is not None
     for entry in matrix:
         if entry["ENV"] == runner_env:
             result = subprocess.run(
@@ -32,7 +34,7 @@ def load_current_images(runner_env: str) -> list[str]:
                 cwd="..",
                 stdout=subprocess.PIPE,
                 text=True,
-                env=dict(filter(lambda item: item[0] != "ENV", entry.items())) | {"RUNNER_ENV": runner_env, "BRANCH_NAME": getenv("BRANCH_NAME")},
+                env=dict(filter(lambda item: item[0] != "ENV", entry.items())) | {"RUNNER_ENV": runner_env, "BRANCH_NAME": branch_name},
                 check=True,
             )
             images.append(result.stdout.strip())
