@@ -9,6 +9,35 @@ from collectors.gc import GarbageCollector
 from github import Github
 
 
+def load_current_images(runner_env: str) -> list[str]:
+    """
+    Loads the currently supported images from the matrix and returns them as a list.
+    """
+    compute_matrix_path = path.join(
+        path.dirname(__file__), "..", "ci", "compute-matrix.sh"
+    )
+    compute_image_name_path = path.join(
+        path.dirname(__file__), "..", "ci", "compute-image-name.sh"
+    )
+    result = subprocess.run(
+        compute_matrix_path, cwd="..", stdout=subprocess.PIPE, text=True, check=True
+    )
+    matrix = json.loads(result.stdout)["include"]
+    images = []
+    for entry in matrix:
+        if entry["ENV"] == runner_env:
+            result = subprocess.run(
+                compute_image_name_path,
+                cwd="..",
+                stdout=subprocess.PIPE,
+                text=True,
+                env=dict(filter(lambda item: item[0] != "ENV", entry.items())) | {"RUNNER_ENV": runner_env, "BRANCH_NAME": getenv("BRANCH_NAME")},
+                check=True,
+            )
+            images.append(result.stdout.strip())
+    return images
+
+
 def load_current_branches() -> list[str]:
     """
     Loads the currently existing branches from the repository and returns them as a list.
@@ -50,6 +79,7 @@ if __name__ == "__main__":
     ]
     ami_collectors = [
         AMIGarbageCollector(
+            current_images=load_current_images("aws"),
             current_branches=current_branches,
             region=region,
             dry_run=dry_run,

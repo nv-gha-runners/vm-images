@@ -35,6 +35,7 @@ jobs:
   gc:
     uses: ./.github/workflows/gc.yaml
     with:
+      branch_name: "main"
       dry_run: true
     secrets: inherit
   build:
