@@ -23,7 +23,7 @@ def load_current_images(runner_env: str) -> list[str]:
     result = subprocess.run(
         compute_matrix_path, cwd="..", stdout=subprocess.PIPE, text=True, check=True
     )
-    matrix: dict[str, list[dict[str, str]]] = json.loads(result.stdout)["include"]
+    matrix: list[dict[str, str]] = json.loads(result.stdout)["include"]
     images = []
     for entry in matrix:
         if entry["ENV"] == runner_env:
