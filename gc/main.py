@@ -3,7 +3,6 @@ import subprocess
 import json
 import yaml
 from os import path, getenv
-from typing import Any
 
 from collectors.ecr import ECRGarbageCollector
 from collectors.amis import AMIGarbageCollector
@@ -24,7 +23,7 @@ def load_current_images(runner_env: str) -> list[str]:
     result = subprocess.run(
         compute_matrix_path, cwd="..", stdout=subprocess.PIPE, text=True, check=True
     )
-    matrix: list[dict[str, Any]] = json.loads(result.stdout)["include"]
+    matrix: dict[str, list[dict[str, str]]] = json.loads(result.stdout)["include"]
     images = []
     for entry in matrix:
         if entry["ENV"] == runner_env:
