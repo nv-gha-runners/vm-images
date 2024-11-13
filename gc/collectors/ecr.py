@@ -8,7 +8,13 @@ from .image_name import deserialize_image_name
 
 
 class ECRGarbageCollector(gc.GarbageCollector):
-    def __init__(self, current_images: list[str], current_branches: list[str], region: str, dry_run: bool):
+    def __init__(
+        self,
+        current_images: list[str],
+        current_branches: list[str],
+        region: str,
+        dry_run: bool,
+    ):
         super().__init__("ECR Collector", region, dry_run)
         self.ecr_client = boto3.client("ecr-public", region_name=region)
         self.current_images = current_images
