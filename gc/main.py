@@ -18,7 +18,7 @@ def load_current_images(runner_env: str) -> list[str]:
         path.dirname(__file__), "..", "ci", "compute-matrix.sh"
     )
     compute_image_name_path = path.join(
-        path.dirname(__file__), "..", "ci", "compute-image-name.sh"
+        path.dirname(__file__), "..", "ci", "image-name", "serialize.sh"
     )
     result = subprocess.run(
         compute_matrix_path, cwd="..", stdout=subprocess.PIPE, text=True, check=True
