@@ -22,7 +22,7 @@ DRIVER_FLAVOR:
 
 RUNNER_VERSION:
   # renovate: repo=actions/runner
-  - "2.320.0"
+  - "2.321.0"
 
 ARCH:
   - amd64
