@@ -8,9 +8,10 @@ from .image_name import deserialize_image_name
 
 
 class ECRGarbageCollector(gc.GarbageCollector):
-    def __init__(self, current_branches: list[str], region: str, dry_run: bool):
+    def __init__(self, current_images: list[str], current_branches: list[str], region: str, dry_run: bool):
         super().__init__("ECR Collector", region, dry_run)
         self.ecr_client = boto3.client("ecr-public", region_name=region)
+        self.current_images = current_images
         self.current_branches = current_branches
         self.repository_name = "kubevirt-images"
 
@@ -44,9 +45,14 @@ class ECRGarbageCollector(gc.GarbageCollector):
             if image_tags:
                 for tag in image_tags:
                     parsed_image_name = deserialize_image_name(tag)
-                    if parsed_image_name and parsed_image_name.branch_name in branches:
-                        hasSupportedTags = True
-                        break
+                    if parsed_image_name:
+                        if parsed_image_name.branch_name == gc.DEFAULT_BRANCH_NAME:
+                            if tag in self.current_images:
+                                hasSupportedTags = True
+                                break
+                        elif parsed_image_name.branch_name in branches:
+                            hasSupportedTags = True
+                            break
 
             # Remove images that don't have any tags or don't have any supported tags
             if not hasSupportedTags:

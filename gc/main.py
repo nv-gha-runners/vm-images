@@ -81,6 +81,7 @@ if __name__ == "__main__":
 
     ecr_collectors = [
         ECRGarbageCollector(
+            current_images=load_current_images("qemu"),
             current_branches=current_branches,
             region=regions["public_ecr_region"],
             dry_run=dry_run,
