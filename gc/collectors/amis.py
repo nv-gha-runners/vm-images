@@ -80,7 +80,7 @@ class AMIGarbageCollector(gc.GarbageCollector):
         # If image is currently supported, keep only the newest AMI. Expire the rest.
         # If image is not currently supported, expire all AMIs.
         for branch_name, images in ami_groups.items():
-            if branch_name == getenv("BRANCH_NAME"):
+            if branch_name == gc.DEFAULT_BRANCH_NAME:
                 for image_name, amis in images.items():
                     if image_name in self.current_images:
                         amis = sorted(

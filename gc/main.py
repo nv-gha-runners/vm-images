@@ -6,7 +6,7 @@ from os import path, getenv
 
 from collectors.ecr import ECRGarbageCollector
 from collectors.amis import AMIGarbageCollector
-from collectors.gc import GarbageCollector
+from collectors.gc import DEFAULT_BRANCH_NAME
 from github import Github
 
 
@@ -25,8 +25,6 @@ def load_current_images(runner_env: str) -> list[str]:
     )
     matrix: list[dict[str, str]] = json.loads(result.stdout)["include"]
     images = []
-    branch_name = getenv("BRANCH_NAME")
-    assert branch_name is not None
     for entry in matrix:
         if entry["ENV"] == runner_env:
             result = subprocess.run(
@@ -35,7 +33,7 @@ def load_current_images(runner_env: str) -> list[str]:
                 stdout=subprocess.PIPE,
                 text=True,
                 env=dict(filter(lambda item: item[0] != "ENV", entry.items()))
-                | {"RUNNER_ENV": runner_env, "BRANCH_NAME": branch_name},
+                | {"RUNNER_ENV": runner_env, "BRANCH_NAME": DEFAULT_BRANCH_NAME},
                 check=True,
             )
             images.append(result.stdout.strip())
@@ -63,6 +61,13 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     dry_run = args.dry_run != "false"
+
+    if not dry_run and getenv("GITHUB_REF_NAME") != DEFAULT_BRANCH_NAME:
+        print()
+        print(f"Not running from '{DEFAULT_BRANCH_NAME}' branch and")
+        print("--dry-run not passed. Exiting.")
+        exit(1)
+
     current_branches = load_current_branches()
     if not current_branches:
         print()

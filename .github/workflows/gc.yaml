@@ -3,17 +3,11 @@ name: garbage collection
 on:
   workflow_call:
     inputs:
-      branch_name:
-        required: true
-        type: string
       dry_run:
         default: true
         type: boolean
   workflow_dispatch:
     inputs:
-      branch_name:
-        required: true
-        type: string
       dry_run:
         default: true
         type: boolean
@@ -55,6 +49,5 @@ jobs:
       - name: Run garbage collection
         run: python main.py --dry-run="${DRY_RUN}"
         env:
-          BRANCH_NAME: ${{ inputs.branch_name }}
           DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || inputs.dry_run }}
           REPOSITORY: ${{ github.repository }}

@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 
 
+DEFAULT_BRANCH_NAME = "main"
+
+
 class GarbageCollector(ABC):
     def __init__(self, collector_name: str, region: str, dry_run: bool):
         self.dry_run = dry_run
