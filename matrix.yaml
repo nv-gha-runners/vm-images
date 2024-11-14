@@ -30,8 +30,7 @@ ARCH:
 
 ENV:
   - aws
-  # TODO: Uncomment this before merging
-  #- qemu
+  - qemu
 
 exclude:
   # only use amd64 for windows
