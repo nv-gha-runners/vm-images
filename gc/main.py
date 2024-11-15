@@ -37,6 +37,11 @@ def load_current_images(runner_env: str) -> list[str]:
                 check=True,
             )
             images.append(result.stdout.strip())
+    if not images:
+        print()
+        print("No current images found. Something's not right.")
+        print("Exiting to prevent all images from being deleted from AWS.")
+        exit(1)
     return images
 
 
@@ -47,7 +52,13 @@ def load_current_branches() -> list[str]:
     client = Github()
     repository = getenv("REPOSITORY")
     assert repository is not None
-    return [b.name for b in client.get_repo(repository).get_branches()]
+    branches = [b.name for b in client.get_repo(repository).get_branches()]
+    if not branches:
+        print()
+        print("No current branches found. Something's not right.")
+        print("Exiting to prevent all images from being deleted from AWS.")
+        exit(1)
+    return branches
 
 
 if __name__ == "__main__":
@@ -69,11 +80,6 @@ if __name__ == "__main__":
         exit(1)
 
     current_branches = load_current_branches()
-    if not current_branches:
-        print()
-        print("No current branches found. Something's not right.")
-        print("Exiting to prevent all images from being deleted from AWS.")
-        exit(1)
 
     regions_path = path.join(path.dirname(__file__), "..", "regions.yaml")
     with open(regions_path, "r") as file:
