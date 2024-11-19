@@ -72,7 +72,6 @@ class AMIGarbageCollector(gc.GarbageCollector):
                 if image_name:
                     if branch_name:
                         ami_groups[branch_name][image_name].append(ami)
-                        break
                     else:
                         expired_amis.append(ami)
 
