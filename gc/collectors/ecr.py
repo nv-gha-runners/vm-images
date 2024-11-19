@@ -4,13 +4,21 @@ from mypy_boto3_ecr_public.type_defs import ImageDetailTypeDef
 from mypy_boto3_ecr_public.paginator import (
     DescribeImagesPaginator as ECRPublicDescribeImagesPaginator,
 )
+from .image_name import deserialize_image_name
 
 
 class ECRGarbageCollector(gc.GarbageCollector):
-    def __init__(self, current_images: list[str], region: str, dry_run: bool):
+    def __init__(
+        self,
+        current_images: list[str],
+        current_branches: list[str],
+        region: str,
+        dry_run: bool,
+    ):
         super().__init__("ECR Collector", region, dry_run)
         self.ecr_client = boto3.client("ecr-public", region_name=region)
         self.current_images = current_images
+        self.current_branches = current_branches
         self.repository_name = "kubevirt-images"
 
     def _run(self) -> None:
@@ -34,6 +42,7 @@ class ECRGarbageCollector(gc.GarbageCollector):
     def _find_expired_ecr_images(
         self, images: list[ImageDetailTypeDef]
     ) -> list[ImageDetailTypeDef]:
+        branches = {b.replace("/", "-") for b in self.current_branches}
         expired_images = []
 
         for image in images:
@@ -41,12 +50,18 @@ class ECRGarbageCollector(gc.GarbageCollector):
             hasSupportedTags = False
             if image_tags:
                 for tag in image_tags:
-                    if tag in self.current_images:
-                        hasSupportedTags = True
-                        break
+                    parsed_image_name = deserialize_image_name(tag)
+                    if parsed_image_name:
+                        if parsed_image_name.branch_name == gc.DEFAULT_BRANCH_NAME:
+                            if tag in self.current_images:
+                                hasSupportedTags = True
+                                break
+                        elif parsed_image_name.branch_name in branches:
+                            hasSupportedTags = True
+                            break
 
             # Remove images that don't have any tags or don't have any supported tags
-            if not image_tags or not hasSupportedTags:
+            if not hasSupportedTags:
                 expired_images.append(image)
                 continue
         return expired_images

@@ -15,14 +15,14 @@ IMAGE_NAME=$(
     --arg DRIVER_VERSION "${DRIVER_VERSION}" \
     --arg DRIVER_FLAVOR "${DRIVER_FLAVOR}" \
     --arg ARCH "${ARCH}" \
-    --arg RUNNER_VERSION "${RUNNER_VERSION}" \
+    --arg BRANCH_NAME "${BRANCH_NAME}" \
   '[
     $OS,
     $VARIANT,
     $DRIVER_VERSION,
     $DRIVER_FLAVOR,
     $ARCH,
-    $RUNNER_VERSION
+    $BRANCH_NAME | sub("/"; "-")
   ] | map(select(length > 0)) | join("-")'
 )
 

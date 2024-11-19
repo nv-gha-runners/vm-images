@@ -1,3 +1,6 @@
+from os import getenv
+from typing import Optional
+
 import boto3
 from collectors import gc
 from collections import defaultdict
@@ -9,10 +12,17 @@ from mypy_boto3_ec2.paginator import (
 
 
 class AMIGarbageCollector(gc.GarbageCollector):
-    def __init__(self, current_images: list[str], region: str, dry_run: bool):
+    def __init__(
+        self,
+        current_images: list[str],
+        current_branches: list[str],
+        region: str,
+        dry_run: bool,
+    ):
         super().__init__("AMI Collector", region, dry_run)
         self.ec2_client = boto3.client("ec2", region_name=region)
         self.current_images = current_images
+        self.current_branches = current_branches
         self.search_tag_name = "vm-images"
         self.search_tag_value = "true"
 
@@ -44,29 +54,46 @@ class AMIGarbageCollector(gc.GarbageCollector):
 
     def _find_expired_amis(self, amis: list[ImageTypeDef]) -> list[ImageTypeDef]:
         expired_amis = []
-        ami_groups = defaultdict(list)
+        ami_groups: dict[str, dict[str, list[ImageTypeDef]]] = defaultdict(
+            lambda: defaultdict(list)
+        )
 
         # Group AMIs by "image-name" tag
         for ami in amis:
             img_tags = ami["Tags"]
             if img_tags:
+                image_name: Optional[str] = None
+                branch_name: Optional[str] = None
                 for tag in img_tags:
                     if tag["Key"] == "image-name":
-                        img_name = tag["Value"]
-                        ami_groups[img_name].append(ami)
+                        image_name = tag["Value"]
+                    if tag["Key"] == "branch-name":
+                        branch_name = tag["Value"]
+                if image_name:
+                    if branch_name:
+                        ami_groups[branch_name][image_name].append(ami)
                         break
+                    else:
+                        expired_amis.append(ami)
 
         # Sort AMIs by creation date.
         # If image is currently supported, keep only the newest AMI. Expire the rest.
         # If image is not currently supported, expire all AMIs.
-        for img_name, amis in ami_groups.items():
-            amis = sorted(
-                amis, key=lambda x: parser.parse(x["CreationDate"]), reverse=True
-            )
-            if img_name in self.current_images:
-                expired_amis.extend(amis[1:])
-            else:
-                expired_amis.extend(amis)
+        for branch_name, images in ami_groups.items():
+            if branch_name == gc.DEFAULT_BRANCH_NAME:
+                for image_name, amis in images.items():
+                    if image_name in self.current_images:
+                        amis = sorted(
+                            amis,
+                            key=lambda x: parser.parse(x["CreationDate"]),
+                            reverse=True,
+                        )
+                        expired_amis.extend(amis[1:])
+                    else:
+                        expired_amis.extend(amis)
+            elif branch_name not in self.current_branches:
+                for image_name, amis in images.items():
+                    expired_amis.extend(amis)
 
         return expired_amis
 

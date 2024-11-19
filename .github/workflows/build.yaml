@@ -6,6 +6,9 @@ on:
       upload_artifacts:
         required: true
         type: boolean
+      branch_name:
+        required: true
+        type: string
 
 permissions:
   id-token: write
@@ -16,6 +19,13 @@ defaults:
     shell: bash
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run tests
+        run: ci/image-name/tests.sh
   compute-constants:
     runs-on: ubuntu-latest
     outputs:
@@ -55,6 +65,7 @@ jobs:
         run: ci/compute-variables.sh
         env:
           ARCH: ${{ matrix.ARCH }}
+          BRANCH_NAME: ${{ inputs.branch_name }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           DRIVER_FLAVOR: ${{ matrix.DRIVER_FLAVOR }}
           OS: ${{ matrix.OS }}
@@ -74,6 +85,7 @@ jobs:
             -only="*${OS}-${RUNNER_ENV}*" \
             -var "arch=${ARCH}" \
             -var "backup_aws_regions=${BACKUP_AWS_REGIONS}" \
+            -var "branch_name=${BRANCH_NAME}" \
             -var "default_aws_region=${DEFAULT_AWS_REGION}" \
             -var "driver_version=${DRIVER_VERSION}" \
             -var "driver_flavor=${DRIVER_FLAVOR}" \
@@ -90,6 +102,7 @@ jobs:
         env:
           ARCH: ${{ matrix.ARCH }}
           BACKUP_AWS_REGIONS: ${{ needs.compute-constants.outputs.BACKUP_AWS_REGIONS }}
+          BRANCH_NAME: ${{ inputs.branch_name }}
           DEFAULT_AWS_REGION: ${{ needs.compute-constants.outputs.DEFAULT_AWS_REGION }}
           DRIVER_VERSION: ${{ matrix.DRIVER_VERSION }}
           DRIVER_FLAVOR: ${{ matrix.DRIVER_FLAVOR }}
