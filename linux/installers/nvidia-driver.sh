@@ -14,9 +14,9 @@ if [ "${NV_ARCH}" == "arm64" ]; then
   ARCH=sbsa
 fi
 
-DRIVER_PKG_NAME="nvidia-driver-${NV_DRIVER_VERSION}-server"
+DRIVER_PKG_NAME="nvidia-driver-${NV_DRIVER_VERSION}"
 if [ "${NV_DRIVER_FLAVOR}" == "open" ]; then
-  DRIVER_PKG_NAME="nvidia-driver-${NV_DRIVER_VERSION}-server-open"
+  DRIVER_PKG_NAME="nvidia-driver-${NV_DRIVER_VERSION}-open"
 fi
 
 wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${ARCH}/${KEYRING}"
