@@ -14,6 +14,7 @@ DRIVER_VERSION:
   - ""
   - "535"
   - "550"
+  - "565"
 
 DRIVER_FLAVOR:
   - ""
@@ -41,6 +42,8 @@ exclude:
     DRIVER_VERSION: "535"
   - OS: windows
     DRIVER_VERSION: "550"
+  - OS: windows
+    DRIVER_VERSION: "565"
   # only make AMI images for windows
   - OS: windows
     ENV: qemu
@@ -53,4 +56,6 @@ exclude:
   - DRIVER_VERSION: "535"
     DRIVER_FLAVOR: ""
   - DRIVER_VERSION: "550"
+    DRIVER_FLAVOR: ""
+  - DRIVER_VERSION: "565"
     DRIVER_FLAVOR: ""
