@@ -15,8 +15,16 @@ if [ "${NV_ARCH}" == "arm64" ]; then
 fi
 
 DRIVER_PKG_NAME="nvidia-driver-${NV_DRIVER_VERSION}"
+
+# NVIDIA repositories do not provide packages for driver 535 open variant so we
+# need to use Canonical packages instead. We should remove this condition once
+# driver 535 is EOL
+if [ "${NV_DRIVER_VERSION}" == "535" ]; then
+  DRIVER_PKG_NAME="${DRIVER_PKG_NAME}-server"
+fi
+
 if [ "${NV_DRIVER_FLAVOR}" == "open" ]; then
-  DRIVER_PKG_NAME="nvidia-driver-${NV_DRIVER_VERSION}-open"
+  DRIVER_PKG_NAME="${DRIVER_PKG_NAME}-open"
 fi
 
 wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/${ARCH}/${KEYRING}"
