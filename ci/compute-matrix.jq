@@ -12,9 +12,9 @@ def compute_runner_label($entry):
   if $entry.ENV == "aws" then
     $entry + {"RUNNER_LABEL": "ubuntu-latest"}
   elif $entry.ARCH == "amd64" then
-    $entry + {"RUNNER_LABEL": "linux-amd64-cpu72-metal"}
+    $entry + {"RUNNER_LABEL": "linux-amd64-cpu4-testing"}
   elif $entry.ARCH == "arm64" then
-    $entry + {"RUNNER_LABEL": "linux-arm64-cpu64-metal"}
+    $entry + {"RUNNER_LABEL": "linux-arm64-cpu4-testing"}
   else
     "Unable to compute runner label\n" | halt_error
   end;
