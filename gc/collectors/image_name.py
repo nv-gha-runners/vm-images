@@ -23,7 +23,10 @@ class ImageName:
 def deserialize_image_name(image_name: str) -> Optional[ImageName]:
     try:
         result = subprocess.run(
-            [DESERIALIZE_PATH, image_name], stdout=subprocess.PIPE, text=True, check=True
+            [DESERIALIZE_PATH, image_name],
+            stdout=subprocess.PIPE,
+            text=True,
+            check=True,
         )
     except subprocess.CalledProcessError:
         return None
