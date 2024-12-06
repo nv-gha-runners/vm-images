@@ -13,6 +13,7 @@ DRIVER_VERSION:
   # keep this blank entry. an empty driver version corresponds to CPU machines
   - ""
   - "535"
+  - "550"
   - "565"
 
 DRIVER_FLAVOR:
@@ -40,6 +41,8 @@ exclude:
   - OS: windows
     DRIVER_VERSION: "535"
   - OS: windows
+    DRIVER_VERSION: "550"
+  - OS: windows
     DRIVER_VERSION: "565"
   # only make AMI images for windows
   - OS: windows
@@ -51,6 +54,8 @@ exclude:
     DRIVER_FLAVOR: "open"
   # ensure DRIVER_FLAVOR is set if DRIVER_VERSION is set
   - DRIVER_VERSION: "535"
+    DRIVER_FLAVOR: ""
+  - DRIVER_VERSION: "550"
     DRIVER_FLAVOR: ""
   - DRIVER_VERSION: "565"
     DRIVER_FLAVOR: ""
