@@ -5,6 +5,8 @@ set -euo pipefail
 MATRIX="$(yq -o json matrix.yaml)"
 LATEST_DRIVER_VERSION="$(echo "${MATRIX}" | jq -r '.DRIVER_VERSION[-1]')"
 
+EXIT_CODE=0
+
 ci/image-name/deserialize.sh "linux-gpu-${LATEST_DRIVER_VERSION}-open-arm64-main" | \
   LATEST_DRIVER_VERSION="${LATEST_DRIVER_VERSION}" \
   jq -e ". == {
@@ -14,7 +16,7 @@ ci/image-name/deserialize.sh "linux-gpu-${LATEST_DRIVER_VERSION}-open-arm64-main
     \"driver_flavor\": \"open\",
     \"arch\": \"arm64\",
     \"branch_name\": \"main\"
-  }"
+  }" || EXIT_CODE=1
 ci/image-name/deserialize.sh "windows-cpu-amd64-pr-1234" | \
   jq -e ". == {
     \"os\": \"windows\",
@@ -23,7 +25,7 @@ ci/image-name/deserialize.sh "windows-cpu-amd64-pr-1234" | \
     \"driver_flavor\": null,
     \"arch\": \"amd64\",
     \"branch_name\": \"pr-1234\"
-  }"
+  }" || EXIT_CODE=1
 ci/image-name/deserialize.sh "linux-gpu-${LATEST_DRIVER_VERSION}-open-arm64" | \
   LATEST_DRIVER_VERSION="${LATEST_DRIVER_VERSION}" \
   jq -e ". == {
@@ -33,14 +35,10 @@ ci/image-name/deserialize.sh "linux-gpu-${LATEST_DRIVER_VERSION}-open-arm64" | \
     \"driver_flavor\": \"open\",
     \"arch\": \"arm64\",
     \"branch_name\": null
-  }"
+  }" || EXIT_CODE=1
 
-if ci/image-name/deserialize.sh "linux-${LATEST_DRIVER_VERSION}-arm64-main"; then
-  exit 1
-fi
-if ci/image-name/deserialize.sh "gpu-${LATEST_DRIVER_VERSION}-arm64-main"; then
-  exit 1
-fi
-if ci/image-name/deserialize.sh "linux-gpu-${LATEST_DRIVER_VERSION}-main"; then
-  exit 1
-fi
+ci/image-name/deserialize.sh "linux-${LATEST_DRIVER_VERSION}-arm64-main" && EXIT_CODE=1
+ci/image-name/deserialize.sh "gpu-${LATEST_DRIVER_VERSION}-arm64-main" && EXIT_CODE=1
+ci/image-name/deserialize.sh "linux-gpu-${LATEST_DRIVER_VERSION}-main" && EXIT_CODE=1
+
+exit "$EXIT_CODE"
