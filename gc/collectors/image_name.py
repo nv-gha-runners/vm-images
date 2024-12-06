@@ -21,9 +21,12 @@ class ImageName:
 
 
 def deserialize_image_name(image_name: str) -> Optional[ImageName]:
-    result = subprocess.run(
-        [DESERIALIZE_PATH, image_name], stdout=subprocess.PIPE, text=True, check=True
-    )
+    try:
+        result = subprocess.run(
+            [DESERIALIZE_PATH, image_name], stdout=subprocess.PIPE, text=True, check=True
+        )
+    except subprocess.CalledProcessError:
+        return None
     parsed_json = json.loads(result.stdout)
     return ImageName(
         os=parsed_json["os"],
