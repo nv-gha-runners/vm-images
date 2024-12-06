@@ -35,6 +35,12 @@ ci/image-name/deserialize.sh "linux-gpu-${LATEST_DRIVER_VERSION}-open-arm64" | \
     \"branch_name\": null
   }"
 
-! ci/image-name/deserialize.sh "linux-${LATEST_DRIVER_VERSION}-arm64-main"
-! ci/image-name/deserialize.sh "gpu-${LATEST_DRIVER_VERSION}-arm64-main"
-! ci/image-name/deserialize.sh "linux-gpu-${LATEST_DRIVER_VERSION}-main"
+if ci/image-name/deserialize.sh "linux-${LATEST_DRIVER_VERSION}-arm64-main"; then
+  exit 1
+fi
+if ci/image-name/deserialize.sh "gpu-${LATEST_DRIVER_VERSION}-arm64-main"; then
+  exit 1
+fi
+if ci/image-name/deserialize.sh "linux-gpu-${LATEST_DRIVER_VERSION}-main"; then
+  exit 1
+fi
