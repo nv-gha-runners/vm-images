@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - deps-actions-runner-2.x
+      - deps-actions-runner-[0-9]*
 
 permissions:
   id-token: write
