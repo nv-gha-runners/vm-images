@@ -29,5 +29,8 @@ for EVENT in "${BLOCKED_EVENTS[@]}"; do
   fi
 done
 
+echo "Dump env"
+env | sort
+
 echo "Runner initialized"
 exit 0
