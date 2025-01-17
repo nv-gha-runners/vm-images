@@ -1,14 +1,18 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "branchPrefix": "deps-",
-  "extends": ["config:base"],
+  "extends": [
+    "config:base"
+  ],
   "customManagers": [
     {
       "customType": "regex",
       "datasourceTemplate": "github-releases",
-      "fileMatch": ["^matrix.yaml$"],
+      "fileMatch": [
+        "^.github/workflows/build.yaml$"
+      ],
       "matchStrings": [
-        "\\s*#\\s*renovate:\\s*repo=(?<depName>.*?)\\s*-\\s*\"?(?<currentValue>.*?)\"?\\s"
+        "# renovate: repo=(?<depName>.*?)\\s+\\a+: \"?(?<currentValue>.*?)\"?"
       ]
     }
   ]

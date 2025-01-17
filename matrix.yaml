@@ -20,10 +20,6 @@ DRIVER_FLAVOR:
   - "legacy"
   - "open"
 
-RUNNER_VERSION:
-  # renovate: repo=actions/runner
-  - "2.321.0"
-
 ARCH:
   - amd64
   - arm64
