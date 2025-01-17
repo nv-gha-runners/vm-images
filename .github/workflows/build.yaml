@@ -70,7 +70,8 @@ jobs:
           DRIVER_FLAVOR: ${{ matrix.DRIVER_FLAVOR }}
           OS: ${{ matrix.OS }}
           RUNNER_ENV: ${{ matrix.ENV }}
-          RUNNER_VERSION: ${{ matrix.RUNNER_VERSION }}
+          # renovate: repo=actions/runner
+          RUNNER_VERSION: "2.321.0"
         # The `exec` command is used to help forward signals to the child process.
         # This helps ensure Packer's AWS resources get removed when the job is cancelled.
         #
