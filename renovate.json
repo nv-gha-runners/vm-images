@@ -12,7 +12,7 @@
         "^.github/workflows/build.yaml$"
       ],
       "matchStrings": [
-        "# renovate: repo=(?<depName>.*?)\\s+\\a+: \"?(?<currentValue>.*?)\"?"
+        "# renovate: repo=(?<depName>.*?)\\s*\\w*: \"?(?<currentValue>.*?)\"?\\s"
       ]
     }
   ]
