@@ -110,7 +110,7 @@ jobs:
           PACKER_GITHUB_API_TOKEN: ${{ github.token }}
           RUNNER_ENV: ${{ matrix.ENV }}
           # renovate: repo=actions/runner
-          RUNNER_VERSION: "2.321.0"
+          RUNNER_VERSION: "2.320.0"
           UPLOAD_ARTIFACTS: ${{ inputs.upload_artifacts }}
       - name: Inspect Image Size
         if: matrix.ENV == 'qemu'
