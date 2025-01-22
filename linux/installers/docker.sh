@@ -14,13 +14,14 @@ echo \
 sudo apt-get update
 
 sudo apt-get install --no-install-recommends \
-  docker-ce \
-  docker-ce-cli \
-  containerd.io \
-  docker-buildx-plugin
+  'docker-ce=5:27.3.1*' \
+  'docker-ce-cli=5:27.3.1*' \
+  'containerd.io=1.7.24*' \
+  'docker-buildx-plugin=0.17.1*'
 
 # Install latest docker-compose from GitHub releases
-COMPOSE_URL="https://github.com/docker/compose/releases/latest/download/docker-compose-linux-$(arch)"
+# COMPOSE_URL="https://github.com/docker/compose/releases/latest/download/docker-compose-linux-$(arch)"
+COMPOSE_URL="https://github.com/docker/compose/releases/download/v2.31.0/docker-compose-linux-$(arch)"
 CHECKSUM_URL="${COMPOSE_URL}.sha256"
 wget -q "${COMPOSE_URL}" "${CHECKSUM_URL}"
 sha256sum -c docker-compose-*.sha256
