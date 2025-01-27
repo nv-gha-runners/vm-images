@@ -1,4 +1,7 @@
 // arch = "amd64"
+backup_aws_regions = ""
+branch_name = "local"
+default_aws_region = "us-east-2"
 // driver_version = "525.147.05"
 // driver_flavor = "open"
 // gh_token = ""
