@@ -6,7 +6,7 @@ The repository uses Packer to create AMIs for AWS and `qcow2` files for VMs.
 
 The `qcow2` files are then packaged and published as a Docker image for use as a `containerDisk` with KubeVirt ([docs](https://kubevirt.io/user-guide/virtual_machines/disks_and_volumes/#containerdisk)).
 
-All images use the latest Ubuntu Jammy image as their base.
+All images use the latest Ubuntu Noble image as their base.
 
 ## System Requirements for Building `qcow2` files
 
