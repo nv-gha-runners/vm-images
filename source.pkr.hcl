@@ -1,10 +1,3 @@
-locals {
-  ubuntu = {
-    version = "24.04"
-    codename = "noble"
-  }
-}
-
 // A dummy source to enable shell-local provisioners to run before the actual
 // provisioning begins
 source "null" "preprovision" {
