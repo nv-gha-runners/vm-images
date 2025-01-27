@@ -62,6 +62,11 @@ locals {
   }
   qemu_machine = lookup(local.qemu_machine_map, var.arch, "")
 
+  ubuntu = {
+    version = "24.04"
+    codename = "noble"
+  }
+
   uefi_imp_map = {
     "amd64" = "OVMF"
     "arm64" = "AAVMF"
