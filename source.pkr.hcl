@@ -1,3 +1,10 @@
+locals {
+  ubuntu = {
+    version = "24.04"
+    codename = "noble"
+  }
+}
+
 // A dummy source to enable shell-local provisioners to run before the actual
 // provisioning begins
 source "null" "preprovision" {
@@ -16,7 +23,7 @@ source "amazon-ebs" "ubuntu" {
 
   source_ami_filter {
     filters = {
-      name = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-${var.arch}-server-20241211"
+      name = "ubuntu/images/hvm-ssd/ubuntu-${local.ubuntu.codename}-${local.ubuntu.version}-${var.arch}-server-*"
     }
     most_recent = true
     owners      = ["099720109477"] // Canonical
@@ -49,8 +56,8 @@ source "qemu" "ubuntu" {
   disk_size        = "150G"
   format           = "qcow2"
   headless         = var.headless
-  iso_checksum     = "file:https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
-  iso_url          = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-${var.arch}.img"
+  iso_checksum     = "file:https://cloud-images.ubuntu.com/${local.ubuntu.codename}/current/SHA256SUMS"
+  iso_url          = "https://cloud-images.ubuntu.com/${local.ubuntu.codename}/current/${local.ubuntu.codename}-server-cloudimg-${var.arch}.img"
   memory           = 2048
   output_directory = local.output_directory
   qemu_binary      = "qemu-system-${local.qemu_arch}"
