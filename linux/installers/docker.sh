@@ -13,21 +13,12 @@ echo \
   sudo tee "${APT}"
 sudo apt-get update
 
-sudo apt-get install --no-install-recommends \
+sudo apt-get install -y --no-install-recommends \
   docker-ce \
   docker-ce-cli \
   containerd.io \
-  docker-buildx-plugin
-
-# Install latest docker-compose from GitHub releases
-COMPOSE_URL="https://github.com/docker/compose/releases/latest/download/docker-compose-linux-$(arch)"
-CHECKSUM_URL="${COMPOSE_URL}.sha256"
-wget -q "${COMPOSE_URL}" "${CHECKSUM_URL}"
-sha256sum -c docker-compose-*.sha256
-rm -rf docker-compose*.sha256
-sudo mkdir -p /usr/libexec/docker/cli-plugins
-chmod +x docker-compose*
-sudo mv docker-compose* /usr/libexec/docker/cli-plugins/docker-compose
+  docker-buildx-plugin \
+  docker-compose-plugin
 
 # Add Docker mirror to daemon.json and buildkitd.toml
 sudo mkdir -p /etc/docker /etc/buildkit
