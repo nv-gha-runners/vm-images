@@ -16,7 +16,7 @@ source "amazon-ebs" "ubuntu" {
 
   source_ami_filter {
     filters = {
-      name = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-${var.arch}-server-*"
+      name = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-${var.arch}-server-20241211"
     }
     most_recent = true
     owners      = ["099720109477"] // Canonical
