@@ -3,6 +3,8 @@ set -euo pipefail
 
 echo 'APT::Update::Error-Mode "any";' | sudo tee /etc/apt/apt.conf.d/warnings-as-errors
 
+sudo add-apt-repository ppa:mruffell/lp2096782-test-qemu
+
 # Prevent kernel upgrades
 sudo apt-mark hold \
   linux-{aws,generic,virtual} \
@@ -22,7 +24,8 @@ sudo apt install -y \
   sudo \
   unzip \
   wget \
-  zip
+  zip \
+  qemu
 
 # Disable unattended-upgrades
 sudo systemctl disable --now unattended-upgrades apt-daily.service apt-daily.timer apt-daily-upgrade.service apt-daily-upgrade.timer
