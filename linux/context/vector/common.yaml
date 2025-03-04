@@ -9,6 +9,16 @@ sources:
       - load
       - memory
       - network
+    disk:
+      devices:
+        excludes: ["loop*", "sr*", "fd*"]
+    filesystem:
+      devices:
+        excludes: ["/dev/loop*"]
+        includes: ["/dev/*"]
+    network:
+      devices:
+        excludes: ["br*", "docker*", "lo", "veth*"]
 
 sinks:
   vector:
