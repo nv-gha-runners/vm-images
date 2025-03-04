@@ -65,6 +65,7 @@ build {
       "${path.root}/linux/installers/python.sh",
       "${path.root}/linux/installers/runner.sh",
       "${path.root}/linux/installers/fluent-bit.sh",
+      "${path.root}/linux/installers/vector.sh",
       "${path.root}/linux/installers/watchdog.sh",
 
       // Cleanup

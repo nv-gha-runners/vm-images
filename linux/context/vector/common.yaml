@@ -1,0 +1,22 @@
+sources:
+  metrics:
+    type: host_metrics
+    collectors:
+      - cpu
+      - disk
+      - filesystem
+      - host
+      - load
+      - memory
+      - network
+
+sinks:
+  vector:
+    type: vector
+    inputs: [metrics]
+    address: https://vector.local.gha-runners.nvidia.com
+    healthcheck:
+      enabled: false
+    tls:
+      enabled: true
+      alpn_protocols: ["h2"]
