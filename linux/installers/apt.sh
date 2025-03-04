@@ -14,6 +14,7 @@ sudo apt update
 sudo apt upgrade -y
 
 sudo apt install -y \
+  apt-transport-https \
   build-essential \
   ca-certificates \
   curl \
