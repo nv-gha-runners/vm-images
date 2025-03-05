@@ -1,0 +1,18 @@
+[Unit]
+Description=DCGM Exporter
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStart=/usr/bin/docker run --rm \
+  --name dcgm-exporter \
+  --hostname %H \
+  --publish 9400:9400 \
+  --gpus all \
+  --cap-add SYS_ADMIN \
+  nvcr.io/nvidia/k8s/dcgm-exporter:4.1.1-4.0.4-ubuntu22.04
+
+[Install]
+WantedBy=multi-user.target

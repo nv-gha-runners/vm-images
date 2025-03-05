@@ -1,0 +1,35 @@
+sources:
+  metrics:
+    type: host_metrics
+    collectors:
+      - cpu
+      - disk
+      - filesystem
+      - host
+      - load
+      - memory
+      - network
+    disk:
+      devices:
+        excludes: ["loop*", "sr*", "fd*"]
+    filesystem:
+      devices:
+        excludes: ["/dev/loop*"]
+        includes: ["/dev/*"]
+    network:
+      devices:
+        excludes: ["br*", "docker*", "lo", "veth*"]
+  gpu_metrics:
+    type: prometheus_scrape
+    endpoints: ["http://127.0.0.1:9400/metrics"]
+
+sinks:
+  vector:
+    type: vector
+    inputs: [metrics, gpu_metrics]
+    address: https://vector.local.gha-runners.nvidia.com
+    healthcheck:
+      enabled: false
+    tls:
+      enabled: true
+      alpn_protocols: ["h2"]
