@@ -29,16 +29,17 @@ sudo apt-get update
 sudo apt-get install --no-install-recommends -y vector
 sudo systemctl enable vector
 
+sudo rm -rf "${APT}" "${KEYRING}"
+
 VECTOR_CONFIG_DIR="/etc/vector"
 
 # Clean default config
 sudo rm -rf "${VECTOR_CONFIG_DIR}"/*
 
-echo "VECTOR_CONFIG_YAML=${VECTOR_CONFIG_DIR}/*.yaml" | sudo tee /etc/default/vector
-sudo cp "${NV_CONTEXT_DIR}/vector/common.yaml" "${VECTOR_CONFIG_DIR}/common.yaml"
+# Copy env specific config
+sudo cp "${NV_CONTEXT_DIR}/vector/${NV_RUNNER_ENV}-${NV_VARIANT}.yaml" "${VECTOR_CONFIG_DIR}/vector.yaml"
 
-if [ -d "${NV_CONTEXT_DIR}/vector/${NV_RUNNER_ENV}" ]; then
-  sudo cp -r "${NV_CONTEXT_DIR}/vector/${NV_RUNNER_ENV}"/* "${VECTOR_CONFIG_DIR}/"
+if [ "${NV_VARIANT}" == "gpu" ]; then
+  sudo cp "${NV_CONTEXT_DIR}/vector/dcgm-exporter.service" /etc/systemd/system/dcgm-exporter.service
+  sudo systemctl enable dcgm-exporter
 fi
-
-sudo rm -rf "${APT}" "${KEYRING}"
