@@ -1,3 +1,4 @@
+from itertools import batched
 import boto3
 from collectors import gc
 from mypy_boto3_ecr_public.type_defs import ImageDetailTypeDef
@@ -74,7 +75,9 @@ class ECRGarbageCollector(gc.GarbageCollector):
             self.log_removal("ECR Image", f"{img['imageDigest']} ({tag_name})")
         if self.dry_run:
             return
-        self.ecr_client.batch_delete_image(
-            repositoryName=self.repository_name,
-            imageIds=[{"imageDigest": img["imageDigest"]} for img in images],
-        )
+        # batch image deletions since the API has a limit of 100 images per request
+        for batch in batched(images, 100):
+            self.ecr_client.batch_delete_image(
+                repositoryName=self.repository_name,
+                imageIds=[{"imageDigest": img["imageDigest"]} for img in batch],
+            )
