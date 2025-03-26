@@ -27,9 +27,14 @@ echo "deb [signed-by=${KEYRING}] \
 sudo apt-get update
 
 sudo apt-get install --no-install-recommends -y vector
-sudo systemctl enable vector
 
 sudo rm -rf "${APT}" "${KEYRING}"
+
+sudo systemctl stop vector
+sudo systemctl enable vector
+
+# Cleanup vector data
+sudo rm -rf /var/lib/vector/*
 
 VECTOR_CONFIG_DIR="/etc/vector"
 
