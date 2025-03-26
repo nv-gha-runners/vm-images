@@ -27,9 +27,13 @@ echo "deb [signed-by=${KEYRING}] \
 sudo apt-get update
 
 sudo apt-get install --no-install-recommends -y vector
-sudo systemctl enable vector
 
 sudo rm -rf "${APT}" "${KEYRING}"
+sudo systemctl stop vector
+sudo systemctl enable vector
+
+# Make sure hostname is set before starting vector
+sudo sed -i '/^After=/ s/$/ systemd-hostnamed.service/' /lib/systemd/system/vector.service
 
 VECTOR_CONFIG_DIR="/etc/vector"
 

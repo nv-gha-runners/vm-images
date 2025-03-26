@@ -27,6 +27,16 @@ transforms:
     type: remap
     inputs: [logs]
     source: |-
+      # Vector is using the hostname specified in systemd logs. This hostname is
+      # set to `nv-runner` until cloud-init is updating it. As vector is
+      # started after the hostname is set, we override the hostname here with
+      # the updated hostname
+      host, err = get_hostname()
+      if err != null {
+        log("Failed to get hostname: " + err +  ". Defaulting to systemd hostname", level: "error")
+      } else {
+        .host = host
+      }
       # fluent-bit is looking for the hostname key
       .hostname = .host
 
