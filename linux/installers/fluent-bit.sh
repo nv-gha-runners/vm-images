@@ -2,6 +2,12 @@
 
 set -euo pipefail
 
+# qemu env is now using vector
+if [ "${NV_RUNNER_ENV}" == "qemu" ]; then
+  echo "NV_RUNNER_ENV is 'qemu'. Skipping Fluent Bit installation."
+  exit 0
+fi
+
 KEYRING="/usr/share/keyrings/fluentbit.gpg"
 APT="/etc/apt/sources.list.d/fluentbit.list"
 
