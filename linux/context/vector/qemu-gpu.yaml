@@ -1,4 +1,6 @@
 sources:
+  logs:
+    type: journald
   metrics:
     type: host_metrics
     collectors:
@@ -23,6 +25,24 @@ sources:
     type: prometheus_scrape
     endpoints: ["http://127.0.0.1:9400/metrics"]
 
+transforms:
+  logs_transform:
+    type: remap
+    inputs: [logs]
+    source: |-
+      # Vector is using the hostname specified in systemd logs. This hostname is
+      # set to `nv-runner` until cloud-init is updating it. As vector is
+      # started after the hostname is set, we override the hostname here with
+      # the updated hostname
+      host, err = get_hostname()
+      if err != null {
+        log("Failed to get hostname: " + err +  ". Defaulting to systemd hostname", level: "error")
+      } else {
+        .host = host
+      }
+      # fluent-bit is looking for the hostname key
+      .hostname = .host
+
 sinks:
   vector:
     type: vector
@@ -33,3 +53,11 @@ sinks:
     tls:
       enabled: true
       alpn_protocols: ["h2"]
+  fluent-bit:
+    type: http
+    inputs: [logs_transform]
+    uri: https://fb.local.gha-runners.nvidia.com/logs
+    healthcheck:
+      enabled: false
+    encoding:
+      codec: json
