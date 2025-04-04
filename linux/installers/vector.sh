@@ -2,12 +2,6 @@
 
 set -euo pipefail
 
-# Currently vector is not used on AWS
-if [ "${NV_RUNNER_ENV}" != "qemu" ]; then
-  echo "NV_RUNNER_ENV is not 'qemu'. Skipping Vector installation."
-  exit 0
-fi
-
 KEYRING="/usr/share/keyrings/vector.gpg"
 APT="/etc/apt/sources.list.d/vector.list"
 APT_GPG_KEYS=(
