@@ -1,0 +1,60 @@
+sources:
+  logs:
+    type: journald
+  metrics:
+    type: host_metrics
+    collectors:
+      - cpu
+      - disk
+      - filesystem
+      - host
+      - load
+      - memory
+      - network
+    disk:
+      devices:
+        excludes: ["loop*", "sr*", "fd*"]
+    filesystem:
+      devices:
+        excludes: ["/dev/loop*"]
+        includes: ["/dev/*"]
+    network:
+      devices:
+        excludes: ["br*", "docker*", "lo", "veth*"]
+  gpu_metrics:
+    type: prometheus_scrape
+    endpoints: ["http://127.0.0.1:9400/metrics"]
+
+transforms:
+  aws_metadata_metrics:
+    type: aws_ec2_metadata
+    inputs: [metrics, gpu_metrics]
+    fields: []
+    tags: ["Name"]
+  aws_metadata_logs:
+    type: aws_ec2_metadata
+    inputs: [logs]
+    tags: ["Name"]
+  remap_hostname_metrics:
+    type: remap
+    inputs: [aws_metadata_metrics]
+    source: |-
+      .tags.host = .tags."tags[Name]"
+      del(.tags."tags[Name]")
+  remap_hostname_logs:
+    type: remap
+    inputs: [aws_metadata_logs]
+    source: |-
+      .host = .tags.Name
+      del(.tags)
+
+sinks:
+  vector:
+    type: vector
+    inputs: [remap_hostname_logs, remap_hostname_metrics]
+    address: https://vector.local.gha-runners.nvidia.com
+    healthcheck:
+      enabled: false
+    tls:
+      enabled: true
+      alpn_protocols: ["h2"]
