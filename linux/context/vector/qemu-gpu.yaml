@@ -40,24 +40,14 @@ transforms:
       } else {
         .host = host
       }
-      # fluent-bit is looking for the hostname key
-      .hostname = .host
 
 sinks:
   vector:
     type: vector
-    inputs: [metrics, gpu_metrics]
+    inputs: [logs_transform, metrics, gpu_metrics]
     address: https://vector.local.gha-runners.nvidia.com
     healthcheck:
       enabled: false
     tls:
       enabled: true
       alpn_protocols: ["h2"]
-  fluent-bit:
-    type: http
-    inputs: [logs_transform]
-    uri: https://fb.local.gha-runners.nvidia.com/logs
-    healthcheck:
-      enabled: false
-    encoding:
-      codec: json
