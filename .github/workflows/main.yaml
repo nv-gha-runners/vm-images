@@ -6,6 +6,7 @@ on:
       - main
       - deps-actions-runner-[0-9]*
       - test-**
+  workflow_dispatch:
 
 permissions:
   id-token: write
