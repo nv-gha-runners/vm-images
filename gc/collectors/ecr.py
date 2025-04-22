@@ -1,10 +1,13 @@
 from itertools import batched
+
 import boto3
-from collectors import gc
-from mypy_boto3_ecr_public.type_defs import ImageDetailTypeDef
 from mypy_boto3_ecr_public.paginator import (
     DescribeImagesPaginator as ECRPublicDescribeImagesPaginator,
 )
+from mypy_boto3_ecr_public.type_defs import ImageDetailTypeDef
+
+from collectors import gc
+
 from .image_name import deserialize_image_name
 
 
@@ -33,16 +36,14 @@ class ECRGarbageCollector(gc.GarbageCollector):
     def _get_ecr_images(self) -> list[ImageDetailTypeDef]:
         images = []
         paginator: ECRPublicDescribeImagesPaginator = self.ecr_client.get_paginator(
-            "describe_images"
+            "describe_images",
         )
         for page in paginator.paginate(repositoryName=self.repository_name):
             page_images = page["imageDetails"]
             images.extend(page_images)
         return images
 
-    def _find_expired_ecr_images(
-        self, images: list[ImageDetailTypeDef]
-    ) -> list[ImageDetailTypeDef]:
+    def _find_expired_ecr_images(self, images: list[ImageDetailTypeDef]) -> list[ImageDetailTypeDef]:
         branches = {b.replace("/", "-") for b in self.current_branches}
         expired_images = []
 
@@ -69,9 +70,7 @@ class ECRGarbageCollector(gc.GarbageCollector):
 
     def _delete_images(self, images: list[ImageDetailTypeDef]) -> None:
         for img in images:
-            tag_name = (
-                img.get("imageTags") and ", ".join(img["imageTags"]) or "untagged"
-            )
+            tag_name = img.get("imageTags") and ", ".join(img["imageTags"]) or "untagged"
             self.log_removal("ECR Image", f"{img['imageDigest']} ({tag_name})")
         if self.dry_run:
             return

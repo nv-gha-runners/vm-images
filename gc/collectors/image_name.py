@@ -4,10 +4,7 @@ import os.path
 import subprocess
 from typing import Optional
 
-
-DESERIALIZE_PATH = os.path.join(
-    os.path.dirname(__file__), "..", "..", "ci", "image-name", "deserialize.sh"
-)
+DESERIALIZE_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "ci", "image-name", "deserialize.sh")
 
 
 @dataclasses.dataclass

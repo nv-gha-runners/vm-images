@@ -1,11 +1,11 @@
 import argparse
-import subprocess
 import json
-import yaml
-from os import path, getenv
+import subprocess
+from os import getenv, path
 
-from collectors.ecr import ECRGarbageCollector
+import yaml
 from collectors.amis import AMIGarbageCollector
+from collectors.ecr import ECRGarbageCollector
 from collectors.gc import DEFAULT_BRANCH_NAME
 from github import Github
 
@@ -14,15 +14,9 @@ def load_current_images(runner_env: str) -> list[str]:
     """
     Loads the currently supported images from the matrix and returns them as a list.
     """
-    compute_matrix_path = path.join(
-        path.dirname(__file__), "..", "ci", "compute-matrix.sh"
-    )
-    compute_image_name_path = path.join(
-        path.dirname(__file__), "..", "ci", "image-name", "serialize.sh"
-    )
-    result = subprocess.run(
-        compute_matrix_path, cwd="..", stdout=subprocess.PIPE, text=True, check=True
-    )
+    compute_matrix_path = path.join(path.dirname(__file__), "..", "ci", "compute-matrix.sh")
+    compute_image_name_path = path.join(path.dirname(__file__), "..", "ci", "image-name", "serialize.sh")
+    result = subprocess.run(compute_matrix_path, cwd="..", stdout=subprocess.PIPE, text=True, check=True)
     matrix: list[dict[str, str]] = json.loads(result.stdout)["include"]
     images = []
     for entry in matrix:

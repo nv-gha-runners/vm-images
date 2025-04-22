@@ -1,0 +1,22 @@
+[tool.codespell]
+builtin = "clear"
+quiet-level = 3
+
+[tool.ruff]
+fix = true
+indent-width = 4
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # pyflakes
+    "F",
+    # isort
+    "I",
+    # numpy
+    "NPY",
+    # flake8-bugbear
+    "B"
+]

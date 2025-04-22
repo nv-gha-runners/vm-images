@@ -1,14 +1,14 @@
-from os import getenv
+from collections import defaultdict
 from typing import Optional
 
 import boto3
-from collectors import gc
-from collections import defaultdict
 from dateutil import parser
-from mypy_boto3_ec2.type_defs import ImageTypeDef
 from mypy_boto3_ec2.paginator import (
     DescribeImagesPaginator as EC2DescribeImagesPaginator,
 )
+from mypy_boto3_ec2.type_defs import ImageTypeDef
+
+from collectors import gc
 
 
 class AMIGarbageCollector(gc.GarbageCollector):
@@ -37,7 +37,7 @@ class AMIGarbageCollector(gc.GarbageCollector):
     def _get_amis(self) -> list[ImageTypeDef]:
         amis = []
         paginator: EC2DescribeImagesPaginator = self.ec2_client.get_paginator(
-            "describe_images"
+            "describe_images",
         )
         for page in paginator.paginate(
             Owners=["self"],
@@ -45,7 +45,7 @@ class AMIGarbageCollector(gc.GarbageCollector):
                 {
                     "Name": f"tag:{self.search_tag_name}",
                     "Values": [self.search_tag_value],
-                }
+                },
             ],
         ):
             page_amis = page["Images"]
@@ -55,7 +55,7 @@ class AMIGarbageCollector(gc.GarbageCollector):
     def _find_expired_amis(self, amis: list[ImageTypeDef]) -> list[ImageTypeDef]:
         expired_amis = []
         ami_groups: dict[str, dict[str, list[ImageTypeDef]]] = defaultdict(
-            lambda: defaultdict(list)
+            lambda: defaultdict(list),
         )
 
         # Group AMIs by "image-name" tag
@@ -91,7 +91,7 @@ class AMIGarbageCollector(gc.GarbageCollector):
                     else:
                         expired_amis.extend(amis)
             elif branch_name not in self.current_branches:
-                for image_name, amis in images.items():
+                for _, amis in images.items():
                     expired_amis.extend(amis)
 
         return expired_amis
