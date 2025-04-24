@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 DEFAULT_BRANCH_NAME = "main"
 
 
@@ -15,9 +14,7 @@ class GarbageCollector(ABC):
         print(f"{self.removal_action} {resource_name}: {resource_id}")
 
     def run(self) -> None:
-        print(
-            f"Running {self.collector_name}: dry_run={self.dry_run}, region={self.region}"
-        )
+        print(f"Running {self.collector_name}: dry_run={self.dry_run}, region={self.region}")
         self._run()
 
     @abstractmethod

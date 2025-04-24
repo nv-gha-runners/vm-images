@@ -28,7 +28,7 @@ function Set-MachineEnvironmentVariable {
 
     $check = [Environment]::GetEnvironmentVariable("${Variable}", [EnvironmentVariableTarget]::Machine)
     if ($check -And $check -icontains "${Value}") {
-        Write-Warning "Succesfully set ${Variable} = '${Value}'"
+        Write-Warning "Successfully set ${Variable} = '${Value}'"
         return
     }
     else {
