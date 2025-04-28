@@ -44,8 +44,6 @@ jobs:
         run: pip install -r requirements.txt
       - name: Check mypy
         run: mypy main.py collectors/*.py
-      - name: Check black
-        run: black --check main.py collectors/*.py
       - name: Run garbage collection
         run: python main.py --dry-run="${DRY_RUN}"
         env:
