@@ -7,9 +7,9 @@ notifications:
       nvidia:
         channels:
           - id: C06K87YG09F
-    match: workflow_run.(conclusion = "failure" and path = ".github/workflows/main.yaml")
+    match: workflow_run.(conclusion = "failure" and path = ".github/workflows/main.yaml" and head_branch = "main")
     message:
       body: |
-        @gha-runners-team The main workflow for the vm-images repository has failed. <<{{url}}|See details here>>.
+        @gha-runners-team The main workflow for the vm-images repository has failed. <{{url}}|See details here>.
       vars:
         url: workflow_run.html_url
