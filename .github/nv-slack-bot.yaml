@@ -1,0 +1,15 @@
+$schema: https://public.gha-runners.nvidia.com/nv-slack-bot/schemas/config-v1.json
+enabled: true
+notifications:
+  - name: Main workflow failed
+    event: workflow_run
+    slack:
+      nvidia:
+        channels:
+          - id: C06K87YG09F
+    match: workflow_run.(conclusion = "failure" and path = ".github/workflows/main.yaml")
+    message:
+      body: |
+        @gha-runners-team The main workflow for the vm-images repository has failed. <<{{url}}|See details here>>.
+      vars:
+        url: workflow_run.html_url
