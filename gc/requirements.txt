@@ -1,8 +1,8 @@
-black
-boto3
-boto3-stubs[boto3,ec2,ecr-public]
-mypy
-PyGithub
-pyyaml
-types-python-dateutil
-types-PyYAML
+black~=25.1
+boto3~=1.38
+boto3-stubs[boto3,ec2,ecr-public]~=1.38
+mypy~=1.15
+PyGithub~=2.6
+pyyaml~=6.0
+types-python-dateutil~=2.9
+types-PyYAML~=6.0
